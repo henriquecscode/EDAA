@@ -1,6 +1,6 @@
 airport_id,city,state,name
 10165,Adak Island,AK,Adak
-10299,Anchorage,AK,Ted Stevens Anchorage International
+10299,Anchorage,AK,Anchorage International Airport
 10304,Aniak,AK,Aniak Airport
 10754,Barrow,AK,Wiley Post/Will Rogers Memorial
 10551,Bethel,AK,Bethel Airport
@@ -32,12 +32,12 @@ airport_id,city,state,name
 15401,Texarkana,AR,Texarkana Regional-Webb Field
 11695,Flagstaff,AZ,Flagstaff Pulliam
 11869,Grand Canyon,AZ,Grand Canyon National Park
-14107,Phoenix,AZ,Phoenix Sky Harbor International
-15376,Tucson,AZ,Tucson International
+14107,Phoenix,AZ,Sky Harbor International Airport
+15376,Tucson,AZ,Tucson International Airport
 16218,Yuma,AZ,Yuma MCAS/Yuma International
 10157,Arcata/Eureka,CA,Arcata
 10561,Bakersfield,CA,Meadows Field
-10800,Burbank,CA,Bob Hope
+10800,Burbank,CA,Burbank Glendale Pasadena Airport
 11041,Carlsbad,CA,McClellan-Palomar
 11002,Chico,CA,Chico Municipal
 10910,Concord,CA,Buchanan Field
@@ -46,30 +46,30 @@ airport_id,city,state,name
 11638,Fresno,CA,Fresno Yosemite International
 12436,Inyokern,CA,Inyokern Airport
 15383,Lake Tahoe,CA,Lake Tahoe Airport
-12954,Long Beach,CA,Long Beach Airport
-12892,Los Angeles,CA,Los Angeles International
+12954,Long Beach,CA,Long Beach Daugherty Field Airport
+12892,Los Angeles,CA,Los Angeles International Airport
 13388,Mammoth Lakes,CA,Mammoth Lakes Airport
 13424,Modesto,CA,Modesto City-County-Harry Sham Field
 13476,Monterey,CA,Monterey Peninsula
-13796,Oakland,CA,Metropolitan Oakland International
-13891,Ontario,CA,Ontario International
+13796,Oakland,CA,Oakland International Airport
+13891,Ontario,CA,Ontario International Airport
 13988,Oxnard/Ventura,CA,Oxnard
 14262,Palm Springs,CA,Palm Springs International
 14162,Palmdale,CA,Palmdale USAF Plant 42
 14487,Redding,CA,Redding Municipal
-14893,Sacramento,CA,Sacramento International
-14679,San Diego,CA,San Diego International
-14771,San Francisco,CA,San Francisco International
-14831,San Jose,CA,Norman Y. Mineta San Jose International
+14893,Sacramento,CA,Sacramento International Airport
+14679,San Diego,CA,San Diego International Airport
+14771,San Francisco,CA,San Francisco International Airport
+14831,San Jose,CA,Norman Y Mineta San Jose International Airport
 14698,San Luis Obispo,CA,San Luis County Regional
-14908,Santa Ana,CA,John Wayne Airport-Orange County
+14908,Santa Ana,CA,John Wayne Airport
 14689,Santa Barbara,CA,Santa Barbara Municipal
 14905,Santa Maria,CA,Santa Maria Public/Capt. G. Allan Hancock Field
 14716,Stockton,CA,Stockton Metropolitan
 15601,Visalia,CA,Visalia Municipal
 10372,Aspen,CO,Aspen Pitkin County Sardy Field
 11109,Colorado Springs,CO,City of Colorado Springs Municipal
-11292,Denver,CO,Denver International
+11292,Denver,CO,Denver International Airport
 11413,Durango,CO,Durango La Plata County
 11503,Eagle,CO,Eagle County Regional
 11921,Grand Junction,CO,Grand Junction Regional
@@ -78,34 +78,34 @@ airport_id,city,state,name
 13502,Montrose/Delta,CO,Montrose Regional
 14288,Pueblo,CO,Pueblo Memorial
 15177,Telluride,CO,Telluride Regional
-10529,Hartford,CT,Bradley International
+10529,Hartford,CT,Bradley International Airport
 12244,New Haven,CT,Tweed New Haven
-11278,Washington,DC,Ronald Reagan Washington National
-12264,Washington,DC,Washington Dulles International
+11278,Washington,DC,Washington National Airport
+12264,Washington,DC,Dulles International Airport
 12320,Wilmington,DE,New Castle
 15994,Yap,Federated States of Micronesia,Yap International
 11252,Daytona Beach,FL,Daytona Beach International
-11697,Fort Lauderdale,FL,Fort Lauderdale-Hollywood International
-14635,Fort Myers,FL,Southwest Florida International
+11697,Fort Lauderdale,FL,Fort Lauderdale Hollywood International Airport
+14635,Fort Myers,FL,Southwest Florida International Airport
 11953,Gainesville,FL,Gainesville Regional
-12451,Jacksonville,FL,Jacksonville International
+12451,Jacksonville,FL,Jacksonville International Airport
 11624,Key West,FL,Key West International
 13501,Marathon,FL,The Florida Keys Marathon
 13360,Melbourne,FL,Melbourne International
-13303,Miami,FL,Miami International
+13303,Miami,FL,Miami International Airport
 10329,Naples,FL,Naples Municipal
-13204,Orlando,FL,Orlando International
+13204,Orlando,FL,Orlando International Airport
 14078,Panama City,FL,Bay County
 11481,Panama City,FL,Northwest Florida Beaches International
 14193,Pensacola,FL,Pensacola Gulf Coast Regional
 14986,Sarasota/Bradenton,FL,Sarasota/Bradenton International
 14112,St. Petersburg,FL,St. Petersburg-Clearwater International
 15249,Tallahassee,FL,Tallahassee Regional
-15304,Tampa,FL,Tampa International
+15304,Tampa,FL,Tampa International Airport
 15624,Valparaiso,FL,Northwest Florida Regional
-14027,West Palm Beach/Palm Beach,FL,Palm Beach International
+14027,West Palm Beach/Palm Beach,FL,Palm Beach International Airport
 10146,Albany,GA,Southwest Georgia Regional
-10397,Atlanta,GA,Hartsfield-Jackson Atlanta International
+10397,Atlanta,GA,Hartsfield-Jackson Atlanta International Airport
 10208,Augusta,GA,Augusta Regional at Bush Field
 10731,Brunswick,GA,Brunswick Golden Isles
 11150,Columbus,GA,Columbus Metropolitan
@@ -113,7 +113,7 @@ airport_id,city,state,name
 14685,Savannah,GA,Savannah/Hilton Head International
 15607,Valdosta,GA,Valdosta Regional
 12402,Hilo,HI,Hilo International
-12173,Honolulu,HI,Honolulu International
+12173,Honolulu,HI,Honolulu International Airport
 13347,Hoolehua,HI,Molokai
 13830,Kahului,HI,Kahului Airport
 12758,Kona,HI,Kona International Airport at Keahole
@@ -132,39 +132,39 @@ airport_id,city,state,name
 15389,Twin Falls,ID,Joslin Field - Magic Valley Regional
 10685,Bloomington/Normal,IL,Central Illinois Regional
 11067,Champaign/Urbana,IL,University of Illinois/Willard
-13232,Chicago,IL,Chicago Midway International
-13930,Chicago,IL,Chicago O'Hare International
+13232,Chicago,IL,Chicago Midway International Airport
+13930,Chicago,IL,Chicago O'Hare International Airport
 13367,Moline,IL,Quad City International
 14108,Peoria,IL,General Downing - Peoria International
 14512,Rockford,IL,Chicago/Rockford International
 14952,Springfield,IL,Abraham Lincoln Capital
 11612,Evansville,IN,Evansville Regional
 11823,Fort Wayne,IN,Fort Wayne International
-12339,Indianapolis,IN,Indianapolis International
+12339,Indianapolis,IN,Indianapolis International Airport
 14696,South Bend,IN,South Bend Airport
 11867,Garden City,KS,Garden City Regional
 13290,Manhattan/Ft. Riley,KS,Manhattan Regional
 11726,Topeka,KS,Forbes Field
 12278,Wichita,KS,Wichita Mid-Continent
 12945,Lexington,KY,Blue Grass
-14730,Louisville,KY,Louisville International-Standiford Field
+14730,Louisville,KY,Louisville International Airport
 14006,Paducah,KY,Barkley Regional
 10185,Alexandria,LA,Alexandria International
 10781,Baton Rouge,LA,Baton Rouge Metropolitan/Ryan Field
 12951,Lafayette,LA,Lafayette Regional
 12915,Lake Charles,LA,Lake Charles Regional
 13377,Monroe,LA,Monroe Regional
-13495,New Orleans,LA,Louis Armstrong New Orleans International
+13495,New Orleans,LA,New Orleans International Airport
 14814,Shreveport,LA,Shreveport Regional
-10721,Boston,MA,Logan International
+10721,Boston,MA,Logan International Airport
 13541,Martha's Vineyard,MA,Martha's Vineyard Airport
 10154,Nantucket,MA,Nantucket Memorial
 13933,Worcester,MA,Worcester Regional
-10821,Baltimore,MD,Baltimore/Washington International Thurgood Marshall
+10821,Baltimore,MD,Baltimore-Washington International Thurgood Mars
 10581,Bangor,ME,Bangor International
 14321,Portland,ME,Portland International Jetport
 11295,Detroit,MI,Coleman A. Young Municipal
-11433,Detroit,MI,Detroit Metro Wayne County
+11433,Detroit,MI,Detroit Metropolitan Wayne County Airport
 11721,Flint,MI,Bishop International
 11986,Grand Rapids,MI,Gerald R. Ford International
 11076,Hancock/Houghton,MI,Houghton County Memorial
@@ -178,15 +178,15 @@ airport_id,city,state,name
 10631,Bemidji,MN,Bemidji Regional
 11337,Duluth,MN,Duluth International
 12343,International Falls,MN,Falls International
-13487,Minneapolis,MN,Minneapolis-St Paul International
+13487,Minneapolis,MN,Minneapolis St Paul International Airport
 14633,Rochester,MN,Rochester International
 10643,Branson,MO,Branson Airport
 11111,Columbia,MO,Columbia Regional
 12511,Joplin,MO,Joplin Regional
 13341,Kansas City,MO,Charles B. Wheeler Downtown
-13198,Kansas City,MO,Kansas City International
+13198,Kansas City,MO,Kansas City International Airport
 14783,Springfield,MO,Springfield-Branson National
-15016,St. Louis,MO,Lambert-St. Louis International
+15016,St. Louis,MO,Lambert St Louis International Airport
 12007,Columbus,MS,Golden Triangle Regional
 11931,Greenville,MS,Mid Delta Regional
 11973,Gulfport/Biloxi,MS,Gulfport-Biloxi International
@@ -203,7 +203,7 @@ airport_id,city,state,name
 13486,Missoula,MT,Missoula International
 15897,West Yellowstone,MT,Yellowstone
 10431,Asheville,NC,Asheville Regional
-11057,Charlotte,NC,Charlotte Douglas International
+11057,Charlotte,NC,Douglas International Airport
 11641,Fayetteville,NC,Fayetteville Regional/Grannis Field
 11995,Greensboro/High Point,NC,Piedmont Triad International
 12149,Hickory,NC,Hickory Regional
@@ -211,7 +211,7 @@ airport_id,city,state,name
 12390,Kinston,NC,Kinston Regional Jetport at Stallings Field
 11617,New Bern/Morehead/Beaufort,NC,Coastal Carolina Regional
 14938,Pinehurst/Southern Pines,NC,Moore County
-14492,Raleigh/Durham,NC,Raleigh-Durham International
+14492,Raleigh/Durham,NC,Durham International Airport
 12323,Wilmington,NC,Wilmington International
 10627,Bismarck/Mandan,ND,Bismarck Municipal
 11637,Fargo,ND,Hector International
@@ -225,24 +225,24 @@ airport_id,city,state,name
 10558,Scottsbluff,NE,Western Neb. Regional/William B. Heilig Field
 13296,Manchester,NH,Manchester-Boston Regional
 10158,Atlantic City,NJ,Atlantic City International
-11618,Newark,NJ,Newark Liberty International
+11618,Newark,NJ,Newark International Airport
 15356,Trenton,NJ,Trenton Mercer
-10140,Albuquerque,NM,Albuquerque International Sunport
+10140,Albuquerque,NM,Albuquerque International Airport
 11711,Farmington,NM,Four Corners Regional
 12177,Hobbs,NM,Lea County Regional
 14588,Roswell,NM,Roswell International Air Center
 14674,Santa Fe,NM,Santa Fe Municipal
 11525,Elko,NV,Elko Regional
-12889,Las Vegas,NV,McCarran International
-14570,Reno,NV,Reno/Tahoe International
+12889,Las Vegas,NV,McCarran International Airport
+14570,Reno,NV,Reno-Tahoe International Airport
 10257,Albany,NY,Albany International
 10577,Binghamton,NY,Greater Binghamton/Edwin A. Link Field
-10792,Buffalo,NY,Buffalo Niagara International
+10792,Buffalo,NY,Greater Buffalo International Airport
 11537,Elmira/Corning,NY,Elmira/Corning Regional
 12391,Islip,NY,Long Island MacArthur
 12397,Ithaca/Cortland,NY,Ithaca Tompkins Regional
-12478,New York,NY,John F. Kennedy International
-12953,New York,NY,LaGuardia
+12478,New York,NY,John F Kennedy International Airport
+12953,New York,NY,LaGuardia Airport
 15070,Newburgh/Poughkeepsie,NY,Stewart International
 14576,Rochester,NY,Greater Rochester International
 15096,Syracuse,NY,Syracuse Hancock International
@@ -250,34 +250,34 @@ airport_id,city,state,name
 10361,Watertown,NY,Watertown International
 12197,White Plains,NY,Westchester County
 10874,Akron,OH,Akron-Canton Regional
-11193,Cincinnati,OH,Cincinnati/Northern Kentucky International
-11042,Cleveland,OH,Cleveland-Hopkins International
-11066,Columbus,OH,Port Columbus International
+11193,Cincinnati,OH,Greater Cincinnati International Airport
+11042,Cleveland,OH,Hopkins International Airport
+11066,Columbus,OH,Port Columbus International Airport
 11267,Dayton,OH,James M Cox/Dayton International
 15295,Toledo,OH,Toledo Express
 12891,Lawton/Fort Sill,OK,Lawton-Fort Sill Regional
-13851,Oklahoma City,OK,Will Rogers World
+13851,Oklahoma City,OK,Will Rogers World Airport
 15370,Tulsa,OK,Tulsa International
 14489,Bend/Redmond,OR,Roberts Field
 11603,Eugene,OR,Mahlon Sweet Field
 13024,Klamath Falls,OR,Klamath Falls Airport
 13264,Medford,OR,Rogue Valley International - Medford
 13964,North Bend/Coos Bay,OR,Southwest Oregon Regional
-14057,Portland,OR,Portland International
+14057,Portland,OR,Portland International Airport
 14871,Salem,OR,McNary Field
 10135,Allentown/Bethlehem/Easton,PA,Lehigh Valley International
 11577,Erie,PA,Erie International/Tom Ridge Field
 13230,Harrisburg,PA,Harrisburg International
-14100,Philadelphia,PA,Philadelphia International
-14122,Pittsburgh,PA,Pittsburgh International
+14100,Philadelphia,PA,Philadelphia International Airport
+14122,Pittsburgh,PA,Pittsburgh International Airport
 10434,Scranton/Wilkes-Barre,PA,Wilkes Barre Scranton International
 14711,State College,PA,University Park
 14583,Koror,Palau,Babelthuap
 10732,Aguadilla,PR,Rafael Hernandez
 13176,Mayaguez,PR,Eugenio Maria de Hostos
 14254,Ponce,PR,Mercedita
-14843,San Juan,PR,Luis Munoz Marin International
-14307,Providence,RI,Theodore Francis Green State
+14843,San Juan,PR,Luis Munoz Marin Airport
+14307,Providence,RI,Theodore Francis Green State Airport
 10994,Charleston,SC,Charleston AFB/International
 10868,Columbia,SC,Columbia Metropolitan
 11699,Florence,SC,Florence Regional
@@ -291,27 +291,27 @@ airport_id,city,state,name
 15323,Bristol/Johnson City/Kingsport,TN,Tri-Cities Regional TN/VA
 10980,Chattanooga,TN,Lovell Field
 15412,Knoxville,TN,McGhee Tyson
-13244,Memphis,TN,Memphis International
-10693,Nashville,TN,Nashville International
+13244,Memphis,TN,Memphis International Airport
+10693,Nashville,TN,Nashville International Airport
 12016,Guam,TT,Guam International
 14582,Rota,TT,Rota International
 14955,Saipan,TT,Francisco C. Ada Saipan International
 10136,Abilene,TX,Abilene Regional
 10279,Amarillo,TX,Rick Husband Amarillo International
-10423,Austin,TX,Austin - Bergstrom International
+10423,Austin,TX,Austin-Bergstrom International Airport
 16440,Austin,TX,Robert Mueller Municipal
 10728,Beaumont/Port Arthur,TX,Jack Brooks Regional
 10747,Brownsville,TX,Brownsville South Padre Island International
 11049,College Station/Bryan,TX,Easterwood Field
 11140,Corpus Christi,TX,Corpus Christi International
-11259,Dallas,TX,Dallas Love Field
-11298,Dallas/Fort Worth,TX,Dallas/Fort Worth International
+11259,Dallas,TX,Dallas Love Field Airport
+11298,Dallas/Fort Worth,TX,Fort Worth International Airport
 11415,Del Rio,TX,Del Rio International
 11540,El Paso,TX,El Paso International
 12206,Harlingen/San Benito,TX,Valley International
 11495,Houston,TX,Ellington Field
-12266,Houston,TX,George Bush Intercontinental/Houston
-12191,Houston,TX,William P Hobby
+12266,Houston,TX,George Bush Intercontinental Airport
+12191,Houston,TX,William P Hobby Airport
 11982,Killeen,TX,Robert Gray AAF
 12319,Killeen,TX,Skylark Field
 13061,Laredo,TX,Laredo International
@@ -320,7 +320,7 @@ airport_id,city,state,name
 13158,Midland/Odessa,TX,Midland International
 13256,Mission/McAllen/Edinburg,TX,McAllen Miller International
 14842,San Angelo,TX,San Angelo Regional/Mathis Field
-14683,San Antonio,TX,San Antonio International
+14683,San Antonio,TX,San Antonio International Airport
 15411,Tyler,TX,Tyler Pounds Regional
 15569,Victoria,TX,Victoria Regional
 10155,Waco,TX,Waco Regional
@@ -328,13 +328,13 @@ airport_id,city,state,name
 10918,Cedar City,UT,Cedar City Regional
 13829,Ogden,UT,Ogden-Hinckley
 14314,Provo,UT,Provo Municipal
-14869,Salt Lake City,UT,Salt Lake City International
+14869,Salt Lake City,UT,Salt Lake City International Airport
 14794,St. George,UT,St George Municipal
 10990,Charlottesville,VA,Charlottesville Albemarle
 13139,Lynchburg,VA,Lynchburg Regional/Preston Glenn Field
 14098,Newport News/Williamsburg,VA,Newport News/Williamsburg International
-13931,Norfolk,VA,Norfolk International
-14524,Richmond,VA,Richmond International
+13931,Norfolk,VA,Norfolk International Airport
+14524,Richmond,VA,Richmond International Airport
 14574,Roanoke,VA,Roanoke Regional/Woodrum Field
 15024,Charlotte Amalie,VI,Cyril E King
 15027,Christiansted,VI,Henry E. Rohlsen
@@ -343,7 +343,7 @@ airport_id,city,state,name
 13546,Moses Lake,WA,Grant County International
 14252,Pasco/Kennewick/Richland,WA,Tri Cities
 10559,Seattle,WA,Boeing Field/King County International
-14747,Seattle,WA,Seattle/Tacoma International
+14747,Seattle,WA,Tacoma International Airport
 11884,Spokane,WA,Spokane International
 16101,Yakima,WA,Yakima Air Terminal/McAllister Field
 10408,Appleton,WI,Outagamie County Regional
@@ -351,7 +351,7 @@ airport_id,city,state,name
 11977,Green Bay,WI,Austin Straubel International
 13076,La Crosse,WI,La Crosse Municipal
 13485,Madison,WI,Dane County Regional-Truax Field
-13342,Milwaukee,WI,General Mitchell International
+13342,Milwaukee,WI,General Mitchell International Airport
 11203,Mosinee,WI,Central Wisconsin
 14520,Rhinelander,WI,Rhinelander/Oneida County
 12223,Ashland,WV,Tri-State/Milton J. Ferguson Field

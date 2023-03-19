@@ -1,0 +1,71 @@
+airport_id,code,name,city,state,statename,lat,lng
+11433,DTW,Detroit Metropolitan Wayne County Airport,Detroit,MI,Michigan,42.2327,-83.3412
+14869,SLC,Salt Lake City International Airport,Salt Lake City,UT,Utah,40.7862,-111.982
+14321,PDX,Portland International Airport,Portland,OR,Oregon,45.5867,-122.587
+15016,STL,Lambert St Louis International Airport,St. Louis,MO,Missouri,38.7414,-90.3647
+11193,CVG,Greater Cincinnati International Airport,Hebron,OH,Ohio,39.0571,-84.6625
+10397,ATL,Hartsfield-Jackson Atlanta International Airport,Atlanta,GA,Georgia,33.6558,-84.4333
+11278,DCA,Washington National Airport,Arlington,VA,Virginia,38.849,-77.0438
+14107,PHX,Sky Harbor International Airport,Phoenix,AZ,Arizona,33.4376,-112.03
+11298,DFW,Fort Worth International Airport,Dallas,TX,Texas,32.9222,-97.0409
+12451,JAX,Jacksonville International Airport,Jacksonville,FL,Florida,30.4914,-81.676
+12953,LGA,LaGuardia Airport,Flushing,NY,New York,40.7731,-73.8756
+13204,MCO,Orlando International Airport,Orlando,FL,Florida,28.4418,-81.3115
+13487,MSP,Minneapolis St Paul International Airport,St. Paul,MN,Minnesota,44.8793,-93.1987
+12889,LAS,Mccarran International Airport,Las Vegas,NV,Nevada,36.0806,-115.143
+14027,PBI,Palm Beach International Airport,West Palm Beach,FL,Florida,26.6909,-80.0889
+13244,MEM,Memphis International Airport,Memphis,TN,Tennessee,35.047,-89.9823
+14747,SEA,Tacoma International Airport,Seattle,WA,Washington,47.4405,-122.296
+10423,AUS,Austin-Bergstrom International Airport,Austin,TX,Texas,30.2027,-97.6653
+11292,DEN,Denver International Airport,Denver,CO,Colorado,39.8396,-104.672
+12892,LAX,Los Angeles International Airport,Los Angeles,CA,California,33.9456,-118.391
+13198,MCI,Kansas City International Airport,Kansas City,MO,Missouri,39.2992,-94.7171
+11057,CLT,Douglas International Airport,Charlotte,NC,North Carolina,35.2226,-80.946
+14100,PHL,Philadelphia International Airport,Philadelphia,PA,Pennsylvania,39.8768,-75.2419
+12478,JFK,John F Kennedy International Airport,Jamaica,NY,New York,40.6437,-73.79
+11697,FLL,Fort Lauderdale Hollywood International Airport,Dania Beach,FL,Florida,26.0722,-80.1354
+12339,IND,Indianapolis International Airport,Indianapolis,IN,Indiana,39.7322,-86.2707
+12266,IAH,George Bush Intercontinental Airport,Houston,TX,Texas,29.9784,-95.3424
+15304,TPA,Tampa International Airport,Tampa,FL,Florida,27.9744,-82.5356
+14635,RSW,Southwest Florida International Airport,Fort Myers,FL,Florida,26.5228,-81.7531
+13930,ORD,Chicago O'Hare International Airport,Chicago,IL,Illinois,41.9796,-87.8825
+14679,SAN,San Diego International Airport,San Diego,CA,California,32.7299,-117.195
+10721,BIL,Logan International Airport,Billings,MT,Montana,45.8034,-108.537
+10821,BWI,Baltimore-Washington International Thurgood Mars,Baltimore,MD,Maryland,39.1841,-76.6745
+11066,CMH,Port Columbus International Airport,Columbus,OH,Ohio,39.9974,-82.8877
+13495,MSY,New Orleans International Airport,Kenner,LA,Louisiana,29.983,-90.2569
+10140,ABQ,Albuquerque International Airport,Albuquerque,NM,New Mexico,35.0494,-106.625
+10792,BUF,Greater Buffalo International Airport,Buffalo,NY,New York,42.9309,-78.738
+14492,RDU,Durham International Airport,Raleigh/Durham,NC,North Carolina,35.8729,-78.7923
+11618,EWR,Newark International Airport,Newark,NJ,New Jersey,40.6924,-74.1843
+14771,SFO,San Francisco International Airport,San Francisco,CA,California,37.6148,-122.392
+12173,HNL,Honolulu International Airport,Honolulu,HI,Hawaii,21.3358,-157.919
+14908,SNA,John Wayne Airport,Santa Ana,CA,California,33.6813,-117.859
+13342,MKE,General Mitchell International Airport,Milwaukee,WI,Wisconsin,42.9471,-87.9051
+14730,SDF,Louisville International Airport,Louisville,KY,Kentucky,38.1865,-85.7462
+14122,PIT,Pittsburgh International Airport,Coraopolis,PA,Pennsylvania,40.4914,-80.2328
+10693,BNA,Nashville International Airport,Nashville,TN,Tennessee,36.1342,-86.6682
+13303,MIA,Miami International Airport,Miami,FL,Florida,25.7953,-80.2727
+14893,SMF,Sacramento International Airport,Sacramento,CA,California,38.683,-121.591
+14524,RIC,Richmond International Airport,Richmond,VA,Virginia,37.5108,-77.3332
+14843,SJU,Luis Munoz Marin Airport,Carolina,PR,Puerto Rico,18.4367,-66.0095
+15376,TUS,Tucson International Airport,Tucson,AZ,Arizona,32.1204,-110.936
+13232,MDW,Chicago Midway International Airport,Chicago,IL,Illinois,41.7875,-87.7416
+14683,SAT,San Antonio International Airport,San Antonio,TX,Texas,29.5252,-98.4729
+13871,OMA,Eppley Airfield,Omaha,NE,Nebraska,41.3,-95.8998
+11042,CLE,Hopkins International Airport,Cleveland,OH,Ohio,41.4115,-81.8339
+14570,RNO,Reno-Tahoe International Airport,Reno,NV,Nevada,39.5064,-119.776
+12264,IAD,Dulles International Airport,Washington,VA,Virginia,38.9556,-77.4484
+13830,OGG,Kahului Airport,Kahului,HI,Hawaii,20.8926,-156.441
+13931,ORF,Norfolk International Airport,Norfolk,VA,Virginia,36.8977,-76.2154
+10299,ANC,Anchorage International Airport,Anchorage,AK,Alaska,61.1767,-149.961
+14307,PVD,Theodore Francis Green State Airport,Warwick,RI,Rhode Island,41.723,-71.4399
+10529,BDL,Bradley International Airport,Windsor Locks,CT,Connecticut,41.9271,-72.6816
+14831,SJC,Norman Y Mineta San Jose International Airport,San Jose,CA,California,37.3679,-121.926
+12191,HOU,William P Hobby Airport,Houston,TX,Texas,29.6572,-95.2795
+13796,OAK,Oakland International Airport,Oakland,CA,California,37.7158,-122.209
+13851,OKC,Will Rogers World Airport,Oklahoma City,OK,Oklahoma,35.3981,-97.5974
+12954,LGB,Long Beach Daugherty Field Airport,Long Beach,CA,California,33.8186,-118.144
+11259,DAL,Dallas Love Field Airport,Dallas,TX,Texas,32.8439,-96.8496
+10800,BUR,Burbank Glendale Pasadena Airport,Burbank,CA,California,34.1963,-118.352
+13891,ONT,Ontario International Airport,Ontario,CA,California,34.062,-117.594
