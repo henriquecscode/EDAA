@@ -5,23 +5,23 @@ using namespace std;
 template <class NodeT, class EdgeT>
 Multigraph<NodeT, EdgeT>::Multigraph()
 {
-    nodes = vector<Node *>();
-    edges = vector<Edge *>();
+    nodes = vector<Node<NodeT> *>();
+    edges = vector<Edge<EdgeT> *>();
 };
 
 template <class NodeT, class EdgeT>
 bool Multigraph<NodeT, EdgeT>::createNode(NodeT data)
 {
-    Node *node = new Node(data);
-    nodes.push_back(node);
+    Node<NodeT> *node = new Node<NodeT>(data);
+    this->nodes.push_back(node);
     return true;
 }
 
 template <class NodeT, class EdgeT>
-bool Multigraph<NodeT, EdgeT>::createEdge(Node *source, Node *dest, EdgeT data)
+bool Multigraph<NodeT, EdgeT>::createEdge(Node<NodeT> *source, Node<NodeT> *dest, EdgeT data)
 {
-    Edge *edge = new Edge(source, dest, data);
-    edges.push_back(edge);
+    Edge<EdgeT> *edge = new Edge<EdgeT>(source, dest, data);
+    this->edges.push_back(edge);
     source->addEdge(edge);
     return true;
 }
@@ -29,11 +29,11 @@ bool Multigraph<NodeT, EdgeT>::createEdge(Node *source, Node *dest, EdgeT data)
 template <class NodeT, class EdgeT>
 void *Multigraph<NodeT, EdgeT>::getNodes()
 {
-    return &nodes;
+    return &(this->nodes);
 }
 
 template <class NodeT, class EdgeT>
 void *Multigraph<NodeT, EdgeT>::getEdges()
 {
-    return &edges;
+    return &(this->edges);
 }
