@@ -4,47 +4,48 @@
 using namespace std;
 
 template <class T>
-class Node
+Node<T>::Node(T data)
 {
-private:
-    T data;
-    vector<Edge *> incomingEdges;
-    vector<Edge *> outgoingEdges;
+    this->data = data;
+}
 
-public:
-    Node(T data);
+template <class T>
+T &Node<T>::getData()
+{
+    return data;
+}
 
-    T &getData()
+template <class T>
+bool Node<T>::addIncomingEdge(Edge *edge)
+{
+    incomingEdges.push_back(edge);
+    return true;
+}
+
+template <class T>
+bool Node<T>::addOutgoingEdge(Edge *edge)
+{
+    outgoingEdges.push_back(edge);
+    return true;
+}
+
+template <class T>
+bool Node<T>::addEdge(Edge *edge)
+{
+    if (edge->getSource() == this)
     {
-        return data;
+        addOutgoingEdge(edge);
+        edge->getDest()->addIncomingEdge(edge);
     }
-
-    addIncomingEdge(Edge *edge)
+    else if (edge->getDest() == this)
     {
-        incomingEdges.push_back(edge);
+        edge->getSource()
+            ->addOutgoingEdge(edge);
+        addIncomingEdge(edge);
     }
-
-    addOutgoingEdge(Edge *edge)
+    else
     {
-        outgoingEdges.push_back(edge);
+        throw "Edge does not connect to this node";
     }
-
-    addEdge(Edge *edge)
-    {
-        if (edge->getSource() == this)
-        {
-            addOutgoingEdge(edge);
-            edge->getDest()->addIncomingEdge(edge);
-        }
-        else if (edge->getDest() == this)
-        {
-            edge->getSource()
-                ->addOutgoingEdge(edge);
-            addIncomingEdge(edge);
-        }
-        else
-        {
-            throw "Edge does not connect to this node";
-        }
-    }
+    return true;
 };

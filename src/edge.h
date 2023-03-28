@@ -6,7 +6,9 @@ class Node;
 template <class T>
 class Edge
 {
-private:
+    Node *source;
+    Node *dest;
+    T data;
 public:
     Edge(Node *source, Node *dest, T data);
     Node *getSource();

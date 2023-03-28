@@ -6,6 +6,14 @@ using namespace std;
 
 class Airport
 {
+    double longitude;
+    double latitude;
+    int id;
+    string code;
+    string name;
+    string city;
+    string state;
+    string statename;
 
 public:
     Airport(double lon, double lat, int id, string code, string name, string city, string state, string statename);

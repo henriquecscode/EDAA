@@ -1,35 +1,29 @@
 #include "edge.h"
 
-class Node;
+using namespace std;
 
 template <class T>
-class Edge
+Edge<T>::Edge(Node *source, Node *dest, T data)
 {
-private:
-    Node *source;
-    Node *dest;
-    T data;
+    this->source = source;
+    this->dest = dest;
+    this->data = data;
+}
 
-public:
-    Edge(Node *source, Node *dest, T data)
-    {
-        this->source = source;
-        this->dest = dest;
-        this->data = data;
-    }
+template <class T>
+Node *Edge<T>::getSource()
+{
+    return source;
+}
 
-    Node *getSource()
-    {
-        return source;
-    }
+template <class T>
+Node *Edge<T>::getDest()
+{
+    return dest;
+}
 
-    Node *getDest()
-    {
-        return dest;
-    }
-
-    T &getData()
-    {
-        return data;
-    }
-};
+template <class T>
+T &Edge<T>::getData()
+{
+    return data;
+}
