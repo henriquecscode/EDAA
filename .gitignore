@@ -1,0 +1,4 @@
+*build
+src/*.exe
+src/*.o
+.vscode
