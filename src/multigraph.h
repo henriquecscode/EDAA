@@ -31,6 +31,6 @@ public:
         bool (*edgeFilter)(Edge<EdgeT>*) ,
         double (*edgeWeight)(Edge<EdgeT>*),
         vector<Edge<EdgeT> *> (*dijkstra)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *), double (*)(Edge<EdgeT> *)
- );
+    ));
 };
 #endif
