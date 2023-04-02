@@ -7,6 +7,7 @@ template <class T>
 Node<T>::Node(T data)
 {
     this->data = data;
+    this->resetNode();
 }
 
 template <class T>
@@ -48,4 +49,35 @@ bool Node<T>::addEdge(Edge *edge)
         throw "Edge does not connect to this node";
     }
     return true;
-};
+}
+template <class T>
+void Node<T>::resetNode()
+{
+    distance = numeric_limits<double>::infinity();
+    previousEdge = nullptr;
+}
+
+template <class T>
+double Node<T>::getNodeDistance()
+{
+    return distance;
+}
+
+template <class T>
+void Node<T>::setNodeDistance(double distance)
+{
+    this->distance = distance;
+}
+
+template <class T>
+Edge *Node<T>::getPreviousEdge()
+{
+    return previousEdge;
+}
+
+template <class T>
+void Node<T>::setPreviousEdge(Edge *edge)
+{
+    this->previousEdge = edge;
+    return edge;
+}
