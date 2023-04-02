@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include <vector>
+#include <map>
 
 using namespace std;
 class Edge;
@@ -12,11 +13,14 @@ class Node
 private:
     T data;
     vector<Edge *> incomingEdges;
+    map<Node<T> *, vector<Edge *>> incomingEdgesByNode;
     vector<Edge *> outgoingEdges;
+    map<Node<T> *, vector<Edge *>> outgoingEdgesByNode;
     bool addIncomingEdge(Edge *edge);
     bool addOutgoingEdge(Edge *edge);
+
     double distance;
-    Edge* previousEdge;
+    Edge *previousEdge;
 
 public:
     Node(T data);
@@ -29,6 +33,13 @@ public:
     void setNodeDistance(double distance);
     Edge *getPreviousEdge();
     void setPreviousEdge(Edge *edge);
+
+    vector<Edge *> getIncomingEdges();
+    vector<Edge *> getOutgoingEdges();
+    map<Node<T> *, vector<Edge *>> getIncomingEdgesByNode();
+    map<Node<T> *, vector<Edge *>> getOutgoingEdgesByNode();
+    vector<Edge *> getIncomingEdgesFromNode(Node<T> *node);
+    vector<Edge *> getOutgoingEdgesToNode(Node<T> *node);
 };
 
 template <class T>
