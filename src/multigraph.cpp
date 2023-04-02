@@ -2,6 +2,8 @@
 #include "node.h"
 #include <vector>
 #include <queue>
+#include <set>
+#include <utility>
 #include "better_priority_queue.h"
 using namespace std;
 
@@ -120,7 +122,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(
         auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
-            //get the best edge
+            // get the best edge
             Node<NodeT> *toNode = outgoingEdgesOfNode.first;
             vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
             priority_queue < Edge<EdgeT> *, vector<Edge<EdgeT> *>, class
@@ -139,7 +141,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(
                 }
             }
 
-            //use the best edge for dijkstra
+            // use the best edge for dijkstra
             Edge<EdgeT> *edge = edgeQueue.top();
             double alt = node->getDistance() - edgeWeight(edge);
             if (alt < toNode->getDistance())
@@ -190,4 +192,124 @@ vector<vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::getShortestPathDijkstra(
         }
         return allPaths;
     }
+}
+
+template <class NodeT, class EdgeT>
+vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
+    Node<NodeT> *n1,
+    Node<NodeT> *n2,
+    bool (*edgeFilter)(Edge<EdgeT> *))
+{
+    set<Node<NodeT> *> found;
+    queue<Node<NodeT> *> q;
+    vector<Edge<EdgeT> *> path;
+
+    if (n1 == n2)
+    {
+        return path;
+    }
+
+    for (auto node : nodes)
+    {
+        node->resetNode();
+    }
+
+    // bfs over nodes using visited
+    q.push(n1);
+    found.insert(n1);
+    while (!q.empty())
+    {
+        Node<NodeT> *node = q.front();
+        q.pop();
+        if (node == n2)
+        {
+            break;
+        }
+
+        for (auto edge : node->getOutgoingEdges())
+        {
+            if (edgeFilter(edge))
+            {
+                Node<NodeT> *toNode = edge->getDest();
+                if (found.find(toNode) == found.end())
+                {
+                    // Not found
+                    q.push(toNode);
+                    toNode->setPrevious(node);
+                    found.insert(toNode);
+                }
+            }
+        }
+    }
+
+    vector<Edge<EdgeT> *> path = buildPath(n1, n2);
+    return path;
+}
+template <class NodeT, class EdgeT>
+vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
+    Node<NodeT> *n1,
+    Node<NodeT> *n2,
+    bool (*edgeFilter)(Edge<EdgeT> *))
+{
+    set<Node<NodeT> *> found;
+    queue<Node<NodeT> *> q;
+    vector<Edge<EdgeT> *> path;
+
+    if (n1 == n2)
+    {
+        return path;
+    }
+
+    for (auto node : nodes)
+    {
+        node->resetNode();
+    }
+
+    // bfs over nodes using visited
+    q.push(n1);
+    found.insert(n1);
+    while (!q.empty())
+    {
+        Node<NodeT> *node = q.front();
+        q.pop();
+        if (node == n2)
+        {
+            break;
+        }
+
+        auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
+        for(auto outgoingEdgesOfNode : outgoingEdgesByNode)
+        {
+            Node<NodeT> *toNode = outgoingEdgesOfNode.first;
+            vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
+            for (auto edge : outgoingEdges)
+            {
+                if (edgeFilter(edge))
+                {
+                    if (found.find(toNode) == found.end())
+                    {
+                        // Not found
+                        q.push(toNode);
+                        toNode->setPrevious(node);
+                        found.insert(toNode);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    vector<Edge<EdgeT> *> path = buildPath(n1, n2);
+    return path;
+}
+
+template <class NodeT, class EdgeT>
+pair<vector<Edge<EdgeT> *>, int> Multigraph<NodeT, EdgeT>::getErdos(
+    Node<NodeT> *n1,
+    Node<NodeT> *n2,
+    bool (*edgeFilter)(Edge<EdgeT> *),
+    vector<Edge<EdgeT> *> (*bfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)))
+{
+    vector<Edge<EdgeT> *> path = bfs(n1, n2, edgeFilter);
+    return make_pair(path, path.size());
 }
