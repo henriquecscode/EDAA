@@ -1,19 +1,19 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-template <typename NodeT>
+template <typename NodeT, typename EdgeT>
 class Node;
 
-template <typename EdgeT>
+template <typename NodeT, typename EdgeT>
 class Edge
 {
-    Node<NodeT> *source;
-    Node<NodeT> *dest;
+    Node<NodeT, EdgeT> *source;
+    Node<NodeT, EdgeT> *dest;
     EdgeT data;
 public:
-    Edge(Node<NodeT> *source, Node<NodeT> *dest, EdgeT data);
-    Node<NodeT> *getSource();
-    Node<NodeT> *getDest();
+    Edge(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, EdgeT data);
+    Node<NodeT, EdgeT> *getSource();
+    Node<NodeT, EdgeT> *getDest();
     EdgeT &getData();
 };
 #endif

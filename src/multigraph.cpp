@@ -10,22 +10,22 @@ using namespace std;
 template <typename NodeT, typename EdgeT>
 Multigraph<NodeT, EdgeT>::Multigraph()
 {
-    nodes = vector<Node<NodeT> *>();
-    edges = vector<Edge<EdgeT> *>();
+    nodes = vector<Node<NodeT, EdgeT> *>();
+    edges = vector<Edge<NodeT, EdgeT> *>();
 };
 
 template <typename NodeT, typename EdgeT>
 bool Multigraph<NodeT, EdgeT>::createNode(NodeT data)
 {
-    Node<NodeT> *node = new Node<NodeT>(data);
+    Node<NodeT, EdgeT> *node = new Node<NodeT, EdgeT>(data);
     this->nodes.push_back(node);
     return true;
 }
 
 template <typename NodeT, typename EdgeT>
-bool Multigraph<NodeT, EdgeT>::createEdge(Node<NodeT> *source, Node<NodeT> *dest, EdgeT data)
+bool Multigraph<NodeT, EdgeT>::createEdge(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, EdgeT data)
 {
-    Edge<EdgeT> *edge = new Edge<EdgeT>(source, dest, data);
+    Edge<NodeT, EdgeT> *edge = new Edge<NodeT, EdgeT>(source, dest, data);
     this->edges.push_back(edge);
     source->addEdge(edge);
     return true;
@@ -44,12 +44,12 @@ void *Multigraph<NodeT, EdgeT>::getEdges()
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node<NodeT> *source, Node<NodeT> *dest, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
-    better_priority_queue::updatable_priority_queue<Node<NodeT> *, double> pQ;
+    better_priority_queue::updatable_priority_queue<Node<NodeT, EdgeT> *, double> pQ;
 
-    // priority_queue<Node<NodeT> *, vector<Node<NodeT> *>, NodeDistanceComparator> queue;
+    // priority_queue<Node<NodeT, EdgeT> *, vector<Node<NodeT, EdgeT> *>, NodeDistanceComparator> queue;
 
     for (auto node : nodes)
     {
@@ -62,7 +62,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node<NodeT>
     // thank you copilot <3 <3
     while (!queue.empty())
     {
-        Node<NodeT> *node = queue.top();
+        Node<NodeT, EdgeT> *node = queue.top();
         queue.pop();
         // check if node is destination
         if (node == dest)
@@ -74,7 +74,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node<NodeT>
         {
             if (edgeFilter(edge))
             {
-                Node<NodeT> *toNode = edge->getDest();
+                Node<NodeT, EdgeT> *toNode = edge->getDest();
                 // double alt = node->getDistance() + edgeWeight(edge);
                 double alt = node->getDistance() - edgeWeight(edge);
                 if (alt < toNode->getDistance())
@@ -87,18 +87,18 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node<NodeT>
             }
         }
     }
-    vector<Edge<EdgeT> *> path = buildPath(source, dest);
+    vector<Edge<NodeT, EdgeT> *> path = buildPath(source, dest);
 
     return path;
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(Node<NodeT> *source, Node<NodeT> *dest, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
-    better_priority_queue::updatable_priority_queue<Node<NodeT> *, double> pQ;
+    better_priority_queue::updatable_priority_queue<Node<NodeT, EdgeT> *, double> pQ;
 
-    // priority_queue<Node<NodeT> *, vector<Node<NodeT> *>, NodeDistanceComparator> queue;
+    // priority_queue<Node<NodeT, EdgeT> *, vector<Node<NodeT, EdgeT> *>, NodeDistanceComparator> queue;
 
     for (auto node : nodes)
     {
@@ -111,7 +111,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(
     // thank you copilot <3
     while (!queue.empty())
     {
-        Node<NodeT> *node = queue.top();
+        Node<NodeT, EdgeT> *node = queue.top();
         queue.pop();
         // check if node is destination
         if (node == dest)
@@ -124,9 +124,9 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(
         {
             // get the best edge
             double bestWeight = numeric_limits<double>::max();
-            Edge<EdgeT> *bestEdge = nullptr;
-            Node<NodeT> *toNode = outgoingEdgesOfNode.first;
-            vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
+            Edge<NodeT, EdgeT> *bestEdge = nullptr;
+            Node<NodeT, EdgeT> *toNode = outgoingEdgesOfNode.first;
+            vector<Edge<NodeT, EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
 
             for (auto edge : outgoingEdges)
             {
@@ -152,16 +152,16 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdgesByNode(
             }
         }
     }
-    vector<Edge<EdgeT> *> path = buildPath(source, dest);
+    vector<Edge<NodeT, EdgeT> *> path = buildPath(source, dest);
     return path;
 }
 
 // build path
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::buildPath(Node<NodeT> *source, Node<NodeT> *dest)
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::buildPath(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest)
 {
-    vector<Edge<EdgeT> *> path;
-    Node<NodeT> *node = dest;
+    vector<Edge<NodeT, EdgeT> *> path;
+    Node<NodeT, EdgeT> *node = dest;
 
     while (node != source)
     {
@@ -172,21 +172,21 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::buildPath(Node<NodeT> *source, N
 }
 
 template <typename NodeT, typename EdgeT>
-vector<vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::getShortestPathDijkstra(
-    vector<Node<NodeT> *> nodes,
-    bool (*edgeFilter)(Edge<EdgeT> *),
-    double (*edgeWeight)(Edge<EdgeT> *),
-    vector<Edge<EdgeT> *> (*dijkstra)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *), double (*)(Edge<EdgeT> *)))
+vector<vector<Edge<NodeT, EdgeT> *>> Multigraph<NodeT, EdgeT>::getShortestPathDijkstra(
+    vector<Node<NodeT, EdgeT> *> nodes,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *),
+    double (*edgeWeight)(Edge<NodeT, EdgeT> *),
+    vector<Edge<NodeT, EdgeT> *> (*dijkstra)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *), double (*)(Edge<NodeT, EdgeT> *)))
 {
     {
         if (nodes.length < 2)
         {
             throw "Not enough nodes";
         }
-        vector<vector<Edge<EdgeT> *>> allPaths;
+        vector<vector<Edge<NodeT, EdgeT> *>> allPaths;
         for (auto i = 1; i < nodes.length; i++)
         {
-            vector<Edge<EdgeT> *> path = dijkstra(nodes[i - 1], nodes[i], edgeFilter, edgeWeight);
+            vector<Edge<NodeT, EdgeT> *> path = dijkstra(nodes[i - 1], nodes[i], edgeFilter, edgeWeight);
             allPaths.push_back(path);
         }
         return allPaths;
@@ -194,13 +194,13 @@ vector<vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::getShortestPathDijkstra(
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
-    Node<NodeT> *n1,
-    Node<NodeT> *n2,
-    bool (*edgeFilter)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
+    Node<NodeT, EdgeT> *n1,
+    Node<NodeT, EdgeT> *n2,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *))
 {
-    queue<Node<NodeT> *> q;
-    vector<Edge<EdgeT> *> path;
+    queue<Node<NodeT, EdgeT> *> q;
+    vector<Edge<NodeT, EdgeT> *> path;
 
     if (n1 == n2)
     {
@@ -217,7 +217,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
     n1->find();
     while (!q.empty())
     {
-        Node<NodeT> *node = q.front();
+        Node<NodeT, EdgeT> *node = q.front();
         q.pop();
         if (node == n2)
         {
@@ -228,7 +228,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
         {
             if (edgeFilter(edge))
             {
-                Node<NodeT> *toNode = edge->getDest();
+                Node<NodeT, EdgeT> *toNode = edge->getDest();
                 if (!toNode->isFound())
                 {
                     // Not found
@@ -240,17 +240,17 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
         }
     }
 
-    vector<Edge<EdgeT> *> path = buildPath(n1, n2);
+    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
     return path;
 }
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
-    Node<NodeT> *n1,
-    Node<NodeT> *n2,
-    bool (*edgeFilter)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
+    Node<NodeT, EdgeT> *n1,
+    Node<NodeT, EdgeT> *n2,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *))
 {
-    queue<Node<NodeT> *> q;
-    vector<Edge<EdgeT> *> path;
+    queue<Node<NodeT, EdgeT> *> q;
+    vector<Edge<NodeT, EdgeT> *> path;
 
     if (n1 == n2)
     {
@@ -267,7 +267,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
     n1->find();
     while (!q.empty())
     {
-        Node<NodeT> *node = q.front();
+        Node<NodeT, EdgeT> *node = q.front();
         q.pop();
         if (node == n2)
         {
@@ -277,8 +277,8 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
         auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
-            Node<NodeT> *toNode = outgoingEdgesOfNode.first;
-            vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
+            Node<NodeT, EdgeT> *toNode = outgoingEdgesOfNode.first;
+            vector<Edge<NodeT, EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -296,29 +296,29 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
         }
     }
 
-    vector<Edge<EdgeT> *> path = buildPath(n1, n2);
+    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
     return path;
 }
 
 template <typename NodeT, typename EdgeT>
-pair<vector<Edge<EdgeT> *>, int> Multigraph<NodeT, EdgeT>::getErdos(
-    Node<NodeT> *n1,
-    Node<NodeT> *n2,
-    bool (*edgeFilter)(Edge<EdgeT> *),
-    vector<Edge<EdgeT> *> (*bfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)))
+pair<vector<Edge<NodeT, EdgeT> *>, int> Multigraph<NodeT, EdgeT>::getErdos(
+    Node<NodeT, EdgeT> *n1,
+    Node<NodeT, EdgeT> *n2,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *),
+    vector<Edge<NodeT, EdgeT> *> (*bfs)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *)))
 {
-    vector<Edge<EdgeT> *> path = bfs(n1, n2, edgeFilter);
+    vector<Edge<NodeT, EdgeT> *> path = bfs(n1, n2, edgeFilter);
     return make_pair(path, path.size());
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfs(
-    Node<NodeT> *n1,
-    Node<NodeT> *n2,
-    bool (*edgeFilter)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dfs(
+    Node<NodeT, EdgeT> *n1,
+    Node<NodeT, EdgeT> *n2,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *))
 {
-    stack<Node<NodeT> *> s;
-    vector<Edge<EdgeT> *> path;
+    stack<Node<NodeT, EdgeT> *> s;
+    vector<Edge<NodeT, EdgeT> *> path;
 
     if (n1 == n2)
     {
@@ -335,7 +335,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfs(
     n1->find();
     while (!s.empty())
     {
-        Node<NodeT> *node = s.top();
+        Node<NodeT, EdgeT> *node = s.top();
         s.pop();
         if (node == n2)
         {
@@ -346,7 +346,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfs(
         {
             if (edgeFilter(edge))
             {
-                Node<NodeT> *toNode = edge->getDest();
+                Node<NodeT, EdgeT> *toNode = edge->getDest();
                 if (!toNode->isFound())
                 {
                     // Not found
@@ -358,18 +358,18 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfs(
         }
     }
 
-    vector<Edge<EdgeT> *> path = buildPath(n1, n2);
+    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
     return path;
 }
 
 template <typename NodeT, typename EdgeT>
-map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfs(
-    Node<NodeT> *n1,
-    bool (*edgeFilter)(Edge<EdgeT> *))
+map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> Multigraph<NodeT, EdgeT>::dfs(
+    Node<NodeT, EdgeT> *n1,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *))
 {
-    set<Node<NodeT> *> found;
-    stack<Node<NodeT> *> s;
-    vector<Edge<EdgeT> *> path;
+    set<Node<NodeT, EdgeT> *> found;
+    stack<Node<NodeT, EdgeT> *> s;
+    vector<Edge<NodeT, EdgeT> *> path;
 
     for (auto node : nodes)
     {
@@ -381,14 +381,14 @@ map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfs(
     n1->find();
     while (!s.empty())
     {
-        Node<NodeT> *node = s.top();
+        Node<NodeT, EdgeT> *node = s.top();
         s.pop();
 
         for (auto edge : node->getOutgoingEdges())
         {
             if (edgeFilter(edge))
             {
-                Node<NodeT> *toNode = edge->getDest();
+                Node<NodeT, EdgeT> *toNode = edge->getDest();
                 if (found.find(toNode) == found.end())
                 {
                     // Not found
@@ -400,12 +400,12 @@ map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfs(
         }
     }
 
-    map<Node<NodeT> *, vector<Edge<EdgeT> *>> pathMap;
+    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> pathMap;
     for (auto node : nodes)
     {
         if (found.find(node) != found.end())
         {
-            vector<Edge<EdgeT> *> nodePath = buildPath(n1, node);
+            vector<Edge<NodeT, EdgeT> *> nodePath = buildPath(n1, node);
             pathMap[node] = nodePath;
         }
     }
@@ -413,13 +413,13 @@ map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfs(
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfsByNode(
-    Node<NodeT> *n1,
-    Node<NodeT> *n2,
-    bool (*edgeFilter)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dfsByNode(
+    Node<NodeT, EdgeT> *n1,
+    Node<NodeT, EdgeT> *n2,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *))
 {
-    stack<Node<NodeT> *> s;
-    vector<Edge<EdgeT> *> path;
+    stack<Node<NodeT, EdgeT> *> s;
+    vector<Edge<NodeT, EdgeT> *> path;
 
     if (n1 == n2)
     {
@@ -436,7 +436,7 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfsByNode(
     n1->find();
     while (!s.empty())
     {
-        Node<NodeT> *node = s.top();
+        Node<NodeT, EdgeT> *node = s.top();
         s.pop();
         if (node == n2)
         {
@@ -446,8 +446,8 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfsByNode(
         auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
-            Node<NodeT> *toNode = outgoingEdgesOfNode.first;
-            vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
+            Node<NodeT, EdgeT> *toNode = outgoingEdgesOfNode.first;
+            vector<Edge<NodeT, EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -465,17 +465,17 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::dfsByNode(
         }
     }
 
-    vector<Edge<EdgeT> *> path = buildPath(n1, n2);
+    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
     return path;
 }
 
 template <typename NodeT, typename EdgeT>
-map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfsByNode(
-    Node<NodeT> *n1,
-    bool (*edgeFilter)(Edge<EdgeT> *))
+map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> Multigraph<NodeT, EdgeT>::dfsByNode(
+    Node<NodeT, EdgeT> *n1,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *))
 {
-    set<Node<NodeT> *> found;
-    stack<Node<NodeT> *> s;
+    set<Node<NodeT, EdgeT> *> found;
+    stack<Node<NodeT, EdgeT> *> s;
 
     for (auto node : nodes)
     {
@@ -487,14 +487,14 @@ map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfsByNode(
     n1->find();
     while (!s.empty())
     {
-        Node<NodeT> *node = s.top();
+        Node<NodeT, EdgeT> *node = s.top();
         s.pop();
 
         auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for(auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
-            Node<NodeT> *toNode = outgoingEdgesOfNode.first;
-            vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
+            Node<NodeT, EdgeT> *toNode = outgoingEdgesOfNode.first;
+            vector<Edge<NodeT, EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -511,17 +511,17 @@ map<Node<NodeT> *, vector<Edge<EdgeT> *>> Multigraph<NodeT, EdgeT>::dfsByNode(
         }
     }
 
-    map<Node<NodeT> *, vector<Edge<EdgeT> *>> pathMap;
+    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> pathMap;
     for (auto node : found)
     {
-        vector<Edge<EdgeT> *> nodePath = buildPath(n1, node);
+        vector<Edge<NodeT, EdgeT> *> nodePath = buildPath(n1, node);
         pathMap[node] = nodePath;
     }
     return pathMap;
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::getEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::getEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
     // check if this does a copy or not
     // It should
@@ -529,9 +529,9 @@ vector<Edge<EdgeT> *> Multigraph<NodeT, EdgeT>::getEdges(bool (*edgeFilter)(Edge
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
-    vector<Edge<EdgeT> *> bestEdges;
+    vector<Edge<NodeT, EdgeT> *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
     for (auto edge : edges)
     {
@@ -554,15 +554,15 @@ vector<Edge<EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*e
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> getBestEdgesByNode(Node<NodeT> *node, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> getBestEdgesByNode(Node<NodeT, EdgeT> *node, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
-    vector<Edge<EdgeT> *> bestEdges;
+    vector<Edge<NodeT, EdgeT> *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
     auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
     for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
     {
-        Node<NodeT> *toNode = outgoingEdgesOfNode.first;
-        vector<Edge<EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
+        Node<NodeT, EdgeT> *toNode = outgoingEdgesOfNode.first;
+        vector<Edge<NodeT, EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
         for (auto edge : outgoingEdges)
         {
             if (edgeFilter(edge))
@@ -581,7 +581,7 @@ vector<Edge<EdgeT> *> getBestEdgesByNode(Node<NodeT> *node, bool (*edgeFilter)(E
 }
 
 template <typename NodeT, typename EdgeT>
-bool Multigraph<NodeT, EdgeT>::isConnected(Node<NodeT> *n1, bool (*edgeFilter)(Edge<EdgeT> *), vector<Edge<EdgeT> *> (*dfs)(Node<NodeT> *))
+bool Multigraph<NodeT, EdgeT>::isConnected(Node<NodeT, EdgeT> *n1, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), vector<Edge<NodeT, EdgeT> *> (*dfs)(Node<NodeT, EdgeT> *))
 {
     dfs(n1, edgeFilter);
 
@@ -596,25 +596,25 @@ bool Multigraph<NodeT, EdgeT>::isConnected(Node<NodeT> *n1, bool (*edgeFilter)(E
 }
 
 template <typename NodeT, typename EdgeT>
-void Multigraph<NodeT, EdgeT>::mountTree(Node<NodeT> *root, vector<Edge<EdgeT> *> treeEdges)
+void Multigraph<NodeT, EdgeT>::mountTree(Node<NodeT, EdgeT> *root, vector<Edge<NodeT, EdgeT> *> treeEdges)
 {
     return;
 }
 
 template <typename NodeT, typename EdgeT>
 void Multigraph<NodeT, EdgeT>::getLocalMinimumSpanningTree(
-    Node<NodeT> *localNode,
-    bool (*edgeFilter)(Edge<EdgeT> *),
-    double (*edgeWeight)(Edge<EdgeT> *),
-    vector<Edge<EdgeT> *> (*collectEdges)(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *)),
-    vector<Edge<EdgeT> *> (*dfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)))
+    Node<NodeT, EdgeT> *localNode,
+    bool (*edgeFilter)(Edge<NodeT, EdgeT> *),
+    double (*edgeWeight)(Edge<NodeT, EdgeT> *),
+    vector<Edge<NodeT, EdgeT> *> (*collectEdges)(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *)),
+    vector<Edge<NodeT, EdgeT> *> (*dfs)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *)))
 {
 
     vector<Edge<EdgeT *>> edges = collectEdges(edgeFilter, edgeWeight);
-    vector<Edge<EgdeT> *> mstEdges = new vector<Edge<EdgeT> *>();
+    vector<Edge<EgdeT> *> mstEdges = new vector<Edge<NodeT, EdgeT> *>();
 
     // sort edges by weight
-    sort(edges.begin(), edges.end(), [](Edge<EdgeT> *e1, Edge<EdgeT> *e2)
+    sort(edges.begin(), edges.end(), [](Edge<NodeT, EdgeT> *e1, Edge<NodeT, EdgeT> *e2)
          { edgeWeight(e1) < edgeWeight(e2); });
 
     for (auto node : nodes)
@@ -624,22 +624,22 @@ void Multigraph<NodeT, EdgeT>::getLocalMinimumSpanningTree(
 
     for (auto edge : edges)
     {
-        Node<NodeT> *n1 = edge->getSource();
-        Node<NodeT> *n2 = edge->getDest();
+        Node<NodeT, EdgeT> *n1 = edge->getSource();
+        Node<NodeT, EdgeT> *n2 = edge->getDest();
         n1->addAuxOutgoingEdge(edge);
         n2->addAuxIncomingEdge(edge);
     }
 
     for (auto edge : edges)
     {
-        Node<NodeT> *n1 = edge->getSource();
-        Node<NodeT> *n2 = edge->getDest();
+        Node<NodeT, EdgeT> *n1 = edge->getSource();
+        Node<NodeT, EdgeT> *n2 = edge->getDest();
 
         n1->removeAuxOutgoingEdge(edge);
         n2->removeAuxIncomingEdge(edge);
 
         bool connected = isConnected(
-            localNode, [](Edge<EdgeT> *e)
+            localNode, [](Edge<NodeT, EdgeT> *e)
             { return e->getSource()->getAuxOutgoingEdges().contains(e); },
             dfs);
 

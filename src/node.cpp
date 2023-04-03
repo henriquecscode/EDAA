@@ -4,45 +4,45 @@
 
 using namespace std;
 
-template <typename NodeT>
-Node<NodeT>::Node(NodeT data)
+template <typename NodeT, typename EdgeT>
+Node<NodeT, EdgeT>::Node(NodeT data)
 {
     this->data = data;
     this->resetNode();
 }
 
-template <typename NodeT>
-NodeT &Node<NodeT>::getData()
+template <typename NodeT, typename EdgeT>
+NodeT &Node<NodeT, EdgeT>::getData()
 {
     return data;
 }
 
-template <typename NodeT>
-bool Node<NodeT>::addIncomingEdge(Edge<EdgeT> *edge)
+template <typename NodeT, typename EdgeT>
+bool Node<NodeT, EdgeT>::addIncomingEdge(Edge<NodeT, EdgeT> *edge)
 {
     incomingEdges.push_back(edge);
     if (incomingEdgesByNode.find(edge->getSource()) == incomingEdgesByNode.end())
     {
-        incomingEdgesByNode[edge->getSource()] = vector<Edge<EdgeT> *>();
+        incomingEdgesByNode[edge->getSource()] = vector<Edge<NodeT, EdgeT> *>();
     }
     incomingEdgesByNode[edge->getSource()].push_back(edge);
     return true;
 }
 
-template <typename NodeT>
-bool Node<NodeT>::addOutgoingEdge(Edge<EdgeT> *edge)
+template <typename NodeT, typename EdgeT>
+bool Node<NodeT, EdgeT>::addOutgoingEdge(Edge<NodeT, EdgeT> *edge)
 {
     outgoingEdges.push_back(edge);
     if (outgoingEdgesByNode.find(edge->getDest()) == outgoingEdgesByNode.end())
     {
-        outgoingEdgesByNode[edge->getDest()] = vector<Edge<EdgeT> *>();
+        outgoingEdgesByNode[edge->getDest()] = vector<Edge<NodeT, EdgeT> *>();
     }
     outgoingEdgesByNode[edge->getDest()].push_back(edge);
     return true;
 }
 
-template <typename NodeT>
-bool Node<NodeT>::addEdge(Edge<EdgeT> *edge)
+template <typename NodeT, typename EdgeT>
+bool Node<NodeT, EdgeT>::addEdge(Edge<NodeT, EdgeT> *edge)
 {
     if (edge->getSource() == this)
     {
@@ -57,12 +57,12 @@ bool Node<NodeT>::addEdge(Edge<EdgeT> *edge)
     }
     else
     {
-        throw "Edge<EdgeT> does not connect to this node";
+        throw "Edge<NodeT, EdgeT> does not connect to this node";
     }
     return true;
 }
-template <typename NodeT>
-void Node<NodeT>::resetNode()
+template <typename NodeT, typename EdgeT>
+void Node<NodeT, EdgeT>::resetNode()
 {
     found = false;
     distance = numeric_limits<double>::infinity();
@@ -70,111 +70,111 @@ void Node<NodeT>::resetNode()
     auxIncomingEdges.clear();
     auxOutgoingEdges.clear();
 }
-template <typename NodeT>
-bool Node<NodeT>::isFound()
+template <typename NodeT, typename EdgeT>
+bool Node<NodeT, EdgeT>::isFound()
 {
     return found;
 }
 
-template <typename NodeT>
-void Node<NodeT>::find()
+template <typename NodeT, typename EdgeT>
+void Node<NodeT, EdgeT>::find()
 {
     found = true;
 }
 
-template <typename NodeT>
-double Node<NodeT>::getNodeDistance()
+template <typename NodeT, typename EdgeT>
+double Node<NodeT, EdgeT>::getNodeDistance()
 {
     return distance;
 }
 
-template <typename NodeT>
-void Node<NodeT>::setNodeDistance(double distance)
+template <typename NodeT, typename EdgeT>
+void Node<NodeT, EdgeT>::setNodeDistance(double distance)
 {
     this->distance = distance;
 }
 
 template <typename NodeT, typename EdgeT>
-Edge<EdgeT> *Node<NodeT>::getPreviousEdge()
+Edge<NodeT, EdgeT> *Node<NodeT, EdgeT>::getPreviousEdge()
 {
     return previousEdge;
 }
 
 template <typename NodeT, typename EdgeT>
-void Node<NodeT>::setPreviousEdge(Edge<EdgeT> *edge)
+void Node<NodeT, EdgeT>::setPreviousEdge(Edge<NodeT, EdgeT> *edge)
 {
     this->previousEdge = edge;
     return edge;
 }
 
 template <typename NodeT, typename EdgeT>
-set<Edge<EdgeT> *> Node<NodeT>::getAuxIncomingEdges()
+set<Edge<NodeT, EdgeT> *> Node<NodeT, EdgeT>::getAuxIncomingEdges()
 {
     return auxIncomingEdges;
 }
 
 template <typename NodeT, typename EdgeT>
-void Node<NodeT>::addAuxIncomingEdge(Edge<EdgeT> *edge)
+void Node<NodeT, EdgeT>::addAuxIncomingEdge(Edge<NodeT, EdgeT> *edge)
 {
     this->auxIncomingEdges.add(edge);
 }
 
 template <typename NodeT, typename EdgeT>
-void Node<NodeT>::removeAuxIncomingEdge(Edge<EdgeT> *edge)
+void Node<NodeT, EdgeT>::removeAuxIncomingEdge(Edge<NodeT, EdgeT> *edge)
 {
     this->auxIncomingEdges.remove(edge);
 }
 
 template <typename NodeT, typename EdgeT>
-set<Edge<EdgeT> *> Node<NodeT>::getAuxOutgoingEdges()
+set<Edge<NodeT, EdgeT> *> Node<NodeT, EdgeT>::getAuxOutgoingEdges()
 {
     return auxOutgoingEdges;
 }
 
 template <typename NodeT, typename EdgeT>
-void Node<NodeT>::addAuxOutgoingEdge(Edge<EdgeT> *edge)
+void Node<NodeT, EdgeT>::addAuxOutgoingEdge(Edge<NodeT, EdgeT> *edge)
 {
     this->auxOutgoingEdges.add(edge);
 }
 
 template <typename NodeT, typename EdgeT>
-void Node<NodeT>::removeAuxOutgoingEdge(Edge<EdgeT> *edge)
+void Node<NodeT, EdgeT>::removeAuxOutgoingEdge(Edge<NodeT, EdgeT> *edge)
 {
     this->auxOutgoingEdges.remove(edge);
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Node<NodeT>::getIncomingEdges()
+vector<Edge<NodeT, EdgeT> *> Node<NodeT, EdgeT>::getIncomingEdges()
 {
     return incomingEdges;
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Node<NodeT>::getOutgoingEdges()
+vector<Edge<NodeT, EdgeT> *> Node<NodeT, EdgeT>::getOutgoingEdges()
 {
     return outgoingEdges;
 }
 
 template <typename NodeT, typename EdgeT>
-map<Node<NodeT> *, vector<Edge<EdgeT> *>> Node<NodeT>::getIncomingEdgesByNode()
+map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> Node<NodeT, EdgeT>::getIncomingEdgesByNode()
 {
     return incomingEdgesByNode;
 }
 
 template <typename NodeT, typename EdgeT>
-map<Node<NodeT> *, vector<Edge<EdgeT> *>> Node<NodeT>::getOutgoingEdgesByNode()
+map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> Node<NodeT, EdgeT>::getOutgoingEdgesByNode()
 {
     return outgoingEdgesByNode;
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Node<NodeT>::getIncomingEdgesFromNode(Node<NodeT> *node)
+vector<Edge<NodeT, EdgeT> *> Node<NodeT, EdgeT>::getIncomingEdgesFromNode(Node<NodeT, EdgeT> *node)
 {
     return incomingEdgesByNode[node];
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<EdgeT> *> Node<NodeT>::getOutgoingEdgesToNode(Node<NodeT> *node)
+vector<Edge<NodeT, EdgeT> *> Node<NodeT, EdgeT>::getOutgoingEdgesToNode(Node<NodeT, EdgeT> *node)
 {
     return outgoingEdgesByNode[node];
 }

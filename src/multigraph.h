@@ -9,67 +9,73 @@
 using namespace std;
 
 template <typename NodeT, typename EdgeT>
+class Node;
+
+template <typename NodeT, typename EdgeT>
+class Edge;
+
+template <typename NodeT, typename EdgeT>
 class Multigraph
 {
-    vector<Node<NodeT> *> nodes;
-    vector<Edge<EdgeT> *> edges;
-    vector<Edge<EdgeT> *> dijkstraShortestPath(Node<NodeT> *source, Node<NodeT> *dest, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> dijkstraShortestPathEdgesByNode(Node<NodeT> *source, Node<NodeT> *dest, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> buildPath(Node<NodeT> *source, Node<NodeT> *dest);
-    vector<Edge<EdgeT> *> bfs(
-        Node<NodeT> *n1,
-        Node<NodeT> *n2,
-        bool (*edgeFilter)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> bfsByNode(
-        Node<NodeT> *n1,
-        Node<NodeT> *n2,
-        bool (*edgeFilter)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> dfs(
-        Node<NodeT> *n1,
-        Node<NodeT> *n2,
-        bool (*edgeFilter)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> dfsByNode(
-        Node<NodeT> *n1,
-        Node<NodeT> *n2,
-        bool (*edgeFilter)(Edge<EdgeT> *));
-    map<Node<NodeT> *, vector<Edge<EdgeT> *>> dfs(
-        Node<NodeT> *n1,
-        bool (*edgeFilter)(Edge<EdgeT> *));
-    map<Node<NodeT> *, vector<Edge<EdgeT> *>> dfsByNode(
-        Node<NodeT> *n1,
-        bool (*edgeFilter)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> getEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
-    vector<Edge<EdgeT> *> getBestEdgesByNode(Node<NodeT> *node, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
-    bool isConnected(Node<NodeT> *n1, bool (*edgeFilter)(Edge<EdgeT> *), vector<Edge<EdgeT> *> (*dfs)(Node<NodeT> *));
-    void mountTree(Node<NodeT> *root, vector<Edge<EdgeT> *> treeEdges);
+    vector<Node<NodeT, EdgeT> *> nodes;
+    vector<Edge<NodeT, EdgeT> *> edges;
+    vector<Edge<NodeT, EdgeT> *> dijkstraShortestPath(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> dijkstraShortestPathEdgesByNode(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> buildPath(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest);
+    vector<Edge<NodeT, EdgeT> *> bfs(
+        Node<NodeT, EdgeT> *n1,
+        Node<NodeT, EdgeT> *n2,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> bfsByNode(
+        Node<NodeT, EdgeT> *n1,
+        Node<NodeT, EdgeT> *n2,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> dfs(
+        Node<NodeT, EdgeT> *n1,
+        Node<NodeT, EdgeT> *n2,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> dfsByNode(
+        Node<NodeT, EdgeT> *n1,
+        Node<NodeT, EdgeT> *n2,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *));
+    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> dfs(
+        Node<NodeT, EdgeT> *n1,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *));
+    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> dfsByNode(
+        Node<NodeT, EdgeT> *n1,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> getEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *));
+    vector<Edge<NodeT, EdgeT> *> getBestEdgesByNode(Node<NodeT, EdgeT> *node, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *));
+    bool isConnected(Node<NodeT, EdgeT> *n1, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), vector<Edge<NodeT, EdgeT> *> (*dfs)(Node<NodeT, EdgeT> *));
+    void mountTree(Node<NodeT, EdgeT> *root, vector<Edge<NodeT, EdgeT> *> treeEdges);
 
 public:
     Multigraph();
     bool createNode(NodeT data);
-    bool createEdge(Node<NodeT> *source, Node<NodeT> *dest, EdgeT data);
+    bool createEdge(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, EdgeT data);
 
     void *getNodes();
     void *getEdges();
 
-    vector<vector<Edge<EdgeT> *>> getShortestPathDijkstra(
-        vector<Node<NodeT> *> nodes,
-        bool (*edgeFilter)(Edge<EdgeT> *),
-        double (*edgeWeight)(Edge<EdgeT> *),
-        vector<Edge<EdgeT> *> (*dijkstra)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *), double (*)(Edge<EdgeT> *)));
+    vector<vector<Edge<NodeT, EdgeT> *>> getShortestPathDijkstra(
+        vector<Node<NodeT, EdgeT> *> nodes,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *),
+        double (*edgeWeight)(Edge<NodeT, EdgeT> *),
+        vector<Edge<NodeT, EdgeT> *> (*dijkstra)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *), double (*)(Edge<NodeT, EdgeT> *)));
 
-    pair<vector<Edge<EdgeT> *>, int> getErdos(
-        Node<NodeT> *n1,
-        Node<NodeT> *n2,
-        bool (*edgeFilter)(Edge<EdgeT> *),
-        vector<Edge<EdgeT> *> (*bfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)));
+    pair<vector<Edge<NodeT, EdgeT> *>, int> getErdos(
+        Node<NodeT, EdgeT> *n1,
+        Node<NodeT, EdgeT> *n2,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *),
+        vector<Edge<NodeT, EdgeT> *> (*bfs)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *)));
 
     // Local because we just check connectivity from the source node
     void getLocalMinimumSpanningTree(
-        Node<NodeT> *localNode,
-        bool (*edgeFilter)(Edge<EdgeT> *),
-        double (*edgeWeight)(Edge<EdgeT> *),
-        vector<Edge<EdgeT> *> (*collectEdges)(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *)),
-        vector<Edge<EdgeT> *> (*dfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)));
+        Node<NodeT, EdgeT> *localNode,
+        bool (*edgeFilter)(Edge<NodeT, EdgeT> *),
+        double (*edgeWeight)(Edge<NodeT, EdgeT> *),
+        vector<Edge<NodeT, EdgeT> *> (*collectEdges)(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *)),
+        vector<Edge<NodeT, EdgeT> *> (*dfs)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *)));
 };
 #endif
