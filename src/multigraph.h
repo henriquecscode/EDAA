@@ -3,14 +3,12 @@
 
 #include <vector>
 #include <utility>
+#include <map>
+
 
 using namespace std;
-template <class T>
-class Node;
-template <class T>
-class Edge;
 
-template <class NodeT, class EdgeT>
+template <typename NodeT, typename EdgeT>
 class Multigraph
 {
     vector<Node<NodeT> *> nodes;
@@ -26,6 +24,25 @@ class Multigraph
         Node<NodeT> *n1,
         Node<NodeT> *n2,
         bool (*edgeFilter)(Edge<EdgeT> *));
+    vector<Edge<EdgeT> *> dfs(
+        Node<NodeT> *n1,
+        Node<NodeT> *n2,
+        bool (*edgeFilter)(Edge<EdgeT> *));
+    vector<Edge<EdgeT> *> dfsByNode(
+        Node<NodeT> *n1,
+        Node<NodeT> *n2,
+        bool (*edgeFilter)(Edge<EdgeT> *));
+    map<Node<NodeT> *, vector<Edge<EdgeT> *>> dfs(
+        Node<NodeT> *n1,
+        bool (*edgeFilter)(Edge<EdgeT> *));
+    map<Node<NodeT> *, vector<Edge<EdgeT> *>> dfsByNode(
+        Node<NodeT> *n1,
+        bool (*edgeFilter)(Edge<EdgeT> *));
+    vector<Edge<EdgeT> *> getEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
+    vector<Edge<EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
+    vector<Edge<EdgeT> *> getBestEdgesByNode(Node<NodeT> *node, bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *));
+    bool isConnected(Node<NodeT> *n1, bool (*edgeFilter)(Edge<EdgeT> *), vector<Edge<EdgeT> *> (*dfs)(Node<NodeT> *));
+    void mountTree(Node<NodeT> *root, vector<Edge<EdgeT> *> treeEdges);
 
 public:
     Multigraph();
@@ -46,5 +63,13 @@ public:
         Node<NodeT> *n2,
         bool (*edgeFilter)(Edge<EdgeT> *),
         vector<Edge<EdgeT> *> (*bfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)));
+
+    // Local because we just check connectivity from the source node
+    void getLocalMinimumSpanningTree(
+        Node<NodeT> *localNode,
+        bool (*edgeFilter)(Edge<EdgeT> *),
+        double (*edgeWeight)(Edge<EdgeT> *),
+        vector<Edge<EdgeT> *> (*collectEdges)(bool (*edgeFilter)(Edge<EdgeT> *), double (*edgeWeight)(Edge<EdgeT> *)),
+        vector<Edge<EdgeT> *> (*dfs)(Node<NodeT> *, Node<NodeT> *, bool (*)(Edge<EdgeT> *)));
 };
 #endif

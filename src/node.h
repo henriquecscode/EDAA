@@ -3,50 +3,60 @@
 
 #include <vector>
 #include <map>
-
+#include <set>
 using namespace std;
-class Edge;
 
-template <class T>
+template <typename NodeT>
 class Node
 {
 private:
-    T data;
-    vector<Edge *> incomingEdges;
-    map<Node<T> *, vector<Edge *>> incomingEdgesByNode;
-    vector<Edge *> outgoingEdges;
-    map<Node<T> *, vector<Edge *>> outgoingEdgesByNode;
-    bool addIncomingEdge(Edge *edge);
-    bool addOutgoingEdge(Edge *edge);
+    NodeT data;
+    vector<Edge<EdgeT> *> incomingEdges;
+    map<Node<NodeT> *, vector<Edge<EdgeT> *>> incomingEdgesByNode;
+    vector<Edge<EdgeT> *> outgoingEdges;
+    map<Node<NodeT> *, vector<Edge<EdgeT> *>> outgoingEdgesByNode;
+    bool addIncomingEdge(Edge<EdgeT> *edge);
+    bool addOutgoingEdge(Edge<EdgeT> *edge);
 
+    bool found;
     double distance;
-    Edge *previousEdge;
+    Edge<EdgeT> *previousEdge;
+    set<Edge<EdgeT> *> auxIncomingEdges = set<Edge<EdgeT> *>();
+    set<Edge<EdgeT> *> auxOutgoingEdges = set<Edge<EdgeT> *>();
 
 public:
-    Node(T data);
+    Node(NodeT data);
 
-    T &getData();
-    bool addEdge(Edge *edge);
+    NodeT &getData();
+    bool addEdge(Edge<EdgeT> *edge);
 
     void resetNode();
+    bool isFound();
+    void find();
     double getNodeDistance();
     void setNodeDistance(double distance);
-    Edge *getPreviousEdge();
-    void setPreviousEdge(Edge *edge);
+    Edge<EdgeT> *getPreviousEdge();
+    void setPreviousEdge(Edge<EdgeT> *edge);
+    set<Edge<EdgeT> *> getAuxIncomingEdges();
+    void addAuxIncomingEdge(Edge<EdgeT> *edge);
+    void removeAuxIncomingEdge(Edge<EdgeT> *edge);
+    set<Edge<EdgeT> *> getAuxOutgoingEdges();
+    void addAuxOutgoingEdge(Edge<EdgeT> *edge);
+    void removeAuxOutgoingEdge(Edge<EdgeT> *edge);
 
-    vector<Edge *> getIncomingEdges();
-    vector<Edge *> getOutgoingEdges();
-    map<Node<T> *, vector<Edge *>> getIncomingEdgesByNode();
-    map<Node<T> *, vector<Edge *>> getOutgoingEdgesByNode();
-    vector<Edge *> getIncomingEdgesFromNode(Node<T> *node);
-    vector<Edge *> getOutgoingEdgesToNode(Node<T> *node);
+    vector<Edge<EdgeT> *> getIncomingEdges();
+    vector<Edge<EdgeT> *> getOutgoingEdges();
+    map<Node<NodeT> *, vector<Edge<EdgeT> *>> getIncomingEdgesByNode();
+    map<Node<NodeT> *, vector<Edge<EdgeT> *>> getOutgoingEdgesByNode();
+    vector<Edge<EdgeT> *> getIncomingEdgesFromNode(Node<NodeT> *node);
+    vector<Edge<EdgeT> *> getOutgoingEdgesToNode(Node<NodeT> *node);
 };
 
-template <class T>
+template <class NodeT>
 class NodeDistanceComparator
 {
 public:
-    bool operator()(Node<T> *a, Node<T> *b)
+    bool operator()(Node<NodeT> *a, Node<NodeT> *b)
     {
         return a->getNodeDistance() < b->getNodeDistance();
     }

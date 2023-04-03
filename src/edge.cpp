@@ -1,29 +1,28 @@
 #include "edge.h"
-
 using namespace std;
 
-template <class T>
-Edge<T>::Edge(Node *source, Node *dest, T data)
+template <typename EdgeT>
+Edge<EdgeT>::Edge(Node<NodeT> *source, Node<NodeT> *dest, EdgeT data)
 {
     this->source = source;
     this->dest = dest;
     this->data = data;
 }
 
-template <class T>
-Node *Edge<T>::getSource()
+template <typename EdgeT>
+Node<NodeT> *Edge<EdgeT>::getSource()
 {
     return source;
 }
 
-template <class T>
-Node *Edge<T>::getDest()
+template <typename EdgeT>
+Node<NodeT> *Edge<EdgeT>::getDest()
 {
     return dest;
 }
 
-template <class T>
-T &Edge<T>::getData()
+template <typename EdgeT>
+EdgeT &Edge<EdgeT>::getData()
 {
     return data;
 }
