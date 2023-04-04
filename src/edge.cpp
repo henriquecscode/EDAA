@@ -1,4 +1,6 @@
 #include "edge.h"
+#include <string>
+#include <functional>
 using namespace std;
 
 template <typename NodeT, typename EdgeT>
@@ -25,4 +27,34 @@ template <typename NodeT, typename EdgeT>
 EdgeT &Edge<NodeT, EdgeT>::getData()
 {
     return data;
+}
+
+template <typename NodeT, typename EdgeT>
+function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*f)(EdgeT *), double min, double max)
+{
+    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    {
+        double value = f(&(edge->getData()));
+        return min <= value && value <= max;
+    };
+}
+
+template <typename NodeT, typename EdgeT>
+function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*f)(EdgeT *), int min, int max)
+{
+    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    {
+        int value = f(&(edge->getData()));
+        return min <= value && value <= max;
+    };
+}
+
+template <typename NodeT, typename EdgeT>
+function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*f)(EdgeT *), string comparison)
+{
+    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    {
+        string value = f(&(edge->getData()));
+
+    };
 }

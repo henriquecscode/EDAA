@@ -2,7 +2,20 @@
 #define FLIGHT_H
 
 #include <string>
+#include <functional>
 using namespace std;
+
+enum attributeType {INT, DOUBLE, STRING};
+union value{
+    int intValue;
+    double doubleValue;
+    string stringValue;
+};
+
+struct{
+    attributeType type;
+    value value;
+} typedef Filter;
 
 class Flight
 {
@@ -19,6 +32,22 @@ class Flight
 public:
     Flight(int dayMonth, int dayWeek, string carrier, int originId, int destId, int depDelay, int arrDelay, double distance, double flightTime);
     Flight(double distance, double flightTime);
+
+    int getDayMonth();
+    int getDayWeek();
+    string getCarrier();
+    int getOriginId();
+    int getDestId();
+    int getDepDelay();
+    int getArrDelay();
+    double getDistance();
+    double getFlightTime();
+
+    // void *getFilter(string attribute);
+    static std::function<void *(Flight *)> getFilter(string attribute);
+    static std::function<int(Flight *)> getIntFilter(string attribute);
+    static std::function<double(Flight *)> getDoubleFilter(string attribute);
+    static std::function<string(Flight *)> getStringFilter(string attribute);
 };
 
 #endif
