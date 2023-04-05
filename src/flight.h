@@ -1,10 +1,11 @@
 #ifndef FLIGHT_H
 #define FLIGHT_H
 
-#include "edge.h"
+#include "attribute_type.h"
 #include <string>
 #include <functional>
 using namespace std;
+
 
 union valueType
 {
@@ -16,8 +17,8 @@ union valueType
 
 struct
 {
-    attributeType type;
-    valueType value;
+    enum attributeType type;
+    union valueType value;
     // Filter() {memset(this, 0, sizeof(*this));}
 } typedef Filter;
 
@@ -49,7 +50,7 @@ public:
 
     // void *getGetter(string attribute);
     // static std::function<void *(Flight *)> getGetter(string attribute);
-    static attributeType getAttributeType(string attribute);
+    static enum attributeType getAttributeType(string attribute);
     static std::function<int(Flight *)> getIntGetter(string attribute);
     static std::function<double(Flight *)> getDoubleGetter(string attribute);
     static std::function<string(Flight *)> getStringGetter(string attribute);

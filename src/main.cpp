@@ -9,19 +9,10 @@
 #include <limits>
 using namespace std;
 
-Multigraph<Airport, Flight> multigraph = Multigraph<Airport, Flight>();
+Multigraph multigraph = Multigraph();
 
 // Choose filter
 // Choose Weighter
-int getIntInput(string message)
-{
-    return getIntInput(message, numeric_limits<int>::min(), numeric_limits<int>::max());
-}
-
-int getIntInput(string message, int inpuMin)
-{
-    return getIntInput(message, inpuMin, numeric_limits<int>::max());
-}
 
 int getIntInput(string message, int inputMin, int inputMax)
 {
@@ -35,15 +26,13 @@ int getIntInput(string message, int inputMin, int inputMax)
     }
     return input;
 }
-
-double getDoubleInput(string message)
+int getIntInput(string message)
 {
-    return getDoubleInput(message, numeric_limits<double>::min(), numeric_limits<double>::max());
+    return getIntInput(message, numeric_limits<int>::min(), numeric_limits<int>::max());
 }
-
-double getDoubleInput(string message, double inputMin)
+int getIntInput(string message, int inpuMin)
 {
-    return getDoubleInput(message, inputMin, numeric_limits<double>::max());
+    return getIntInput(message, inpuMin, numeric_limits<int>::max());
 }
 
 double getDoubleInput(string message, double inputMin, double inputMax)
@@ -58,11 +47,20 @@ double getDoubleInput(string message, double inputMin, double inputMax)
     }
     return input;
 }
-
-template <typename NodeT, typename EdgeT>
-function<bool(Edge<NodeT, EdgeT> *)> chooseFilter()
+double getDoubleInput(string message)
 {
-    string[] attributes = {"dayMonth", "dayWeek", "carrier", "originId", "destId", "depDelay", "arrDelay", "distance", "flightTime"};
+    return getDoubleInput(message, numeric_limits<double>::min(), numeric_limits<double>::max());
+}
+double getDoubleInput(string message, double inputMin)
+{
+    return getDoubleInput(message, inputMin, numeric_limits<double>::max());
+}
+
+
+
+function<bool(Edge *)> chooseFilter()
+{
+    string attributes[] = {"dayMonth", "dayWeek", "carrier", "originId", "destId", "depDelay", "arrDelay", "distance", "flightTime"};
     while (1)
     {
         cout << "Choose attribute to filter by:" << endl;
@@ -80,34 +78,34 @@ function<bool(Edge<NodeT, EdgeT> *)> chooseFilter()
 
         // do a safe input here
         int choice;
-        getIntInput(0, 9, "Enter your choice: ");
+        getIntInput("Enter your choice: ", 0, 9);
         if (choice == 0)
         {
-            return Edge<NodeT, EdgeT>::getFilter();
+            return Edge::getEdgeFilter();
         }
         else if (choice == 1 || choice == 2 || choice == 4 || choice == 5 || choice == 6 || choice == 7)
         {
             int min, max;
             min = getIntInput("Enter minimum" + attributes[choice - 1] + ": ");
             max = getIntInput("Enter maximum" + attributes[choice - 1] + ": ");
-            auto dataGetter = Flight::getFilter(attributes[choice - 1]);
-            return Edge<NodeT, EdgeT>::getFilter(dataGetter, min, max);
+            auto dataGetter = Flight::getIntGetter(attributes[choice - 1]);
+            return Edge::getEdgeFilter(dataGetter, min, max);
         }
         else if (choice == 8 || choice == 9)
         {
             double min, max;
             min = getDoubleInput("Enter minimum" + attributes[choice - 1] + ": ");
             max = getDoubleInput("Enter maximum" + attributes[choice - 1] + ": ");
-            auto dataGetter = Flight::getFilter(attributes[choice - 1]);
-            return Edge<NodeT, EdgeT>::getFilter(dataGetter, min, max);
+            auto dataGetter = Flight::getDoubleGetter(attributes[choice - 1]);
+            return Edge::getEdgeFilter(dataGetter, min, max);
         }
         else if (choice == 3)
         {
             string carrier;
             cout << "Enter carrier: ";
             cin >> carrier;
-            auto dataGetter = Flight::getFilter("carrier");
-            return Edge<NodeT, EdgeT>::getFilter(dataGetter, carrier);
+            auto dataGetter = Flight::getStringGetter("carrier");
+            return Edge::getEdgeFilter(dataGetter, carrier);
         }
         else
         {
@@ -116,8 +114,7 @@ function<bool(Edge<NodeT, EdgeT> *)> chooseFilter()
     }
 }
 
-template <typename NodeT, typename EdgeT>
-function<bool(Edge<NodeT, EdgeT> *)> chooseWeighter()
+function<bool(Edge *)> chooseWeighter()
 {
     while (1)
     {
@@ -133,9 +130,7 @@ function<bool(Edge<NodeT, EdgeT> *)> chooseWeighter()
 
         int choice;
         cout << "Enter your choice: ";
-        cin >> choice;
 
-        int choice;
         while (!(cin >> choice) || choice < 0 || choice > 9)
         {
             cout << "Invalid input. Try again: ";
@@ -143,36 +138,36 @@ function<bool(Edge<NodeT, EdgeT> *)> chooseWeighter()
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
 
-        auto weighter = EdgeT::getWeighter("dayMonth");
-        Edge<NodeT, EdgeT>::getEdgeWeight(weighter)
+        // auto weighter = Flight::getWeighter("dayMonth"); -> need to do this function
+        // Edge::getEdgeWeight(weighter);
 
-            if (choice == 0)
+        if (choice == 0)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight();
+            return nullptr;
         }
         else if (choice == 1)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight("dayMonth");
+            return Edge::getEdgeWeight("dayMonth");
         }
         else if (choice == 2)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight("dayWeek");
+            return Edge::getEdgeWeight("dayWeek");
         }
         else if (choice == 3)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight("depDelay");
+            return Edge::getEdgeWeight("depDelay");
         }
         else if (choice == 4)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight("arrDelay");
+            return Edge::getEdgeWeight("arrDelay");
         }
         else if (choice == 5)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight("distance");
+            return Edge::getEdgeWeight("distance");
         }
         else if (choice == 6)
         {
-            return Edge<NodeT, EdgeT>::getEdgeWeight("flightTime");
+            return Edge::getEdgeWeight("flightTime");
         }
         else
         {
@@ -181,16 +176,15 @@ function<bool(Edge<NodeT, EdgeT> *)> chooseWeighter()
     }
 }
 
-template <typename NodeT, typename EdgeT>
 void doChoice(int choice)
 {
     switch (choice)
     {
     case 1:
-        chooseFilter<NodeT, EdgeT>();
+        chooseFilter();
         break;
     case 2:
-        chooseWeighter<NodeT, EdgeT>();
+        chooseWeighter();
         break;
     case 3:
         // chooseProblem();
@@ -210,7 +204,6 @@ void doChoice(int choice)
     }
 }
 
-template <typename NodeT, typename EdgeT>
 void menu()
 {
     while (1)
@@ -224,7 +217,7 @@ void menu()
         cout << "0 - Exit" << endl;
         cout << endl;
 
-        doChoice<NodeT, EdgeT>(getIntInput("Enter your choice", 0, 2));
+        doChoice(getIntInput("Enter your choice", 0, 2));
     }
 }
 
@@ -248,6 +241,6 @@ int main()
 {
     cout << "-----  AIRPORT FLIGHTS MULTIGRAPH  -----" << endl;
     startMultigraph();
-    menu<Airport, Flight>();
+    menu();
     return 0;
 }

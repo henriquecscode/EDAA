@@ -1,127 +1,122 @@
 #include "edge.h"
+#include "flight.h"
 #include <string>
 #include <functional>
-#include "flight.h"
 using namespace std;
 
-template <typename NodeT, typename EdgeT>
-Edge<NodeT, EdgeT>::Edge(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, EdgeT data)
+Edge::Edge(Node *source, Node *dest, Flight data) : data(data)
 {
     this->source = source;
     this->dest = dest;
     this->data = data;
 }
 
-template <typename NodeT, typename EdgeT>
-Node<NodeT, EdgeT> *Edge<NodeT, EdgeT>::getSource()
+Node *Edge::getSource()
 {
     return source;
 }
 
-template <typename NodeT, typename EdgeT>
-Node<NodeT, EdgeT> *Edge<NodeT, EdgeT>::getDest()
+Node *Edge::getDest()
 {
     return dest;
 }
 
-template <typename NodeT, typename EdgeT>
-EdgeT *Edge<NodeT, EdgeT>::getData()
+Flight *Edge::getData()
 {
     return &data;
 }
 
-template <typename NodeT, typename EdgeT>
-function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter()
+function<bool(Edge *)> Edge::getEdgeFilter()
 {
-    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    return [](Edge *edge) -> bool
     {
         return true;
     };
 }
-template <typename NodeT, typename EdgeT>
-function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (EdgeT::*f)(), double min, double max)
+
+function<bool(Edge *)> Edge::getEdgeFilter(function<double (Flight*)>f, double min, double max)
 {
-    return [f, min, max](Edge<NodeT, EdgeT> *edge) -> bool
+    return [f, min, max](Edge *edge) -> bool
     {
-        EdgeT *data = edge->getData();
-        double value = (*data.*f)();
+        Flight *data = edge->getData();
+        double value = f(data);
         return min <= value && value <= max;
     };
 }
 
-template <typename NodeT, typename EdgeT>
-function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(int (EdgeT::*f)(), int min, int max)
+function<bool(Edge *)> Edge::getEdgeFilter(function<int (Flight*)>f, int min, int max)
 {
-    return [f, min, max](Edge<NodeT, EdgeT> *edge) -> bool
+    return [f, min, max](Edge *edge) -> bool
     {
-        EdgeT *data = edge->getData();
-        int value = (*data.*f)();
+        Flight *data = edge->getData();
+        int value = f(data);
         return min <= value && value <= max;
     };
 }
 
-template <typename NodeT, typename EdgeT>
-function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(string (EdgeT::*f)(), string comparison)
+function<bool(Edge *)> Edge::getEdgeFilter(function<string (Flight*)>f, string comparison)
 {
-    return [f, comparison](Edge<NodeT, EdgeT> *edge) -> bool
+    return [f, comparison](Edge *edge) -> bool
     {
-        EdgeT *data = edge->getData();
-        string value = (*data.*f)();
+        Flight *data = edge->getData();
+        string value = f(data);
         return value == comparison;
     };
 }
 
-template <typename NodeT, typename EdgeT>
-function<double(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeWeight(string dataAttributeName)
+function<double(Edge *)> Edge::getEdgeWeight(string dataAttributeName)
 {
-    attributeType type = Flight::getAttributeType(dataAttributeName);
-    if (type == INT || type == DOUBLE)
+    enum attributeType type = Flight::getAttributeType(dataAttributeName);
+    if (type == INT)
     {
-        auto func = Flight::getAttributeType(dataAttributeName);
-        return Edge<NodeT, EdgeT>::getEdgeWeight(func);
+        auto func = Flight::getIntGetter(dataAttributeName);
+        return Edge::getIntEdgeWeight(func);
+    }
+    else if (type == DOUBLE)
+    {
+        auto func = Flight::getDoubleGetter(dataAttributeName);
+        return Edge::getDoubleEdgeWeight(func);
     }
     // switch (type)
     // {
 
     // case INT:
     //     auto func = Flight::getIntAttribute(dataAttributeName);
-    //     return Edge<NodeT, EdgeT>::getEdgeWeight(func);
+    //     return Edge::getEdgeWeight(func);
 
     //     {
-    //         EdgeT *data = edge->getData();
+    //         Flight *data = edge->getData();
     //         int value = (*data.*f)();
     //         return max(0, static_cast<double>(value)); // non-negative for dijsktra restrictions
     //     };
     // case DOUBLE:
-    //     auto func = Flight::getDoubleAttribute(dataAttributeName) return [f](Edge<NodeT, EdgeT> * edge);
-    //     return Edge<NodeT, EdgeT>::getEdgeWeight(func);
+    //     auto func = Flight::getDoubleAttribute(dataAttributeName) return [f](Edge * edge);
+    //     return Edge::getEdgeWeight(func);
     //     // {
-    //     //     EdgeT *data = edge->getData();
+    //     //     Flight *data = edge->getData();
     //     //     double value = (*data.*f)();
     //     //     return max(0, value); // non-negative for dijsktra restrictions
     //     // };
     // }
 }
 
-template <typename NodeT, typename EdgeT>
-function<double(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeWeight(double (EdgeT::*f)())
+function<double(Edge *)> Edge::getDoubleEdgeWeight(function<double (Flight*)>f)
 {
-    return [f](Edge<NodeT, EdgeT> *edge) -> double
+    return [f](Edge *edge) -> double
     {
-        EdgeT *data = edge->getData();
-        double value = (*data.*f)();
-        return max(0, value); // non-negative for dijsktra restrictions
+        Flight *data = edge->getData();
+        double value = f(data);
+        return max(0.0, value); // non-negative for dijsktra restrictions
     };
 }
 
-template <typename NodeT, typename EdgeT>
-function<double(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeWeight(int (EdgeT::*f)())
+function<double(Edge *)> Edge::getIntEdgeWeight(function<int (Flight*f)>f)
 {
-    return [f](Edge<NodeT, EdgeT> *edge) -> double
+    return [f](Edge *edge) -> double
     {
-        EdgeT *data = edge->getData();
-        int value = (*data.*f)();
-        return max(0, static_cast<double>(value)); // non-negative for dijsktra restrictions
+        Flight *data = edge->getData();
+        int value = f(data);
+        return max(0.0, static_cast<double>(value)); // non-negative for dijsktra restrictions
     };
 }
 

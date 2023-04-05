@@ -1,4 +1,5 @@
 #include "flight.h"
+#include "edge.h"
 #include <string>
 #include <functional>
 using namespace std;
@@ -165,19 +166,19 @@ double Flight::getFlightTime()
 //     return func;
 // }
 
-attributeType Flight::getAttributeType(string attribute)
+enum attributeType Flight::getAttributeType(string attribute)
 {
     if (attribute == "dayMonth" || attribute == "dayWeek" || attribute == "originId" || attribute == "destId" || attribute == "depDelay" || attribute == "arrDelay")
     {
-        return INT;
+        return attributeType::INT;
     }
     else if (attribute == "distance" || attribute == "flightTime")
     {
-        return DOUBLE;
+        return attributeType::DOUBLE;
     }
     else if (attribute == "carrier")
     {
-        return STRING;
+        return attributeType::STRING;
     }
 }
 
@@ -213,7 +214,7 @@ std::function<int(Flight *)> Flight::getIntGetter(string attribute)
 
 std::function<double(Flight *)> Flight::getDoubleGetter(string attribute)
 {
-    function<double(Flight *)> func = nullptr;
+    std::function<double(Flight *)> func;
     if (attribute == "distance")
     {
         func = &Flight::getDistance;

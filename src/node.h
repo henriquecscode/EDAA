@@ -4,62 +4,63 @@
 #include <vector>
 #include <map>
 #include <set>
+#include "airport.h"
 using namespace std;
 
-template <typename NodeT, typename EdgeT>
+
 class Edge;
 
-template <typename NodeT, typename EdgeT>
+
 class Node
 {
 private:
-    NodeT data;
-    vector<Edge<NodeT, EdgeT> *> incomingEdges;
-    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> incomingEdgesByNode;
-    vector<Edge<NodeT, EdgeT> *> outgoingEdges;
-    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> outgoingEdgesByNode;
-    bool addIncomingEdge(Edge<NodeT, EdgeT> *edge);
-    bool addOutgoingEdge(Edge<NodeT, EdgeT> *edge);
+    Airport data;
+    vector<Edge *> incomingEdges;
+    map<Node *, vector<Edge *>> incomingEdgesByNode;
+    vector<Edge *> outgoingEdges;
+    map<Node *, vector<Edge *>> outgoingEdgesByNode;
+    bool addIncomingEdge(Edge *edge);
+    bool addOutgoingEdge(Edge *edge);
 
     bool found;
     double distance;
-    Edge<NodeT, EdgeT> *previousEdge;
-    set<Edge<NodeT, EdgeT> *> auxIncomingEdges = set<Edge<NodeT, EdgeT> *>();
-    set<Edge<NodeT, EdgeT> *> auxOutgoingEdges = set<Edge<NodeT, EdgeT> *>();
+    Edge *previousEdge;
+    set<Edge *> auxIncomingEdges = set<Edge *>();
+    set<Edge *> auxOutgoingEdges = set<Edge *>();
 
 public:
-    Node(NodeT data);
+    Node(Airport data);
 
-    NodeT &getData();
-    bool addEdge(Edge<NodeT, EdgeT> *edge);
+    Airport &getData();
+    bool addEdge(Edge *edge);
 
     void resetNode();
     bool isFound();
     void find();
     double getNodeDistance();
     void setNodeDistance(double distance);
-    Edge<NodeT, EdgeT> *getPreviousEdge();
-    void setPreviousEdge(Edge<NodeT, EdgeT> *edge);
-    set<Edge<NodeT, EdgeT> *> getAuxIncomingEdges();
-    void addAuxIncomingEdge(Edge<NodeT, EdgeT> *edge);
-    void removeAuxIncomingEdge(Edge<NodeT, EdgeT> *edge);
-    set<Edge<NodeT, EdgeT> *> getAuxOutgoingEdges();
-    void addAuxOutgoingEdge(Edge<NodeT, EdgeT> *edge);
-    void removeAuxOutgoingEdge(Edge<NodeT, EdgeT> *edge);
+    Edge *getPreviousEdge();
+    void setPreviousEdge(Edge *edge);
+    set<Edge *> getAuxIncomingEdges();
+    void addAuxIncomingEdge(Edge *edge);
+    void removeAuxIncomingEdge(Edge *edge);
+    set<Edge *> getAuxOutgoingEdges();
+    void addAuxOutgoingEdge(Edge *edge);
+    void removeAuxOutgoingEdge(Edge *edge);
 
-    vector<Edge<NodeT, EdgeT> *> getIncomingEdges();
-    vector<Edge<NodeT, EdgeT> *> getOutgoingEdges();
-    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> getIncomingEdgesByNode();
-    map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> getOutgoingEdgesByNode();
-    vector<Edge<NodeT, EdgeT> *> getIncomingEdgesFromNode(Node<NodeT, EdgeT> *node);
-    vector<Edge<NodeT, EdgeT> *> getOutgoingEdgesToNode(Node<NodeT, EdgeT> *node);
+    vector<Edge *> getIncomingEdges();
+    vector<Edge *> getOutgoingEdges();
+    map<Node *, vector<Edge *>> getIncomingEdgesByNode();
+    map<Node *, vector<Edge *>> getOutgoingEdgesByNode();
+    vector<Edge *> getIncomingEdgesFromNode(Node *node);
+    vector<Edge *> getOutgoingEdgesToNode(Node *node);
 };
 
-template <typename NodeT, typename EdgeT>
+
 class NodeDistanceComparator
 {
 public:
-    bool operator()(Node<NodeT, EdgeT> *a, Node<NodeT, EdgeT> *b)
+    bool operator()(Node *a, Node *b)
     {
         return a->getNodeDistance() < b->getNodeDistance();
     }
