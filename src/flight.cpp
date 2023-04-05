@@ -165,6 +165,22 @@ double Flight::getFlightTime()
 //     return func;
 // }
 
+attributeType Flight::getAttributeType(string attribute)
+{
+    if (attribute == "dayMonth" || attribute == "dayWeek" || attribute == "originId" || attribute == "destId" || attribute == "depDelay" || attribute == "arrDelay")
+    {
+        return INT;
+    }
+    else if (attribute == "distance" || attribute == "flightTime")
+    {
+        return DOUBLE;
+    }
+    else if (attribute == "carrier")
+    {
+        return STRING;
+    }
+}
+
 std::function<int(Flight *)> Flight::getIntGetter(string attribute)
 {
     function<int(Flight *)> func = nullptr;

@@ -18,11 +18,11 @@ Multigraph<NodeT, EdgeT>::Multigraph()
 };
 
 template <typename NodeT, typename EdgeT>
-bool Multigraph<NodeT, EdgeT>::createNode(NodeT data)
+Node<NodeT, EdgeT> Multigraph<NodeT, EdgeT>::createNode(NodeT data)
 {
     Node<NodeT, EdgeT> *node = new Node<NodeT, EdgeT>(data);
     this->nodes.push_back(node);
-    return true;
+    return node;
 }
 
 template <typename NodeT, typename EdgeT>

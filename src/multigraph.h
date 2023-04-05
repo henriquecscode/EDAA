@@ -5,7 +5,6 @@
 #include <utility>
 #include <map>
 
-
 using namespace std;
 
 template <typename NodeT, typename EdgeT>
@@ -52,7 +51,7 @@ class Multigraph
 
 public:
     Multigraph();
-    bool createNode(NodeT data);
+    Node<NodeT, EdgeT> createNode(NodeT data);
     bool createEdge(Node<NodeT, EdgeT> *source, Node<NodeT, EdgeT> *dest, EdgeT data);
 
     void *getNodes();
