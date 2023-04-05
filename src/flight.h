@@ -6,15 +6,17 @@
 using namespace std;
 
 enum attributeType {INT, DOUBLE, STRING};
-union value{
+union valueType{
     int intValue;
     double doubleValue;
     string stringValue;
+    // value() {memset(this, 0, sizeof(*this));}
 };
 
 struct{
     attributeType type;
-    value value;
+    valueType value;
+    // Filter() {memset(this, 0, sizeof(*this));}
 } typedef Filter;
 
 class Flight
@@ -44,7 +46,7 @@ public:
     double getFlightTime();
 
     // void *getFilter(string attribute);
-    static std::function<void *(Flight *)> getFilter(string attribute);
+    // static std::function<void *(Flight *)> getFilter(string attribute);
     static std::function<int(Flight *)> getIntFilter(string attribute);
     static std::function<double(Flight *)> getDoubleFilter(string attribute);
     static std::function<string(Flight *)> getStringFilter(string attribute);

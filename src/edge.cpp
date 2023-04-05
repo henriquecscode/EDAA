@@ -32,7 +32,7 @@ EdgeT &Edge<NodeT, EdgeT>::getData()
 template <typename NodeT, typename EdgeT>
 function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*f)(EdgeT *), double min, double max)
 {
-    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    return [f, min, max](Edge<NodeT, EdgeT> *edge) -> bool
     {
         double value = f(&(edge->getData()));
         return min <= value && value <= max;
@@ -42,7 +42,7 @@ function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*
 template <typename NodeT, typename EdgeT>
 function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*f)(EdgeT *), int min, int max)
 {
-    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    return [f, min, max](Edge<NodeT, EdgeT> *edge) -> bool
     {
         int value = f(&(edge->getData()));
         return min <= value && value <= max;
@@ -52,9 +52,10 @@ function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*
 template <typename NodeT, typename EdgeT>
 function<bool(Edge<NodeT, EdgeT> *)> Edge<NodeT, EdgeT>::getEdgeFilter(double (*f)(EdgeT *), string comparison)
 {
-    return [](Edge<NodeT, EdgeT> *edge) -> bool
+    return [f, comparison](Edge<NodeT, EdgeT> *edge) -> bool
     {
         string value = f(&(edge->getData()));
+        return value == comparison;
 
     };
 }

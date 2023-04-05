@@ -55,7 +55,7 @@ public:
     vector<Edge<NodeT, EdgeT> *> getOutgoingEdgesToNode(Node<NodeT, EdgeT> *node);
 };
 
-template <class NodeT>
+template <typename NodeT, typename EdgeT>
 class NodeDistanceComparator
 {
 public:

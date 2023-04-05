@@ -1,6 +1,7 @@
 #include "node.h"
 #include <vector>
 #include <set>
+#include <limits>
 
 using namespace std;
 
@@ -104,7 +105,6 @@ template <typename NodeT, typename EdgeT>
 void Node<NodeT, EdgeT>::setPreviousEdge(Edge<NodeT, EdgeT> *edge)
 {
     this->previousEdge = edge;
-    return edge;
 }
 
 template <typename NodeT, typename EdgeT>

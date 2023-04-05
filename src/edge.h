@@ -24,5 +24,7 @@ public:
     function<bool (Edge<NodeT,EdgeT>*)>getEdgeFilter(double (*f)(EdgeT*), double min, double max);
     function<bool (Edge<NodeT,EdgeT>*)>getEdgeFilter(double (*f)(EdgeT*), int min, int max);
     function<bool (Edge<NodeT,EdgeT>*)>getEdgeFilter(double (*f)(EdgeT*), string comparison);
+
+    function<bool (Edge<NodeT,EdgeT>*)>getEdgeWeight(double (*f)(EdgeT*), string comparison);
 };
 #endif

@@ -4,6 +4,9 @@
 #include <queue>
 #include <set>
 #include <utility>
+#include <limits>
+#include <algorithm>
+#include <stack>
 #include "better_priority_queue.h"
 using namespace std;
 
@@ -48,7 +51,7 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
     better_priority_queue::updatable_priority_queue<Node<NodeT, EdgeT> *, double> pQ;
-
+    vector<Edge<NodeT, EdgeT> *> path;
     // priority_queue<Node<NodeT, EdgeT> *, vector<Node<NodeT, EdgeT> *>, NodeDistanceComparator> queue;
 
     for (auto node : nodes)
@@ -57,13 +60,13 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node
     }
     // source->setDistance(0);
     // queue.push(source);
-    pq.set(source, 0);
+    pQ.set(source, 0);
 
     // thank you copilot <3 <3
-    while (!queue.empty())
+    while (!pQ.empty())
     {
-        Node<NodeT, EdgeT> *node = queue.top();
-        queue.pop();
+        Node<NodeT, EdgeT> *node = pQ.top();
+        pQ.pop();
         // check if node is destination
         if (node == dest)
         {
@@ -81,13 +84,13 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPath(Node
                 {
                     // toNode->setDistance(alt);
                     // queue.push(toNode);
-                    pq.set(toNode, alt);
+                    pQ.set(toNode, alt);
                     toNode->setPrevious(node);
                 }
             }
         }
     }
-    vector<Edge<NodeT, EdgeT> *> path = buildPath(source, dest);
+    path = buildPath(source, dest);
 
     return path;
 }
@@ -106,13 +109,13 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdges
     }
     // source->setDistance(0);
     // queue.push(source);
-    pq.set(source, 0);
+    pQ.set(source, 0);
 
     // thank you copilot <3
-    while (!queue.empty())
+    while (!pQ.empty())
     {
-        Node<NodeT, EdgeT> *node = queue.top();
-        queue.pop();
+        Node<NodeT, EdgeT> *node = pQ.top();
+        pQ.pop();
         // check if node is destination
         if (node == dest)
         {
@@ -147,7 +150,7 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dijkstraShortestPathEdges
             {
                 // toNode->setDistance(alt);
                 // queue.push(toNode);
-                pq.set(toNode, alt);
+                pQ.set(toNode, alt);
                 toNode->setPrevious(node);
             }
         }
@@ -240,7 +243,7 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::bfs(
         }
     }
 
-    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
+    path = buildPath(n1, n2);
     return path;
 }
 template <typename NodeT, typename EdgeT>
@@ -296,7 +299,7 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::bfsByNode(
         }
     }
 
-    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
+    path = buildPath(n1, n2);
     return path;
 }
 
@@ -358,7 +361,7 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dfs(
         }
     }
 
-    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
+    path = buildPath(n1, n2);
     return path;
 }
 
@@ -465,7 +468,7 @@ vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::dfsByNode(
         }
     }
 
-    vector<Edge<NodeT, EdgeT> *> path = buildPath(n1, n2);
+    path = buildPath(n1, n2);
     return path;
 }
 
@@ -491,7 +494,7 @@ map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> Multigraph<NodeT, EdgeT>
         s.pop();
 
         auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
-        for(auto outgoingEdgesOfNode : outgoingEdgesByNode)
+        for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
             Node<NodeT, EdgeT> *toNode = outgoingEdgesOfNode.first;
             vector<Edge<NodeT, EdgeT> *> outgoingEdges = outgoingEdgesOfNode.second;
@@ -523,17 +526,19 @@ map<Node<NodeT, EdgeT> *, vector<Edge<NodeT, EdgeT> *>> Multigraph<NodeT, EdgeT>
 template <typename NodeT, typename EdgeT>
 vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::getEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
-    // check if this does a copy or not
-    // It should
-    return getEdges();
+    vector<Edge<NodeT, EdgeT> *> filteredEdges;
+    copy_if(this.edges.begin(), this.edges.end(), filteredEdges.begin(), edgeFilter);
+    return filteredEdges;
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<NodeT, EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::getBestEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
+    // I think this is useles. Will only get the edges with least weight for the local minimum spanning tree
+    // We need every edge
     vector<Edge<NodeT, EdgeT> *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
-    for (auto edge : edges)
+    for (auto edge : this->edges)
     {
         if (edgeFilter(edge))
         {
@@ -554,7 +559,7 @@ vector<Edge<NodeT, EdgeT> *> getBestEdges(bool (*edgeFilter)(Edge<NodeT, EdgeT> 
 }
 
 template <typename NodeT, typename EdgeT>
-vector<Edge<NodeT, EdgeT> *> getBestEdgesByNode(Node<NodeT, EdgeT> *node, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
+vector<Edge<NodeT, EdgeT> *> Multigraph<NodeT, EdgeT>::getBestEdgesByNode(Node<NodeT, EdgeT> *node, bool (*edgeFilter)(Edge<NodeT, EdgeT> *), double (*edgeWeight)(Edge<NodeT, EdgeT> *))
 {
     vector<Edge<NodeT, EdgeT> *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
@@ -610,11 +615,11 @@ void Multigraph<NodeT, EdgeT>::getLocalMinimumSpanningTree(
     vector<Edge<NodeT, EdgeT> *> (*dfs)(Node<NodeT, EdgeT> *, Node<NodeT, EdgeT> *, bool (*)(Edge<NodeT, EdgeT> *)))
 {
 
-    vector<Edge<EdgeT *>> edges = collectEdges(edgeFilter, edgeWeight);
-    vector<Edge<EgdeT> *> mstEdges = new vector<Edge<NodeT, EdgeT> *>();
+    vector<Edge<NodeT, EdgeT> *> edges = collectEdges(edgeFilter, edgeWeight);
+    vector<Edge<NodeT, EdgeT> *> mstEdges = new vector<Edge<NodeT, EdgeT> *>();
 
     // sort edges by weight
-    sort(edges.begin(), edges.end(), [](Edge<NodeT, EdgeT> *e1, Edge<NodeT, EdgeT> *e2)
+    sort(edges.begin(), edges.end(), [edgeWeight](Edge<NodeT, EdgeT> *e1, Edge<NodeT, EdgeT> *e2)
          { edgeWeight(e1) < edgeWeight(e2); });
 
     for (auto node : nodes)
