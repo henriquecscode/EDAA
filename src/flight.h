@@ -45,11 +45,11 @@ public:
     double getDistance();
     double getFlightTime();
 
-    // void *getFilter(string attribute);
-    // static std::function<void *(Flight *)> getFilter(string attribute);
-    static std::function<int(Flight *)> getIntFilter(string attribute);
-    static std::function<double(Flight *)> getDoubleFilter(string attribute);
-    static std::function<string(Flight *)> getStringFilter(string attribute);
+    // void *getGetter(string attribute);
+    // static std::function<void *(Flight *)> getGetter(string attribute);
+    static std::function<int(Flight *)> getIntGetter(string attribute);
+    static std::function<double(Flight *)> getDoubleGetter(string attribute);
+    static std::function<string(Flight *)> getStringGetter(string attribute);
 };
 
 #endif

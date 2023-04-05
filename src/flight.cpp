@@ -59,7 +59,7 @@ double Flight::getFlightTime()
     return flightTime;
 }
 
-// std::function<void *(Flight *)> Flight::getFilter(string attribute)
+// std::function<void *(Flight *)> Flight::getGetter(string attribute)
 // {
 //     function<void *(Flight *)> func = nullptr;
 
@@ -165,7 +165,7 @@ double Flight::getFlightTime()
 //     return func;
 // }
 
-std::function<int(Flight *)> Flight::getIntFilter(string attribute)
+std::function<int(Flight *)> Flight::getIntGetter(string attribute)
 {
     function<int(Flight *)> func = nullptr;
     if (attribute == "dayMonth")
@@ -195,7 +195,7 @@ std::function<int(Flight *)> Flight::getIntFilter(string attribute)
     return func;
 }
 
-std::function<double(Flight *)> Flight::getDoubleFilter(string attribute)
+std::function<double(Flight *)> Flight::getDoubleGetter(string attribute)
 {
     function<double(Flight *)> func = nullptr;
     if (attribute == "distance")
@@ -209,7 +209,7 @@ std::function<double(Flight *)> Flight::getDoubleFilter(string attribute)
     return func;
 }
 
-std::function<string(Flight *)> Flight::getStringFilter(string attribute)
+std::function<string(Flight *)> Flight::getStringGetter(string attribute)
 {
     function<string(Flight *)> func = nullptr;
     if (attribute == "carrier")
