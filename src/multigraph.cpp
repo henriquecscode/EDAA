@@ -607,7 +607,7 @@ void Multigraph::getLocalMinimumSpanningTree(
 
     // sort edges by weight
     sort(edges.begin(), edges.end(), [edgeWeight](Edge *e1, Edge *e2)
-         { edgeWeight(e1) < edgeWeight(e2); });
+         { return edgeWeight(e1) < edgeWeight(e2); });
 
     for (auto node : nodes)
     {
@@ -634,8 +634,7 @@ void Multigraph::getLocalMinimumSpanningTree(
             localNode, [](Edge *e)
             { 
                 auto it = e->getSource()->getAuxOutgoingEdges().find(e);
-                return it!=e->getSource()->getAuxOutgoingEdges().end(); 
-                },
+                return it!=e->getSource()->getAuxOutgoingEdges().end(); },
             dfs);
 
         if (!connected)
