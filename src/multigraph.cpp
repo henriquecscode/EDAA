@@ -10,7 +10,7 @@
 #include <limits>
 #include <algorithm>
 #include <stack>
-#include "better_priority_queue.h"
+// #include "better_priority_queue.h" //not in makefile
 using namespace std;
 
 Multigraph::Multigraph()
@@ -19,7 +19,7 @@ Multigraph::Multigraph()
     edges = vector<Edge *>();
 };
 
-Node* Multigraph::createNode(Airport data) 
+Node *Multigraph::createNode(Airport data)
 {
     Node *node = new Node(data);
     this->nodes.push_back(node);
@@ -47,22 +47,29 @@ vector<Edge *> Multigraph::getEdges()
 vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
-    better_priority_queue::updatable_priority_queue<Node *, double> pQ;
+    // better_priority_queue::updatable_priority_queue<Node *, double> pQ;
     vector<Edge *> path;
-    // priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue;
+    priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue;
 
     for (auto node : nodes)
     {
         node->resetNode();
     }
-    // source->setDistance(0);
-    // queue.push(source);
-    pQ.set(source, 0);
+    source->setNodeDistance(0);
+    queue.push(source);
+    // pQ.set(source, 0);
 
     // thank you copilot <3 <3
-    while (!pQ.empty())
+    // while (!pQ.empty())
+    while (!queue.empty())
     {
-        Node *node = pQ.pop_value().key;
+        // Node *node = pQ.pop_value().key;
+        Node *node = queue.top();
+        queue.pop();
+        if (node->isFound())
+        {
+            continue;
+        }
         // check if node is destination
         if (node == dest)
         {
@@ -79,13 +86,14 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, bool (
                 double alt = node->getNodeDistance() - edgeWeight(edge);
                 if (alt < toNode->getNodeDistance())
                 {
-                    // toNode->setDistance(alt);
-                    // queue.push(toNode);
-                    pQ.set(toNode, alt);
+                    toNode->setNodeDistance(alt);
+                    queue.push(toNode);
+                    // pQ.set(toNode, alt);
                     toNode->setPreviousEdge(edge);
                 }
             }
         }
+        node->find();
     }
     path = buildPath(source, dest);
 
@@ -95,28 +103,29 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, bool (
 vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *dest, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
-    better_priority_queue::updatable_priority_queue<Node *, double> pQ;
+    // better_priority_queue::updatable_priority_queue<Node *, double> pQ;
 
-    // priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue;
+    priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue;
 
     for (auto node : nodes)
     {
         node->resetNode();
     }
-    // source->setDistance(0);
-    // queue.push(source);
-    pQ.set(source, 0);
+    source->setNodeDistance(0);
+    queue.push(source);
+    // pQ.set(source, 0);
 
     // thank you copilot <3
-    while (!pQ.empty())
+    // while (!pQ.empty())
+    while (!queue.empty())
     {
-        Node *node = pQ.pop_value().key;
+        // Node *node = pQ.pop_value().key;
         // check if node is destination
-        // Node *node = queue.top();
-        // queue.pop();
-        // if(node->isFound()){
-        //     continue;
-        // }
+        Node *node = queue.top();
+        queue.pop();
+        if(node->isFound()){
+            continue;
+        }
         if (node == dest)
         {
             break;
@@ -148,12 +157,13 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
             double alt = node->getNodeDistance() - edgeWeight(bestEdge);
             if (alt < toNode->getNodeDistance())
             {
-                // toNode->setDistance(alt);
-                // queue.push(toNode);
-                pQ.set(toNode, alt);
+                toNode->setNodeDistance(alt);
+                queue.push(toNode);
+                // pQ.set(toNode, alt);
                 toNode->setPreviousEdge(bestEdge);
             }
         }
+        node->find();
     }
     vector<Edge *> path = buildPath(source, dest);
     return path;
@@ -577,7 +587,7 @@ vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, bool (*edgeFilter)(Edg
 
 bool Multigraph::isConnected(Node *n1, bool (*edgeFilter)(Edge *), vector<Edge *> (*dfs)(Node *, bool (*edgeFilter)(Edge *)))
 {
-    dfs(n1, edgeFilter); 
+    dfs(n1, edgeFilter);
 
     for (auto node : nodes)
     {
