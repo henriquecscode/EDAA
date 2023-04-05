@@ -64,18 +64,18 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<string (Flight*)>f, string c
     };
 }
 
-function<double(Edge *)> Edge::getEdgeWeight(string dataAttributeName)
+function<double(Edge *)> Edge::getEdgeWeighter(string dataAttributeName)
 {
     enum attributeType type = Flight::getAttributeType(dataAttributeName);
     if (type == INT)
     {
         auto func = Flight::getIntGetter(dataAttributeName);
-        return Edge::getIntEdgeWeight(func);
+        return Edge::getIntEdgeWeighter(func);
     }
     else if (type == DOUBLE)
     {
         auto func = Flight::getDoubleGetter(dataAttributeName);
-        return Edge::getDoubleEdgeWeight(func);
+        return Edge::getDoubleEdgeWeighter(func);
     }
     // switch (type)
     // {
@@ -100,7 +100,7 @@ function<double(Edge *)> Edge::getEdgeWeight(string dataAttributeName)
     // }
 }
 
-function<double(Edge *)> Edge::getDoubleEdgeWeight(function<double (Flight*)>f)
+function<double(Edge *)> Edge::getDoubleEdgeWeighter(function<double (Flight*)>f)
 {
     return [f](Edge *edge) -> double
     {
@@ -110,7 +110,7 @@ function<double(Edge *)> Edge::getDoubleEdgeWeight(function<double (Flight*)>f)
     };
 }
 
-function<double(Edge *)> Edge::getIntEdgeWeight(function<int (Flight*f)>f)
+function<double(Edge *)> Edge::getIntEdgeWeighter(function<int (Flight*f)>f)
 {
     return [f](Edge *edge) -> double
     {

@@ -30,8 +30,8 @@ public:
     static function<bool(Edge *)> getEdgeFilter(function<int (Flight*)> f, int min, int max);
     static function<bool(Edge *)> getEdgeFilter(function<string (Flight*)> f, string comparison);
 
-    static function<double(Edge *)> getEdgeWeight(string dataAttributeName);
-    static function<double(Edge *)> getDoubleEdgeWeight(function<double (Flight*)> f);
-    static function<double(Edge *)> getIntEdgeWeight(function<int (Flight*f)> f);
+    static function<double(Edge *)> getEdgeWeighter(string dataAttributeName);
+    static function<double(Edge *)> getDoubleEdgeWeighter(function<double (Flight*)> f);
+    static function<double(Edge *)> getIntEdgeWeighter(function<int (Flight*f)> f);
 };
 #endif

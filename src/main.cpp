@@ -56,8 +56,6 @@ double getDoubleInput(string message, double inputMin)
     return getDoubleInput(message, inputMin, numeric_limits<double>::max());
 }
 
-
-
 function<bool(Edge *)> chooseFilter()
 {
     string attributes[] = {"dayMonth", "dayWeek", "carrier", "originId", "destId", "depDelay", "arrDelay", "distance", "flightTime"};
@@ -139,7 +137,7 @@ function<bool(Edge *)> chooseWeighter()
         }
 
         // auto weighter = Flight::getWeighter("dayMonth"); -> need to do this function
-        // Edge::getEdgeWeight(weighter);
+        // Edge::getEdgeWeighter(weighter);
 
         if (choice == 0)
         {
@@ -147,27 +145,27 @@ function<bool(Edge *)> chooseWeighter()
         }
         else if (choice == 1)
         {
-            return Edge::getEdgeWeight("dayMonth");
+            return Edge::getEdgeWeighter("dayMonth");
         }
         else if (choice == 2)
         {
-            return Edge::getEdgeWeight("dayWeek");
+            return Edge::getEdgeWeighter("dayWeek");
         }
         else if (choice == 3)
         {
-            return Edge::getEdgeWeight("depDelay");
+            return Edge::getEdgeWeighter("depDelay");
         }
         else if (choice == 4)
         {
-            return Edge::getEdgeWeight("arrDelay");
+            return Edge::getEdgeWeighter("arrDelay");
         }
         else if (choice == 5)
         {
-            return Edge::getEdgeWeight("distance");
+            return Edge::getEdgeWeighter("distance");
         }
         else if (choice == 6)
         {
-            return Edge::getEdgeWeight("flightTime");
+            return Edge::getEdgeWeighter("flightTime");
         }
         else
         {
@@ -206,6 +204,11 @@ void doChoice(int choice)
 
 void menu()
 {
+    auto filter = Edge::getEdgeFilter();
+    auto weighter = Edge::getEdgeWeighter("distance");
+    int choice;
+    multigraph.getEdges(filter, weighter);
+
     while (1)
     {
         cout << "-----  AIRPORT FLIGHTS MULTIGRAPH  -----" << endl;
@@ -217,7 +220,8 @@ void menu()
         cout << "0 - Exit" << endl;
         cout << endl;
 
-        doChoice(getIntInput("Enter your choice", 0, 2));
+        choice = getIntInput("Enter your choice", 0, 2);
+        doChoice(choice);
     }
 }
 
