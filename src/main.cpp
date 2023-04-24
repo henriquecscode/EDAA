@@ -207,7 +207,7 @@ void menu()
     auto filter = Edge::getEdgeFilter();
     auto weighter = Edge::getEdgeWeighter("distance");
     int choice;
-    multigraph.getEdges(filter, weighter);
+    multigraph.getBestEdges(&filter, &weighter);
 
     while (1)
     {

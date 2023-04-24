@@ -46,7 +46,6 @@ class Multigraph
         Node *n1,
         bool (*edgeFilter)(Edge *));
     vector<Edge *> getEdges(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
-    vector<Edge *> getBestEdges(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
     vector<Edge *> getBestEdgesByNode(Node *node, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
     bool isConnected(Node *n1, bool (*edgeFilter)(Edge *), vector<Edge *> (*dfs)(Node *, bool (*)(Edge *)));
     void mountTree(Node *root, vector<Edge *> treeEdges);
@@ -58,6 +57,7 @@ public:
 
     vector<Node*> getNodes();
     vector<Edge*> getEdges();
+    vector<Edge *> getBestEdges(function<bool(Edge*)> *edgeFilter, function<double(Edge*)> *edgeWeight);
 
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,

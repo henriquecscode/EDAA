@@ -533,7 +533,7 @@ vector<Edge *> Multigraph::getEdges(bool (*edgeFilter)(Edge *), double (*edgeWei
     return filteredEdges;
 }
 
-vector<Edge *> Multigraph::getBestEdges(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
+vector<Edge *> Multigraph::getBestEdges(function<bool(Edge*)> *edgeFilter,function<double(Edge *)> *edgeWeight)
 {
     // I think this is useles. Will only get the edges with least weight for the local minimum spanning tree
     // We need every edge
@@ -541,9 +541,9 @@ vector<Edge *> Multigraph::getBestEdges(bool (*edgeFilter)(Edge *), double (*edg
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
     for (auto edge : this->edges)
     {
-        if (edgeFilter(edge))
+        if ((*edgeFilter)(edge))
         {
-            double weight = edgeWeight(edge);
+            double weight = (*edgeWeight)(edge);
             if (weight < bestWeight)
             {
                 bestEdges.clear();
