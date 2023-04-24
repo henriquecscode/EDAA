@@ -123,7 +123,8 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
         // check if node is destination
         Node *node = queue.top();
         queue.pop();
-        if(node->isFound()){
+        if (node->isFound())
+        {
             continue;
         }
         if (node == dest)
@@ -533,7 +534,7 @@ vector<Edge *> Multigraph::getEdges(bool (*edgeFilter)(Edge *), double (*edgeWei
     return filteredEdges;
 }
 
-vector<Edge *> Multigraph::getBestEdges(function<bool(Edge*)> *edgeFilter,function<double(Edge *)> *edgeWeight)
+vector<Edge *> Multigraph::getBestEdges(function<bool(Edge *)> *edgeFilter, function<double(Edge *)> *edgeWeight)
 {
     // I think this is useles. Will only get the edges with least weight for the local minimum spanning tree
     // We need every edge
@@ -660,4 +661,10 @@ void Multigraph::getLocalMinimumSpanningTree(
     }
 
     mountTree(localNode, mstEdges);
+}
+
+Node *Multigraph::getNode(int id)
+{
+    find_if(nodes.begin(), nodes.end(), [id](Node *n)
+            { return n->getData().getId() == id; });
 }

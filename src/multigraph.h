@@ -9,12 +9,9 @@
 
 using namespace std;
 
-
 class Node;
 
-
 class Edge;
-
 
 class Multigraph
 {
@@ -52,12 +49,12 @@ class Multigraph
 
 public:
     Multigraph();
-    Node* createNode(Airport data);
+    Node *createNode(Airport data);
     bool createEdge(Node *source, Node *dest, Flight data);
 
-    vector<Node*> getNodes();
-    vector<Edge*> getEdges();
-    vector<Edge *> getBestEdges(function<bool(Edge*)> *edgeFilter, function<double(Edge*)> *edgeWeight);
+    vector<Node *> getNodes();
+    vector<Edge *> getEdges();
+    vector<Edge *> getBestEdges(function<bool(Edge *)> *edgeFilter, function<double(Edge *)> *edgeWeight);
 
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
@@ -78,5 +75,7 @@ public:
         double (*edgeWeight)(Edge *),
         vector<Edge *> (*collectEdges)(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *)),
         vector<Edge *> (*dfs)(Node *, bool (*)(Edge *)));
+
+    Node *getNode(int id);
 };
 #endif

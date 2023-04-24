@@ -13,11 +13,20 @@ class Airport
     string name;
     string city;
     string state;
-    string statename;
+    string stateName;
 
 public:
     Airport(double lon, double lat, int id, string code, string name, string city, string state, string statename);
     Airport(double lon, double lat);
+
+    double getLongitude();
+    double getLatitude();
+    int getId();
+    string getCode();
+    string getName();
+    string getCity();
+    string getState();
+    string getStateName();
 };
 
 #endif
