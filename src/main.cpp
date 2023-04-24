@@ -12,8 +12,8 @@
 
 using namespace std;
 
-string NODES_FILE = "data/airports_actually_used.csv";
-string EDGES_FILE = "data/flights.csv";
+string NODES_FILE = "../data/airports_actually_used.csv";
+string EDGES_FILE = "../data/flights.csv";
 
 Multigraph multigraph = Multigraph();
 
@@ -24,11 +24,14 @@ int getIntInput(string message, int inputMin, int inputMax)
 {
     int input;
     cout << message;
-    while (!(cin >> input) || input <= inputMin || input >= inputMax)
+    cin >> input;
+    while (input < inputMin || input > inputMax)
     {
         cout << "Invalid input. Try again: ";
+        cin >> input;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << endl << endl;
     }
     return input;
 }
@@ -65,56 +68,53 @@ double getDoubleInput(string message, double inputMin)
 function<bool(Edge *)> chooseFilter()
 {
     string attributes[] = {"dayMonth", "dayWeek", "carrier", "originId", "destId", "depDelay", "arrDelay", "distance", "flightTime"};
-    while (1)
-    {
-        cout << "Choose attribute to filter by:" << endl;
-        cout << "1 - Filter by dayMonth" << endl;
-        cout << "2 - Filter by dayWeek" << endl;
-        cout << "3 - Filter by carrier" << endl;
-        cout << "4 - Filter by originId" << endl;
-        cout << "5 - Filter by destId" << endl;
-        cout << "6 - Filter by depDelay" << endl;
-        cout << "7 - Filter by arrDelay" << endl;
-        cout << "8 - Filter by distance" << endl;
-        cout << "9 - Filter by flightTime" << endl;
-        cout << "0 - Exit" << endl;
-        cout << endl;
+    cout << "Choose attribute to filter by:" << endl;
+    cout << "1 - Filter by dayMonth" << endl;
+    cout << "2 - Filter by dayWeek" << endl;
+    cout << "3 - Filter by carrier" << endl;
+    cout << "4 - Filter by originId" << endl;
+    cout << "5 - Filter by destId" << endl;
+    cout << "6 - Filter by depDelay" << endl;
+    cout << "7 - Filter by arrDelay" << endl;
+    cout << "8 - Filter by distance" << endl;
+    cout << "9 - Filter by flightTime" << endl;
+    cout << "0 - Exit" << endl;
+    cout << endl;
 
-        // do a safe input here
-        int choice;
-        getIntInput("Enter your choice: ", 0, 9);
-        if (choice == 0)
-        {
-            return Edge::getEdgeFilter();
-        }
-        else if (choice == 1 || choice == 2 || choice == 4 || choice == 5 || choice == 6 || choice == 7)
-        {
-            int min, max;
-            min = getIntInput("Enter minimum" + attributes[choice - 1] + ": ");
-            max = getIntInput("Enter maximum" + attributes[choice - 1] + ": ");
-            auto dataGetter = Flight::getIntGetter(attributes[choice - 1]);
-            return Edge::getEdgeFilter(dataGetter, min, max);
-        }
-        else if (choice == 8 || choice == 9)
-        {
-            double min, max;
-            min = getDoubleInput("Enter minimum" + attributes[choice - 1] + ": ");
-            max = getDoubleInput("Enter maximum" + attributes[choice - 1] + ": ");
-            auto dataGetter = Flight::getDoubleGetter(attributes[choice - 1]);
-            return Edge::getEdgeFilter(dataGetter, min, max);
-        }
-        else if (choice == 3)
-        {
-            string carrier;
-            cout << "Enter carrier: ";
-            cin >> carrier;
-            auto dataGetter = Flight::getStringGetter("carrier");
-            return Edge::getEdgeFilter(dataGetter, carrier);
-        }
-        else
-        {
-            cout << "Invalid input. Try again: ";
-        }
+    // do a safe input here
+    int choice = getIntInput("Enter your choice: ", 0, 9);
+    if (choice == 0)
+    {
+        cout << endl << endl;
+        return nullptr;
+    }
+    else if (choice == 1 || choice == 2 || choice == 4 || choice == 5 || choice == 6 || choice == 7)
+    {
+        int min, max;
+        min = getIntInput("Enter minimum" + attributes[choice - 1] + ": ");
+        max = getIntInput("Enter maximum" + attributes[choice - 1] + ": ");
+        auto dataGetter = Flight::getIntGetter(attributes[choice - 1]);
+        return Edge::getEdgeFilter(dataGetter, min, max);
+    }
+    else if (choice == 8 || choice == 9)
+    {
+        double min, max;
+        min = getDoubleInput("Enter minimum" + attributes[choice - 1] + ": ");
+        max = getDoubleInput("Enter maximum" + attributes[choice - 1] + ": ");
+        auto dataGetter = Flight::getDoubleGetter(attributes[choice - 1]);
+        return Edge::getEdgeFilter(dataGetter, min, max);
+    }
+    else if (choice == 3)
+    {
+        string carrier;
+        cout << "Enter carrier: ";
+        cin >> carrier;
+        auto dataGetter = Flight::getStringGetter("carrier");
+        return Edge::getEdgeFilter(dataGetter, carrier);
+    }
+    else
+    {
+        cout << "Invalid input. Try again: ";
     }
 }
 
@@ -135,7 +135,7 @@ function<bool(Edge *)> chooseWeighter()
         int choice;
         cout << "Enter your choice: ";
 
-        while (!(cin >> choice) || choice < 0 || choice > 9)
+        while (!(cin >> choice) || choice < 0 || choice > 6)
         {
             cout << "Invalid input. Try again: ";
             cin.clear();
@@ -147,6 +147,7 @@ function<bool(Edge *)> chooseWeighter()
 
         if (choice == 0)
         {
+            cout << endl << endl;
             return nullptr;
         }
         else if (choice == 1)
@@ -226,7 +227,7 @@ void menu()
         cout << "0 - Exit" << endl;
         cout << endl;
 
-        choice = getIntInput("Enter your choice", 0, 2);
+        choice = getIntInput("Enter your choice: ", 0, 2);
         doChoice(choice);
     }
 }
