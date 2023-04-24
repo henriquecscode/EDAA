@@ -1,6 +1,8 @@
 // https://github.com/Ten0/updatable_priority_queue
 #include <utility>
 #include <vector>
+using namespace std;
+
 namespace better_priority_queue {
 	template <typename Key, typename Priority>
 		struct priority_queue_node {
@@ -20,7 +22,7 @@ namespace better_priority_queue {
 	template <typename Key, typename Priority>
 		class updatable_priority_queue {
 			protected:
-				std::vector<size_t> id_to_heappos;
+				std::vector<std::size_t> id_to_heappos;
 				std::vector<priority_queue_node<Key,Priority>> heap;
 
 			public:
