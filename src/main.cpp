@@ -317,7 +317,9 @@ void createEdges(vector<vector<string>> data)
         distance = stod(data[i][7]);
         flightTime = stod(data[i][8]);
         Flight flight = Flight(dayMonth, dayWeek, carrier, originId, destId, depDelay, arrDelay, distance, flightTime);
-        multigraph.createEdge(multigraph.getNode(originId), multigraph.getNode(destId), flight);
+        Node * originNode = multigraph.getNode(originId);
+        Node * destinationNode = multigraph.getNode(destId);
+        multigraph.createEdge(originNode, destinationNode, flight);
     }
 }
 

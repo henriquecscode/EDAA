@@ -10,6 +10,7 @@
 #include <limits>
 #include <algorithm>
 #include <stack>
+#include <iostream>
 // #include "better_priority_queue.h" //not in makefile
 using namespace std;
 
@@ -665,6 +666,12 @@ void Multigraph::getLocalMinimumSpanningTree(
 
 Node *Multigraph::getNode(int id)
 {
-    find_if(nodes.begin(), nodes.end(), [id](Node *n)
-            { return n->getData().getId() == id; });
+    auto it = find_if(nodes.begin(), nodes.end(), [id](Node *n)
+                      { return n->getData().getId() == id; });
+    if (it == nodes.end())
+    {
+        std::cout << "Could not find node\n";
+        return nullptr;
+    }
+    return *it;
 }
