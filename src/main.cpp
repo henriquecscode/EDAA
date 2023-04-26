@@ -116,8 +116,6 @@ function<bool(Edge *)> chooseFilter()
     {
         cout << "Invalid input. Try again: ";
     }
-
-    return edgeFilter;
 }
 
 function<bool(Edge *)> chooseWeighter()
@@ -181,8 +179,6 @@ function<bool(Edge *)> chooseWeighter()
             cout << "Invalid input. Try again: ";
         }
     }
-
-    return edgeWeighter;
 }
 
 function<vector<vector<Edge *>>> chooseProblem() {
