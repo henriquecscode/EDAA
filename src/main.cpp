@@ -116,6 +116,8 @@ function<bool(Edge *)> chooseFilter()
     {
         cout << "Invalid input. Try again: ";
     }
+
+    return edgeFilter;
 }
 
 function<bool(Edge *)> chooseWeighter()
@@ -179,7 +181,30 @@ function<bool(Edge *)> chooseWeighter()
             cout << "Invalid input. Try again: ";
         }
     }
+
+    return edgeWeighter;
 }
+
+function<vector<vector<Edge *>>> chooseProblem() {
+    cout << "1 - Shortest Path by Dijkstra Algorithm" << endl;
+    cout << "2 - Local Minimum Spanning Tree" << endl;
+    cout << "0 - Exit" << endl;
+    
+    int choice = getIntInput("Choose the problem you wish to solve: ", 0, 2);
+
+    if (choice == 0) {
+        return nullptr;
+    } else if (choice == 1) {
+        vector<Node*> nodes = multigraph.getNodes();
+
+        //TODO: add the dijkstra function
+        return nullptr;
+    } else if (choice == 2) {
+        //TODO: add the local minimum spanning tree function
+        return nullptr;
+    }
+}
+
 
 void doChoice(int choice)
 {
@@ -192,7 +217,7 @@ void doChoice(int choice)
         chooseWeighter();
         break;
     case 3:
-        // chooseProblem();
+        chooseProblem();
         break;
     case 4:
         // chooseOriginDest();
@@ -227,7 +252,7 @@ void menu()
         cout << "0 - Exit" << endl;
         cout << endl;
 
-        choice = getIntInput("Enter your choice: ", 0, 2);
+        choice = getIntInput("Enter your choice: ", 0, 3);
         doChoice(choice);
     }
 }
@@ -343,7 +368,6 @@ void loadData(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     loadData(argc, argv);
-    cout << "-----  AIRPORT FLIGHTS MULTIGRAPH  -----" << endl;
     startMultigraph();
     menu();
     return 0;
