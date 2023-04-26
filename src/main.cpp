@@ -26,18 +26,26 @@ int getIntInput(string message, int inputMin, int inputMax)
 {
     int input;
     cout << message;
-    cin >> input;
-    while (input < inputMin || input > inputMax)
+    while (1)
     {
-        cout << "Invalid input. Try again: ";
-        cin >> input;
+        while (!(cin >> input))
+        // while (input < inputMin || input > inputMax)
+        {
+            cout << "Invalid input. Try again: " << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << endl
-             << endl;
+        }
+
+        if (input < inputMin || input > inputMax)
+        {
+            cout << "Must be between " << inputMin << " and " << inputMax << endl;
+            continue;
+        }
+        break;
     }
     return input;
 }
+
 int getIntInput(string message)
 {
     return getIntInput(message, numeric_limits<int>::min(), numeric_limits<int>::max());
