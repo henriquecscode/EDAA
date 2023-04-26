@@ -10,6 +10,7 @@
 #include <sstream>
 #include <functional>
 #include <limits>
+#include <vector>
 
 using namespace std;
 
@@ -32,8 +33,8 @@ int getIntInput(string message, int inputMin, int inputMax)
         // while (input < inputMin || input > inputMax)
         {
             cout << "Invalid input. Try again: " << endl;
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
 
         if (input < inputMin || input > inputMax)
@@ -259,6 +260,43 @@ void viewNodes()
     }
 }
 
+void viewEdgesFilter(vector<Edge *> edges)
+{
+    int choice;
+    while (true)
+    {
+        cout << "---- FILTER EDGES ---- " << endl;
+        cout << "1 - Filter " << endl;
+        cout << "0 - Exit" << endl;
+
+        choice = getIntInput("Enter your choice: ", 0, 1);
+
+        if (choice == 1)
+        {
+            std::function<bool(Edge *)> filter = chooseFilter();
+            if (filter == nullptr)
+            {
+                break;
+            }
+            int count = 0;
+            for (Edge *edge : edges)
+            {
+                if (filter(edge))
+                {
+                    count++;
+                    cout << edge->toString() << endl;
+                }
+            }
+            cout << "Number of edges that satisfy parameters: " << count << endl;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return;
+}
+
 void viewEdges()
 {
     int choice;
@@ -318,6 +356,7 @@ void viewEdges()
                     {
                         cout << edge->toString() << endl;
                     }
+                    viewEdgesFilter(edges);
                 }
                 else if (choice2 == 0)
                 {
