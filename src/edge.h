@@ -22,6 +22,8 @@ public:
     Node *getDest();
     Flight *getData();
 
+    string toString();
+
     // function<bool (Edge*)>getEdgeFilter(double (*f)(Flight*), double min, double max);
 
     static function<bool(Edge *)> getEdgeFilter();

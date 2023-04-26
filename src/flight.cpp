@@ -1,6 +1,7 @@
 #include "flight.h"
 #include "edge.h"
 #include <string>
+#include <sstream>
 #include <functional>
 using namespace std;
 
@@ -234,4 +235,11 @@ std::function<string(Flight *)> Flight::getStringGetter(string attribute)
         func = &Flight::getCarrier;
     }
     return func;
+}
+
+string Flight::toString()
+{
+    stringstream stream;
+    stream << originId << " - " << destId << ":" << dayMonth << " on " << dayWeek << "," << carrier << " - " << distance << "," << flightTime << " [" << depDelay << "," << arrDelay << "]";
+    return stream.str();
 }

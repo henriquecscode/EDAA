@@ -1,5 +1,6 @@
 // Menu for filters and weighters getter
 #include "edge.h"
+#include "node.h"
 #include "flight.h"
 #include "airport.h"
 #include "multigraph.h"
@@ -16,6 +17,7 @@ string NODES_FILE = "../data/airports_actually_used.csv";
 string EDGES_FILE = "../data/flights.csv";
 
 Multigraph multigraph = Multigraph();
+int chosenFunction = -1;
 
 // Choose filter
 // Choose Weighter
@@ -31,7 +33,8 @@ int getIntInput(string message, int inputMin, int inputMax)
         cin >> input;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << endl << endl;
+        cout << endl
+             << endl;
     }
     return input;
 }
@@ -85,7 +88,8 @@ function<bool(Edge *)> chooseFilter()
     int choice = getIntInput("Enter your choice: ", 0, 9);
     if (choice == 0)
     {
-        cout << endl << endl;
+        cout << endl
+             << endl;
         return nullptr;
     }
     else if (choice == 1 || choice == 2 || choice == 4 || choice == 5 || choice == 6 || choice == 7)
@@ -147,7 +151,8 @@ function<bool(Edge *)> chooseWeighter()
 
         if (choice == 0)
         {
-            cout << endl << endl;
+            cout << endl
+                 << endl;
             return nullptr;
         }
         else if (choice == 1)
@@ -181,26 +186,151 @@ function<bool(Edge *)> chooseWeighter()
     }
 }
 
-function<vector<vector<Edge *>>> chooseProblem() {
+// function<vector<vector<Edge *>>> chooseProblem()
+
+void chooseProblem()
+{
     cout << "1 - Shortest Path by Dijkstra Algorithm" << endl;
     cout << "2 - Local Minimum Spanning Tree" << endl;
     cout << "0 - Exit" << endl;
-    
+
     int choice = getIntInput("Choose the problem you wish to solve: ", 0, 2);
 
-    if (choice == 0) {
-        return nullptr;
-    } else if (choice == 1) {
-        vector<Node*> nodes = multigraph.getNodes();
+    if (choice == 0)
+    {
+        chosenFunction = 0;
+        return;
+    }
+    else if (choice == 1)
+    {
+        chosenFunction = 1;
+        vector<Node *> nodes = multigraph.getNodes();
+        return;
 
-        //TODO: add the dijkstra function
-        return nullptr;
-    } else if (choice == 2) {
-        //TODO: add the local minimum spanning tree function
-        return nullptr;
+        // TODO: add the dijkstra function
+    }
+    else if (choice == 2)
+    {
+        chosenFunction = 2;
+        return;
+        // TODO: add the local minimum spanning tree function
     }
 }
 
+void viewNodes()
+{
+    int choice;
+    int doViewNode = true;
+    while (doViewNode)
+    {
+        cout << "---- VIEW NODES ----" << endl;
+        cout << "1 - View node by Id" << endl;
+        cout << "0 - Exit" << endl;
+        choice = getIntInput("Enter your choice: ", 0, 1);
+
+        if (choice == 1)
+        {
+            int nodeId = getIntInput("Enter node id: ");
+            Node *node = multigraph.getNode(nodeId);
+            if (node == nullptr)
+            {
+                cout << "Node not found" << endl;
+                continue;
+            }
+            node->print();
+        }
+        else if (choice == 0)
+        {
+            doViewNode = false;
+        }
+        else
+        {
+            cout << "Invalid input. Try again: " << endl;
+            break;
+        }
+    }
+}
+
+void viewEdges()
+{
+    int choice;
+    bool doViewEdge = true;
+    while (doViewEdge)
+    {
+        cout << "---- VIEW EDGES ----" << endl;
+        cout << "1 - View edge by Id" << endl;
+        choice = getIntInput("Enter your choice: ", 0, 1);
+
+        if (choice == 1)
+        {
+            bool doViewEdgeById = true;
+            Node *origin = nullptr;
+            Node *destination = nullptr;
+            vector<Edge *> edges;
+            int choice2;
+            while (doViewEdgeById)
+            {
+                cout << "---- VIEW EDGES BY ID ---- " << endl;
+                cout << "1 - Choose origin node" << endl;
+                cout << "2 - Choose destination node" << endl;
+                cout << "3 - View edge" << endl;
+                cout << "0 - Return " << endl;
+                choice2 = getIntInput("Enter your choice: ", 0, 3);
+
+                if (choice2 == 1)
+                {
+                    origin = multigraph.getNode(getIntInput("Enter origin node id: "));
+                    if (origin == nullptr)
+                    {
+                        cout << "No node found " << endl;
+                        continue;
+                    }
+                }
+                else if (choice2 == 2)
+                {
+                    destination = multigraph.getNode(getIntInput("Enter destination node id: "));
+                    if (destination == nullptr)
+                    {
+                        cout << "No node found " << endl;
+                        continue;
+                    }
+                }
+                else if (choice2 == 3)
+                {
+                    if (origin == nullptr || destination == nullptr)
+                    {
+                        cout << "Please select origin and destination nodes" << endl;
+                        continue;
+                    }
+                    cout << "Origin: " << origin->toString() << endl;
+                    cout << "Destination: " << destination->toString() << endl;
+                    edges = origin->getOutgoingEdgesToNode(destination);
+                    cout << "Found " << edges.size() << " edges: " << endl;
+                    for (auto edge : edges)
+                    {
+                        cout << edge->toString() << endl;
+                    }
+                }
+                else if (choice2 == 0)
+                {
+                    doViewEdgeById = false;
+                }
+                else
+                {
+                    cout << "Please select a valid option" << endl;
+                }
+            }
+        }
+        else if (choice == 0)
+        {
+            doViewEdge = false;
+        }
+        else
+        {
+            cout << "Invalid input. Try again: " << endl;
+        }
+    }
+}
 
 void doChoice(int choice)
 {
@@ -220,6 +350,12 @@ void doChoice(int choice)
         break;
     case 5:
         // run();
+        break;
+    case 6: // debugging purposes
+        viewNodes();
+        break;
+    case 7: // debugging purposes
+        viewEdges();
         break;
     case 0:
         exit(0);
@@ -245,10 +381,12 @@ void menu()
         cout << "3 - Choose problem to solve" << endl;
         cout << "4 - Choose origin and destination" << endl;
         cout << "5 - Run!" << endl;
+        cout << "6 - View nodes" << endl;
+        cout << "7 - View edges" << endl;
         cout << "0 - Exit" << endl;
         cout << endl;
 
-        choice = getIntInput("Enter your choice: ", 0, 3);
+        choice = getIntInput("Enter your choice: ", 0, 7);
         doChoice(choice);
     }
 }
@@ -338,8 +476,8 @@ void createEdges(vector<vector<string>> data)
         distance = stod(data[i][7]);
         flightTime = stod(data[i][8]);
         Flight flight = Flight(dayMonth, dayWeek, carrier, originId, destId, depDelay, arrDelay, distance, flightTime);
-        Node * originNode = multigraph.getNode(originId);
-        Node * destinationNode = multigraph.getNode(destId);
+        Node *originNode = multigraph.getNode(originId);
+        Node *destinationNode = multigraph.getNode(destId);
         multigraph.createEdge(originNode, destinationNode, flight);
     }
 }
@@ -363,7 +501,9 @@ void loadData(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
+    cout << "Loading data... " << endl;
     loadData(argc, argv);
+    cout << "Data loaded. Creating multigraph" << endl;
     startMultigraph();
     menu();
     return 0;

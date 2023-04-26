@@ -34,7 +34,7 @@ function<bool(Edge *)> Edge::getEdgeFilter()
     };
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter(function<double (Flight*)>f, double min, double max)
+function<bool(Edge *)> Edge::getEdgeFilter(function<double(Flight *)> f, double min, double max)
 {
     return [f, min, max](Edge *edge) -> bool
     {
@@ -44,7 +44,7 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<double (Flight*)>f, double m
     };
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter(function<int (Flight*)>f, int min, int max)
+function<bool(Edge *)> Edge::getEdgeFilter(function<int(Flight *)> f, int min, int max)
 {
     return [f, min, max](Edge *edge) -> bool
     {
@@ -54,7 +54,7 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<int (Flight*)>f, int min, in
     };
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter(function<string (Flight*)>f, string comparison)
+function<bool(Edge *)> Edge::getEdgeFilter(function<string(Flight *)> f, string comparison)
 {
     return [f, comparison](Edge *edge) -> bool
     {
@@ -100,7 +100,7 @@ function<double(Edge *)> Edge::getEdgeWeighter(string dataAttributeName)
     // }
 }
 
-function<double(Edge *)> Edge::getDoubleEdgeWeighter(function<double (Flight*)>f)
+function<double(Edge *)> Edge::getDoubleEdgeWeighter(function<double(Flight *)> f)
 {
     return [f](Edge *edge) -> double
     {
@@ -110,7 +110,7 @@ function<double(Edge *)> Edge::getDoubleEdgeWeighter(function<double (Flight*)>f
     };
 }
 
-function<double(Edge *)> Edge::getIntEdgeWeighter(function<int (Flight*f)>f)
+function<double(Edge *)> Edge::getIntEdgeWeighter(function<int(Flight *f)> f)
 {
     return [f](Edge *edge) -> double
     {
@@ -118,6 +118,11 @@ function<double(Edge *)> Edge::getIntEdgeWeighter(function<int (Flight*f)>f)
         int value = f(data);
         return max(0.0, static_cast<double>(value)); // non-negative for dijsktra restrictions
     };
+}
+
+string Edge::toString()
+{
+    return data.toString();
 }
 
 // // 1 define a function pointer and initialize to NULL

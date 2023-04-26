@@ -1,4 +1,5 @@
 #include "airport.h"
+#include <sstream>
 using namespace std;
 
 Airport::Airport(double lon, double lat, int id, string code, string name, string city, string state, string statename)
@@ -57,4 +58,11 @@ string Airport::getState()
 string Airport::getStateName()
 {
     return this->stateName;
+}
+
+string Airport::toString()
+{
+    stringstream stream;
+    stream << id << ":" << name << " [" << latitude << "," << longitude << "] " << city << " " << state;
+    return stream.str();
 }

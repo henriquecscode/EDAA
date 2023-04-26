@@ -7,9 +7,7 @@
 #include "airport.h"
 using namespace std;
 
-
 class Edge;
-
 
 class Node
 {
@@ -37,6 +35,8 @@ public:
     void resetNode();
     bool isFound();
     void find();
+    string toString();
+    void print();
     double getNodeDistance();
     void setNodeDistance(double distance);
     Edge *getPreviousEdge();
@@ -53,9 +53,9 @@ public:
     map<Node *, vector<Edge *>> getIncomingEdgesByNode();
     map<Node *, vector<Edge *>> getOutgoingEdgesByNode();
     vector<Edge *> getIncomingEdgesFromNode(Node *node);
-    vector<Edge *> getOutgoingEdgesToNode(Node *node);
+    vector<Edge *> getOutgoingEdgesToNode(Node *node);    
+    
 };
-
 
 class NodeDistanceComparator
 {

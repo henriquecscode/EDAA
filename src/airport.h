@@ -27,6 +27,8 @@ public:
     string getCity();
     string getState();
     string getStateName();
+
+    string toString();
 };
 
 #endif

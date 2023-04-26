@@ -54,6 +54,8 @@ public:
     static std::function<int(Flight *)> getIntGetter(string attribute);
     static std::function<double(Flight *)> getDoubleGetter(string attribute);
     static std::function<string(Flight *)> getStringGetter(string attribute);
+
+    string toString();
 };
 
 #endif
