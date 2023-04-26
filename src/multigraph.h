@@ -17,34 +17,34 @@ class Multigraph
 {
     vector<Node *> nodes;
     vector<Edge *> edges;
-    vector<Edge *> dijkstraShortestPath(Node *source, Node *dest, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
-    vector<Edge *> dijkstraShortestPathEdgesByNode(Node *source, Node *dest, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
+    vector<Edge *> dijkstraShortestPath(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
+    vector<Edge *> dijkstraShortestPathEdgesByNode(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
     vector<Edge *> buildPath(Node *source, Node *dest);
     vector<Edge *> bfs(
         Node *n1,
         Node *n2,
-        bool (*edgeFilter)(Edge *));
+        function<bool(Edge *)> edgeFilter);
     vector<Edge *> bfsByNode(
         Node *n1,
         Node *n2,
-        bool (*edgeFilter)(Edge *));
+        function<bool(Edge *)> edgeFilter);
     vector<Edge *> dfs(
         Node *n1,
         Node *n2,
-        bool (*edgeFilter)(Edge *));
+        function<bool(Edge *)> edgeFilter);
     vector<Edge *> dfsByNode(
         Node *n1,
         Node *n2,
-        bool (*edgeFilter)(Edge *));
+        function<bool(Edge *)> edgeFilter);
     map<Node *, vector<Edge *>> dfs(
         Node *n1,
-        bool (*edgeFilter)(Edge *));
+        function<bool(Edge *)> edgeFilter);
     map<Node *, vector<Edge *>> dfsByNode(
         Node *n1,
-        bool (*edgeFilter)(Edge *));
-    vector<Edge *> getEdges(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
-    vector<Edge *> getBestEdgesByNode(Node *node, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *));
-    bool isConnected(Node *n1, bool (*edgeFilter)(Edge *), vector<Edge *> (*dfs)(Node *, bool (*)(Edge *)));
+        function<bool(Edge *)> edgeFilter);
+    vector<Edge *> getEdges(function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
+    vector<Edge *> getBestEdgesByNode(Node *node, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
+    bool isConnected(Node *n1, function<bool(Edge *)> edgeFilter, vector<Edge *> (*dfs)(Node *, function<bool(Edge*)>));
     void mountTree(Node *root, vector<Edge *> treeEdges);
 
 public:
@@ -58,23 +58,28 @@ public:
 
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
-        bool (*edgeFilter)(Edge *),
-        double (*edgeWeight)(Edge *),
-        vector<Edge *> (*dijkstra)(Node *, Node *, bool (*)(Edge *), double (*)(Edge *)));
+        function<bool(Edge *)> edgeFilter,
+        function<double(Edge *)> edgeWeight,
+        vector<Edge *> (*dijkstra)(Node *, Node *, function<bool(Edge *)>, function<double(Edge *)>));
 
     pair<vector<Edge *>, int> getErdos(
         Node *n1,
         Node *n2,
-        bool (*edgeFilter)(Edge *),
-        vector<Edge *> (*bfs)(Node *, Node *, bool (*)(Edge *)));
+        function<bool(Edge *)> edgeFilter,
+        std::vector<Edge *, std::allocator<Edge *>> (Multigraph::*)(Node *n1, Node *n2, std::function<bool(Edge *)> edgeFilter));
+    pair<vector<Edge *>, int> getErdos(
+        Node *n1,
+        Node *n2,
+        function<bool(Edge *)> edgeFilter,
+        int bfsSelection);
 
     // Local because we just check connectivity from the source node
     void getLocalMinimumSpanningTree(
         Node *localNode,
-        bool (*edgeFilter)(Edge *),
-        double (*edgeWeight)(Edge *),
-        vector<Edge *> (*collectEdges)(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *)),
-        vector<Edge *> (*dfs)(Node *, bool (*)(Edge *)));
+        function<bool(Edge *)> edgeFilter,
+        function<double(Edge *)> edgeWeight,
+        vector<Edge *> (*collectEdges)(function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight),
+        vector<Edge *> (*dfs)(Node *, function<bool(Edge *)>));
 
     Node *getNode(int id);
 };

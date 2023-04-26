@@ -18,7 +18,9 @@ string NODES_FILE = "../data/airports_actually_used.csv";
 string EDGES_FILE = "../data/flights.csv";
 
 Multigraph multigraph = Multigraph();
-int chosenFunction = -1;
+int problem = -1;
+function<bool(Edge *)> filter;
+function<double(Edge *)> weighter;
 
 // Choose filter
 // Choose Weighter
@@ -90,11 +92,12 @@ function<bool(Edge *)> chooseFilter()
     cout << "7 - Filter by arrDelay" << endl;
     cout << "8 - Filter by distance" << endl;
     cout << "9 - Filter by flightTime" << endl;
+    cout << "10 - No filter" << endl;
     cout << "0 - Exit" << endl;
     cout << endl;
 
     // do a safe input here
-    int choice = getIntInput("Enter your choice: ", 0, 9);
+    int choice = getIntInput("Enter your choice: ", 0, 10);
     if (choice == 0)
     {
         cout << endl
@@ -124,6 +127,10 @@ function<bool(Edge *)> chooseFilter()
         cin >> carrier;
         auto dataGetter = Flight::getStringGetter("carrier");
         return Edge::getEdgeFilter(dataGetter, carrier);
+    }
+    else if (choice == 10)
+    {
+        return Edge::getEdgeFilter();
     }
     else
     {
@@ -197,33 +204,138 @@ function<bool(Edge *)> chooseWeighter()
 
 // function<vector<vector<Edge *>>> chooseProblem()
 
-void chooseProblem()
+int chooseProblem()
 {
     cout << "1 - Shortest Path by Dijkstra Algorithm" << endl;
     cout << "2 - Local Minimum Spanning Tree" << endl;
+    cout << "3 - Erdos" << endl;
     cout << "0 - Exit" << endl;
 
-    int choice = getIntInput("Choose the problem you wish to solve: ", 0, 2);
+    int choice = getIntInput("Choose the problem you wish to solve: ", 0, 3);
 
     if (choice == 0)
     {
-        chosenFunction = 0;
-        return;
+        return -1;
     }
-    else if (choice == 1)
+    else
     {
-        chosenFunction = 1;
-        vector<Node *> nodes = multigraph.getNodes();
-        return;
+        return choice;
+    }
+}
 
-        // TODO: add the dijkstra function
-    }
-    else if (choice == 2)
+void viewSolution(pair<vector<Edge *>, int> solution)
+{
+    int steps = solution.second;
+    vector<Edge *> edges = solution.first;
+    // iterate edges, please
+    for (Edge *edge : edges)
     {
-        chosenFunction = 2;
-        return;
-        // TODO: add the local minimum spanning tree function
+        cout << edge->getSource()->getData().getId() << " -> " << edge->getDest()->getData().getId() << endl;
     }
+    cout << "Found above solution (top to bottom)" << endl;
+    cout<< "Total steps: " << steps << endl;
+}
+
+void run()
+{
+    if (problem == 1)
+    {
+        // djsktra
+        return;
+    }
+    else if (problem == 2)
+    {
+        // spanning tree
+    }
+    else if (problem == 3)
+    {
+        if (filter == nullptr)
+        {
+            cout << "You must choose a filter first" << endl;
+            return;
+        }
+        int choice;
+        Node *origin = nullptr;
+        Node *destination = nullptr;
+        int algorithm = 0;
+        while (true)
+        {
+            cout << "---- Choose parameters ---- " << endl;
+            cout << "1 - Choose origin node" << endl;
+            cout << "2 - Choose destination node" << endl;
+            cout << "3 - Choose algorithm" << endl;
+            cout << "4 - Run" << endl;
+            cout << "0 - Return " << endl;
+            choice = getIntInput("Enter your choice: ", 0, 4);
+
+            if (choice == 1)
+            {
+                origin = multigraph.getNode(getIntInput("Enter origin node id: "));
+                if (origin == nullptr)
+                {
+                    cout << "No node found " << endl;
+                    continue;
+                }
+            }
+            else if (choice == 2)
+            {
+                destination = multigraph.getNode(getIntInput("Enter destination node id: "));
+                if (destination == nullptr)
+                {
+                    cout << "No node found " << endl;
+                    continue;
+                }
+            }
+            else if (choice == 3)
+            {
+                cout << "---- Choose algorithm ----" << endl;
+                cout << "1 - bfs " << endl;
+                cout << "2 - bfs by node" << endl;
+                cout << "0 - Return " << endl;
+                algorithm = getIntInput("Enter your choice: ", 0, 2);
+                continue;
+            }
+            else if (choice == 4)
+            {
+                if (origin == nullptr)
+                {
+                    cout << "You must choose an origin node" << endl;
+                }
+                if (destination == nullptr)
+                {
+                    cout << "You must choose a destination node" << endl;
+                }
+                if (algorithm == 0)
+                {
+                    cout << "You must choose an algorithm" << endl;
+                }
+                pair<vector<Edge *>, int> solution = multigraph.getErdos(origin, destination, filter, algorithm);
+                viewSolution(solution);
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+            else
+            {
+                cout << "Please select a valid option" << endl;
+            }
+        }
+
+        //  erdos
+    }
+    else
+    {
+        // exit
+    }
+}
+
+void viewNodesFilter(Node *node)
+{
+    cout << " ---- VIEW THIS NODE ---- " << endl;
+    cout << "1 - View all edges" << endl;
+    cout << "2 - View incoming edges" << endl;
+    cout << "3 - View outgoing edges" << endl;
 }
 
 void viewNodes()
@@ -246,6 +358,7 @@ void viewNodes()
                 cout << "Node not found" << endl;
                 continue;
             }
+            viewNodesFilter(node);
             node->print();
         }
         else if (choice == 0)
@@ -384,19 +497,19 @@ void doChoice(int choice)
     switch (choice)
     {
     case 1:
-        chooseFilter();
+        filter = chooseFilter();
         break;
     case 2:
-        chooseWeighter();
+        weighter = chooseWeighter();
         break;
     case 3:
-        chooseProblem();
+        problem = chooseProblem();
         break;
     case 4:
         // chooseOriginDest();
         break;
     case 5:
-        // run();
+        run();
         break;
     case 6: // debugging purposes
         viewNodes();

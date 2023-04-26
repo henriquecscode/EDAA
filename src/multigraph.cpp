@@ -45,7 +45,7 @@ vector<Edge *> Multigraph::getEdges()
     return this->edges;
 }
 
-vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
+vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight)
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
     // better_priority_queue::updatable_priority_queue<Node *, double> pQ;
@@ -101,7 +101,7 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, bool (
     return path;
 }
 
-vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *dest, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
+vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight)
 {
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
     // better_priority_queue::updatable_priority_queue<Node *, double> pQ;
@@ -183,14 +183,15 @@ vector<Edge *> Multigraph::buildPath(Node *source, Node *dest)
         path.push_back(node->getPreviousEdge());
         node = node->getPreviousEdge()->getSource();
     }
+    reverse(path.begin(), path.end());
     return path;
 }
 
 vector<vector<Edge *>> Multigraph::getShortestPathDijkstra(
     vector<Node *> nodes,
-    bool (*edgeFilter)(Edge *),
-    double (*edgeWeight)(Edge *),
-    vector<Edge *> (*dijkstra)(Node *, Node *, bool (*)(Edge *), double (*)(Edge *)))
+    function<bool(Edge *)> edgeFilter,
+    function<double(Edge *)> edgeWeight,
+    vector<Edge *> (*dijkstra)(Node *, Node *, function<bool(Edge *)>, function<double(Edge *)>))
 {
     {
         if (nodes.size() < 2)
@@ -210,7 +211,7 @@ vector<vector<Edge *>> Multigraph::getShortestPathDijkstra(
 vector<Edge *> Multigraph::bfs(
     Node *n1,
     Node *n2,
-    bool (*edgeFilter)(Edge *))
+    function<bool(Edge *)> edgeFilter)
 {
     queue<Node *> q;
     vector<Edge *> path;
@@ -260,7 +261,7 @@ vector<Edge *> Multigraph::bfs(
 vector<Edge *> Multigraph::bfsByNode(
     Node *n1,
     Node *n2,
-    bool (*edgeFilter)(Edge *))
+    function<bool(Edge *)> edgeFilter)
 {
     queue<Node *> q;
     vector<Edge *> path;
@@ -316,17 +317,34 @@ vector<Edge *> Multigraph::bfsByNode(
 pair<vector<Edge *>, int> Multigraph::getErdos(
     Node *n1,
     Node *n2,
-    bool (*edgeFilter)(Edge *),
-    vector<Edge *> (*bfs)(Node *, Node *, bool (*)(Edge *)))
+    function<bool(Edge *)> edgeFilter,
+    std::vector<Edge *, std::allocator<Edge *>> (Multigraph::*)(Node *n1, Node *n2, std::function<bool(Edge *)> edgeFilter))
 {
     vector<Edge *> path = bfs(n1, n2, edgeFilter);
     return make_pair(path, path.size());
 }
 
+pair<vector<Edge *>, int> Multigraph::getErdos(
+    Node *n1,
+    Node *n2,
+    function<bool(Edge *)> edgeFilter,
+    int bfsSelection)
+{
+    function<vector<Edge *>(Node *, Node *, bool (*)(Edge *))> bfs;
+    if (bfsSelection == 1)
+    {
+        return this->getErdos(n1, n2, edgeFilter, &Multigraph::bfs);
+    }
+    else if (bfsSelection == 2)
+    {
+        return this->getErdos(n1, n2, edgeFilter, &Multigraph::bfsByNode);
+    }
+}
+
 vector<Edge *> Multigraph::dfs(
     Node *n1,
     Node *n2,
-    bool (*edgeFilter)(Edge *))
+    function<bool(Edge *)> edgeFilter)
 {
     stack<Node *> s;
     vector<Edge *> path;
@@ -375,7 +393,7 @@ vector<Edge *> Multigraph::dfs(
 
 map<Node *, vector<Edge *>> Multigraph::dfs(
     Node *n1,
-    bool (*edgeFilter)(Edge *))
+    function<bool(Edge *)> edgeFilter)
 {
     set<Node *> found;
     stack<Node *> s;
@@ -425,7 +443,7 @@ map<Node *, vector<Edge *>> Multigraph::dfs(
 vector<Edge *> Multigraph::dfsByNode(
     Node *n1,
     Node *n2,
-    bool (*edgeFilter)(Edge *))
+    function<bool(Edge *)> edgeFilter)
 {
     stack<Node *> s;
     vector<Edge *> path;
@@ -480,7 +498,7 @@ vector<Edge *> Multigraph::dfsByNode(
 
 map<Node *, vector<Edge *>> Multigraph::dfsByNode(
     Node *n1,
-    bool (*edgeFilter)(Edge *))
+    function<bool(Edge *)> edgeFilter)
 {
     set<Node *> found;
     stack<Node *> s;
@@ -528,7 +546,7 @@ map<Node *, vector<Edge *>> Multigraph::dfsByNode(
     return pathMap;
 }
 
-vector<Edge *> Multigraph::getEdges(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
+vector<Edge *> Multigraph::getEdges(function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight)
 {
     vector<Edge *> filteredEdges;
     copy_if(this->edges.begin(), this->edges.end(), filteredEdges.begin(), edgeFilter);
@@ -561,7 +579,7 @@ vector<Edge *> Multigraph::getBestEdges(function<bool(Edge *)> *edgeFilter, func
     return bestEdges;
 }
 
-vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *))
+vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight)
 {
     vector<Edge *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
@@ -587,7 +605,7 @@ vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, bool (*edgeFilter)(Edg
     return bestEdges;
 }
 
-bool Multigraph::isConnected(Node *n1, bool (*edgeFilter)(Edge *), vector<Edge *> (*dfs)(Node *, bool (*edgeFilter)(Edge *)))
+bool Multigraph::isConnected(Node *n1, function<bool(Edge *)> edgeFilter, vector<Edge *> (*dfs)(Node *, function<bool(Edge *)>))
 {
     dfs(n1, edgeFilter);
 
@@ -608,10 +626,10 @@ void Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
 
 void Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
-    bool (*edgeFilter)(Edge *),
-    double (*edgeWeight)(Edge *),
-    vector<Edge *> (*collectEdges)(bool (*edgeFilter)(Edge *), double (*edgeWeight)(Edge *)),
-    vector<Edge *> (*dfs)(Node *, bool (*)(Edge *)))
+    function<bool(Edge *)> edgeFilter,
+    function<double(Edge *)> edgeWeight,
+    vector<Edge *> (*collectEdges)(function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight),
+    vector<Edge *> (*dfs)(Node *, function<bool(Edge *)> edgeFilter))
 {
 
     vector<Edge *> edges = collectEdges(edgeFilter, edgeWeight);
