@@ -53,7 +53,7 @@ public:
     map<Node *, vector<Edge *>> getIncomingEdgesByNode();
     map<Node *, vector<Edge *>> getOutgoingEdgesByNode();
     vector<Edge *> getIncomingEdgesFromNode(Node *node);
-    vector<Edge *> getOutgoingEdgesToNode(Node *node);    
+    vector<Edge *> getOutgoingEdgesToNode(Node *node);
     
 };
 
@@ -62,7 +62,17 @@ class NodeDistanceComparator
 public:
     bool operator()(Node *a, Node *b)
     {
-        return a->getNodeDistance() < b->getNodeDistance();
+        bool smaller = !!(a->getNodeDistance() < b->getNodeDistance());
+        return smaller;
+    }
+};
+class NodeDistanceComparatorPair
+{
+public:
+    bool operator()(pair<double, Node *> a, pair<double, Node *> b)
+    {
+        bool smaller = !!(a.first < b.first);
+        return smaller;
     }
 };
 #endif

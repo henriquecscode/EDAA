@@ -168,6 +168,7 @@ string Node::toString()
     return data.toString();
 }
 
-void Node::print() {
+void Node::print()
+{
     cout << this->toString() << endl;
 }

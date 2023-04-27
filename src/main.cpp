@@ -4,6 +4,7 @@
 #include "flight.h"
 #include "airport.h"
 #include "multigraph.h"
+#include "attribute_type.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -16,6 +17,8 @@ using namespace std;
 
 string NODES_FILE = "../data/airports_actually_used.csv";
 string EDGES_FILE = "../data/flights.csv";
+streambuf *terminalstream = cin.rdbuf();
+streambuf *inputstream;
 
 Multigraph multigraph = Multigraph();
 int problem = -1;
@@ -34,6 +37,11 @@ int getIntInput(string message, int inputMin, int inputMax)
         while (!(cin >> input))
         // while (input < inputMin || input > inputMax)
         {
+            if (cin.rdbuf() == inputstream)
+            {
+                cin.rdbuf(terminalstream);
+                continue;
+            }
             cout << "Invalid input. Try again: " << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -98,6 +106,9 @@ function<bool(Edge *)> chooseFilter()
 
     // do a safe input here
     int choice = getIntInput("Enter your choice: ", 0, 10);
+    cout << endl
+         << endl;
+
     if (choice == 0)
     {
         cout << endl
@@ -294,6 +305,8 @@ void run()
         cout << "4 - Run" << endl;
         cout << "0 - Return " << endl;
         choice = getIntInput("Enter your choice: ", 0, 4);
+        cout << endl
+             << endl;
 
         if (choice == 1)
         {
@@ -301,6 +314,8 @@ void run()
             if (origin == nullptr)
             {
                 cout << "No node found " << endl;
+                cout << endl
+                     << endl;
                 continue;
             }
         }
@@ -310,6 +325,8 @@ void run()
             if (destination == nullptr)
             {
                 cout << "No node found " << endl;
+                cout << endl
+                     << endl;
                 continue;
             }
         }
@@ -339,6 +356,8 @@ void run()
             cout << "0 - Return " << endl;
 
             algorithm = getIntInput("Enter your choice: ", 0, max);
+            cout << endl
+                 << endl;
             continue;
         }
         else if (choice == 4)
@@ -346,16 +365,22 @@ void run()
             if (origin == nullptr)
             {
                 cout << "You must choose an origin node" << endl;
+                cout << endl
+                     << endl;
                 continue;
             }
             if (destination == nullptr)
             {
                 cout << "You must choose a destination node" << endl;
+                cout << endl
+                     << endl;
                 continue;
             }
             if (algorithm == 0)
             {
                 cout << "You must choose an algorithm" << endl;
+                cout << endl
+                     << endl;
                 continue;
             }
             break;
@@ -375,7 +400,9 @@ void run()
     if (problem == 1)
     {
         // dijkstra
-        // solution = multigraph.dijkstra(origin, destination, filter, weighter, algorithm);
+        vector<Node *> nodes = {origin, destination};
+        vector<vector<Edge *>> allPaths = multigraph.getShortestPathDijkstra(nodes, filter, weighter, algorithm);
+        solution = make_pair(allPaths[0], allPaths[0].size());
     }
     else if (problem == 2)
     {
@@ -414,7 +441,9 @@ void viewNodes()
             Node *node = multigraph.getNode(nodeId);
             if (node == nullptr)
             {
-                cout << "Node not found" << endl;
+                cout << "Node not found." << endl;
+                cout << endl
+                     << endl;
                 continue;
             }
             viewNodesFilter(node);
@@ -500,7 +529,9 @@ void viewEdges()
                     origin = multigraph.getNode(getIntInput("Enter origin node id: "));
                     if (origin == nullptr)
                     {
-                        cout << "No node found " << endl;
+                        cout << "No node found." << endl;
+                        cout << endl
+                             << endl;
                         continue;
                     }
                 }
@@ -509,7 +540,9 @@ void viewEdges()
                     destination = multigraph.getNode(getIntInput("Enter destination node id: "));
                     if (destination == nullptr)
                     {
-                        cout << "No node found " << endl;
+                        cout << "No node found." << endl;
+                        cout << endl
+                             << endl;
                         continue;
                     }
                 }
@@ -517,7 +550,9 @@ void viewEdges()
                 {
                     if (origin == nullptr || destination == nullptr)
                     {
-                        cout << "Please select origin and destination nodes" << endl;
+                        cout << "Please select origin and destination nodes..." << endl;
+                        cout << endl
+                             << endl;
                         continue;
                     }
                     cout << "Origin: " << origin->toString() << endl;
@@ -536,7 +571,9 @@ void viewEdges()
                 }
                 else
                 {
-                    cout << "Please select a valid option" << endl;
+                    cout << "Please select a valid option!" << endl;
+                    cout << endl
+                         << endl;
                 }
             }
         }
@@ -605,6 +642,8 @@ void menu()
         cout << endl;
 
         choice = getIntInput("Enter your choice: ", 0, 7);
+        cout << endl
+             << endl;
         doChoice(choice);
     }
 }
@@ -719,6 +758,10 @@ void loadData(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
+    // istringstream iss("1 10 2 5 3 1 5 1 11433 2 13930 3 1 4");
+    istringstream iss("1 10 2 5 3 1 5 1 11433 2 10140 3 1 4");
+    inputstream = iss.rdbuf();
+    cin.rdbuf(iss.rdbuf());
     cout << "Loading data... " << endl;
     loadData(argc, argv);
     cout << "Data loaded. Creating multigraph" << endl;

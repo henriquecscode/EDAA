@@ -3,6 +3,7 @@
 
 #include "airport.h"
 #include "flight.h"
+#include"attribute_type.h"
 #include <vector>
 #include <utility>
 #include <map>
@@ -59,8 +60,13 @@ public:
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
         function<bool(Edge *)> edgeFilter,
-        function<double(Edge *)> edgeWeight,
-        vector<Edge *> (*dijkstra)(Node *, Node *, function<bool(Edge *)>, function<double(Edge *)>));
+        function<double(Edge*, double&)> edgeWeight,
+        vector<Edge *> (*dijkstra)(Node *, Node *, function<bool(Edge *)>, function<double(Edge*, double&)>));
+vector<vector<Edge *>> getShortestPathDijkstra(
+        vector<Node *> nodes,
+        function<bool(Edge *)> edgeFilter,
+        function<double(Edge*, double&)> edgeWeight,
+        int algorithm);
 
     pair<vector<Edge *>, int> getErdos(
         Node *n1,

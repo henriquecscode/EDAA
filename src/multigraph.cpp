@@ -3,6 +3,7 @@
 #include "edge.h"
 #include "airport.h"
 #include "flight.h"
+#include "attribute_type.h"
 #include <vector>
 #include <queue>
 #include <set>
@@ -11,8 +12,37 @@
 #include <algorithm>
 #include <stack>
 #include <iostream>
+#include <cmath>
 // #include "better_priority_queue.h" //not in makefile
 using namespace std;
+
+void printQueue(priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue)
+{
+    Node *node;
+    cout << "Queue ";
+    while (!queue.empty())
+    {
+        node = queue.top();
+        cout << node->getNodeDistance() << " ";
+        queue.pop();
+    }
+    cout << endl;
+}
+void printQueue(priority_queue<pair<double, Node *>, vector<pair<double, Node *>>, NodeDistanceComparatorPair> queue)
+{
+    Node *node;
+    double distance;
+    pair<double, Node *> pair;
+    cout << "Queue ";
+    while (!queue.empty())
+    {
+        pair = queue.top();
+        cout << pair.first << ":" << pair.second->getData().getId() << ":" << pair.second->getNodeDistance() << " ";
+        // cout << node->getNodeDistance() << " ";
+        queue.pop();
+    }
+    cout << endl;
+}
 
 Multigraph::Multigraph()
 {
@@ -50,14 +80,15 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, functi
     // pQ is a maximum priority queue. We want to use a minimum priority queue, so we negate the distance.
     // better_priority_queue::updatable_priority_queue<Node *, double> pQ;
     vector<Edge *> path;
-    priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue;
+    // priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue;
+    priority_queue<pair<double, Node *>, vector<pair<double, Node *>>, NodeDistanceComparatorPair> queue;
 
     for (auto node : nodes)
     {
         node->resetNode();
     }
     source->setNodeDistance(0);
-    queue.push(source);
+    queue.push(make_pair(0,source));
     // pQ.set(source, 0);
 
     // thank you copilot <3 <3
@@ -65,7 +96,10 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, functi
     while (!queue.empty())
     {
         // Node *node = pQ.pop_value().key;
-        Node *node = queue.top();
+        Node *node = queue.top().second;
+        cout << "Checking node " << node->getData().getId() << endl;
+        cout << "Distance is" << node->getNodeDistance() << endl;
+        printQueue(queue);
         queue.pop();
         if (node->isFound())
         {
@@ -74,27 +108,33 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, functi
         // check if node is destination
         if (node == dest)
         {
+            cout << "----- FOUND DESTINATION -----" << endl;
             break;
         }
 
         vector<Edge *> outgoingEdges = node->getOutgoingEdges();
+        cout << "Node has " << outgoingEdges.size() << "connections" << endl;
+
         for (auto edge : outgoingEdges)
         {
             if (edgeFilter(edge))
             {
+                // cout << "Checking one specific edge " << endl;
                 Node *toNode = edge->getDest();
                 // double alt = node->getDistance() + edgeWeight(edge);
                 double weight;
                 edgeWeight(edge, weight);
                 double alt = node->getNodeDistance() - weight;
+                if (alt > toNode->getNodeDistance() || isinf(toNode->getNodeDistance()))
                 {
                     toNode->setNodeDistance(alt);
-                    queue.push(toNode);
+                    queue.push(make_pair(alt, toNode));
                     // pQ.set(toNode, alt);
                     toNode->setPreviousEdge(edge);
                 }
             }
         }
+        cout << "Checked the connections" << endl;
         node->find();
     }
     path = buildPath(source, dest);
@@ -124,6 +164,9 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
         // Node *node = pQ.pop_value().key;
         // check if node is destination
         Node *node = queue.top();
+        cout << "Checking node " << node->getData().getId() << endl;
+        cout << "Distance is" << node->getNodeDistance() << endl;
+        printQueue(queue);
         queue.pop();
         if (node->isFound())
         {
@@ -142,7 +185,7 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
             Edge *bestEdge = nullptr;
             Node *toNode = outgoingEdgesOfNode.first;
             vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
-
+            cout << "Checking" << outgoingEdges.size() << "edges to " << toNode->getData().getId() << endl;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -210,6 +253,32 @@ vector<vector<Edge *>> Multigraph::getShortestPathDijkstra(
         }
         return allPaths;
     }
+}
+
+vector<vector<Edge *>> Multigraph::getShortestPathDijkstra(
+    vector<Node *> nodes,
+    function<bool(Edge *)> edgeFilter,
+    function<double(Edge *, double &)> edgeWeight,
+    int algorithm)
+{
+    vector<vector<Edge *>> allPaths;
+    vector<Edge *> path;
+    Node *source, *dest;
+    for (int i = 0; i < nodes.size() - 1; i++)
+    {
+        source = nodes[i];
+        dest = nodes[i + 1];
+        if (algorithm == 1)
+        {
+            path = this->dijkstraShortestPath(source, dest, edgeFilter, edgeWeight);
+        }
+        else if (algorithm == 2)
+        {
+            path = this->dijkstraShortestPathEdgesByNode(source, dest, edgeFilter, edgeWeight);
+        }
+        allPaths.push_back(path);
+    }
+    return allPaths;
 }
 
 vector<Edge *> Multigraph::bfs(
