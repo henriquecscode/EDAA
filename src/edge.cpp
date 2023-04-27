@@ -26,7 +26,7 @@ Flight *Edge::getData()
     return &data;
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter()
+EdgeFilter Edge::getEdgeFilter()
 {
     return [](Edge *edge) -> bool
     {
@@ -34,7 +34,7 @@ function<bool(Edge *)> Edge::getEdgeFilter()
     };
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter(function<double(Flight *)> f, double min, double max)
+EdgeFilter Edge::getEdgeFilter(function<double(Flight *)> f, double min, double max)
 {
     return [f, min, max](Edge *edge) -> bool
     {
@@ -44,7 +44,7 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<double(Flight *)> f, double 
     };
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter(function<int(Flight *)> f, int min, int max)
+EdgeFilter Edge::getEdgeFilter(function<int(Flight *)> f, int min, int max)
 {
     return [f, min, max](Edge *edge) -> bool
     {
@@ -54,7 +54,7 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<int(Flight *)> f, int min, i
     };
 }
 
-function<bool(Edge *)> Edge::getEdgeFilter(function<string(Flight *)> f, string comparison)
+EdgeFilter Edge::getEdgeFilter(function<string(Flight *)> f, string comparison)
 {
     return [f, comparison](Edge *edge) -> bool
     {
@@ -64,7 +64,7 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<string(Flight *)> f, string 
     };
 }
 
-function<double(Edge *, double &)> Edge::getEdgeWeighter(string dataAttributeName)
+EdgeWeighter Edge::getEdgeWeighter(string dataAttributeName)
 {
     enum attributeType type = Flight::getAttributeType(dataAttributeName);
     if (type == INT)
@@ -100,7 +100,7 @@ function<double(Edge *, double &)> Edge::getEdgeWeighter(string dataAttributeNam
     // }
 }
 
-function<double(Edge *, double &)> Edge::getDoubleEdgeWeighter(function<double(Flight *)> f)
+EdgeWeighter Edge::getDoubleEdgeWeighter(function<double(Flight *)> f)
 {
     return [f](Edge *edge, double &pointer) -> double
     {
@@ -111,7 +111,7 @@ function<double(Edge *, double &)> Edge::getDoubleEdgeWeighter(function<double(F
     };
 }
 
-function<double(Edge *, double &)> Edge::getIntEdgeWeighter(function<int(Flight *f)> f)
+EdgeWeighter Edge::getIntEdgeWeighter(function<int(Flight *f)> f)
 {
     return [f](Edge *edge, double &pointer) -> double
     {

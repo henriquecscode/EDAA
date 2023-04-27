@@ -26,11 +26,11 @@ public:
 
     // function<bool (Edge*)>getEdgeFilter(double (*f)(Flight*), double min, double max);
 
-    static function<bool(Edge *)> getEdgeFilter();
-    // static function<bool(Edge *)> getEdgeFilter(string dataAttributeName, double min, double max);
-    static function<bool(Edge *)> getEdgeFilter(function<double (Flight*)> f, double min, double max);
-    static function<bool(Edge *)> getEdgeFilter(function<int (Flight*)> f, int min, int max);
-    static function<bool(Edge *)> getEdgeFilter(function<string (Flight*)> f, string comparison);
+    static EdgeFilter getEdgeFilter();
+    // static EdgeFilter getEdgeFilter(string dataAttributeName, double min, double max);
+    static EdgeFilter getEdgeFilter(function<double (Flight*)> f, double min, double max);
+    static EdgeFilter getEdgeFilter(function<int (Flight*)> f, int min, int max);
+    static EdgeFilter getEdgeFilter(function<string (Flight*)> f, string comparison);
 
     static function<double(Edge*, double&)> getEdgeWeighter(string dataAttributeName);
     static function<double(Edge*, double&)> getDoubleEdgeWeighter(function<double (Flight*)> f);

@@ -22,8 +22,8 @@ streambuf *inputstream;
 
 Multigraph multigraph = Multigraph();
 int problem = -1;
-function<bool(Edge *)> filter;
-function<double(Edge *, double &)> weighter;
+EdgeFilter filter;
+EdgeWeighter weighter;
 
 // Choose filter
 // Choose Weighter
@@ -87,7 +87,7 @@ double getDoubleInput(string message, double inputMin)
     return getDoubleInput(message, inputMin, numeric_limits<double>::max());
 }
 
-function<bool(Edge *)> chooseFilter()
+EdgeFilter chooseFilter()
 {
     string attributes[] = {"dayMonth", "dayWeek", "carrier", "originId", "destId", "depDelay", "arrDelay", "distance", "flightTime"};
     cout << "Choose attribute to filter by:" << endl;
@@ -149,7 +149,7 @@ function<bool(Edge *)> chooseFilter()
     }
 }
 
-function<double(Edge *, double &)> chooseWeighter()
+EdgeWeighter chooseWeighter()
 {
     while (1)
     {
@@ -474,7 +474,7 @@ void viewEdgesFilter(vector<Edge *> edges)
 
         if (choice == 1)
         {
-            std::function<bool(Edge *)> filter = chooseFilter();
+            EdgeFilter filter = chooseFilter();
             if (filter == nullptr)
             {
                 break;
