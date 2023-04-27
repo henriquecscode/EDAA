@@ -233,7 +233,7 @@ void viewSolution(pair<vector<Edge *>, int> solution)
         cout << edge->getSource()->getData().getId() << " -> " << edge->getDest()->getData().getId() << endl;
     }
     cout << "Found above solution (top to bottom)" << endl;
-    cout<< "Total steps: " << steps << endl;
+    cout << "Total steps: " << steps << endl;
 }
 
 void run()
@@ -241,93 +241,152 @@ void run()
     if (problem == 1)
     {
         // djsktra
-        return;
-    }
-    else if (problem == 2)
-    {
-        // spanning tree
-    }
-    else if (problem == 3)
-    {
         if (filter == nullptr)
         {
             cout << "You must choose a filter first" << endl;
             return;
         }
-        int choice;
-        Node *origin = nullptr;
-        Node *destination = nullptr;
-        int algorithm = 0;
-        while (true)
+        if (weighter == nullptr)
         {
-            cout << "---- Choose parameters ---- " << endl;
-            cout << "1 - Choose origin node" << endl;
-            cout << "2 - Choose destination node" << endl;
-            cout << "3 - Choose algorithm" << endl;
-            cout << "4 - Run" << endl;
-            cout << "0 - Return " << endl;
-            choice = getIntInput("Enter your choice: ", 0, 4);
-
-            if (choice == 1)
-            {
-                origin = multigraph.getNode(getIntInput("Enter origin node id: "));
-                if (origin == nullptr)
-                {
-                    cout << "No node found " << endl;
-                    continue;
-                }
-            }
-            else if (choice == 2)
-            {
-                destination = multigraph.getNode(getIntInput("Enter destination node id: "));
-                if (destination == nullptr)
-                {
-                    cout << "No node found " << endl;
-                    continue;
-                }
-            }
-            else if (choice == 3)
-            {
-                cout << "---- Choose algorithm ----" << endl;
-                cout << "1 - bfs " << endl;
-                cout << "2 - bfs by node" << endl;
-                cout << "0 - Return " << endl;
-                algorithm = getIntInput("Enter your choice: ", 0, 2);
-                continue;
-            }
-            else if (choice == 4)
-            {
-                if (origin == nullptr)
-                {
-                    cout << "You must choose an origin node" << endl;
-                }
-                if (destination == nullptr)
-                {
-                    cout << "You must choose a destination node" << endl;
-                }
-                if (algorithm == 0)
-                {
-                    cout << "You must choose an algorithm" << endl;
-                }
-                pair<vector<Edge *>, int> solution = multigraph.getErdos(origin, destination, filter, algorithm);
-                viewSolution(solution);
-            }
-            else if (choice == 0)
-            {
-                break;
-            }
-            else
-            {
-                cout << "Please select a valid option" << endl;
-            }
+            cout << "You must choose a weighter first" << endl;
+            return;
         }
-
-        //  erdos
+    }
+    else if (problem == 2)
+    {
+        // spanning tree
+        if (filter == nullptr)
+        {
+            cout << "You must choose a filter first" << endl;
+            return;
+        }
+        if (weighter == nullptr)
+        {
+            cout << "You must choose a weighter first" << endl;
+            return;
+        }
+    }
+    else if (problem == 3)
+    {
+        // erdos
+        if (filter == nullptr)
+        {
+            cout << "You must choose a filter first" << endl;
+            return;
+        }
     }
     else
     {
-        // exit
+        cout << "You must choose a problem first" << endl;
+        return;
     }
+
+    int choice;
+    Node *origin = nullptr;
+    Node *destination = nullptr;
+    int algorithm = 0;
+    while (true)
+    {
+        cout << "---- Choose parameters ---- " << endl;
+        cout << "1 - Choose node" << endl;
+        cout << "2 - Choose destination node" << endl;
+        cout << "3 - Choose algorithm" << endl;
+        cout << "4 - Run" << endl;
+        cout << "0 - Return " << endl;
+        choice = getIntInput("Enter your choice: ", 0, 4);
+
+        if (choice == 1)
+        {
+            origin = multigraph.getNode(getIntInput("Enter origin node id: "));
+            if (origin == nullptr)
+            {
+                cout << "No node found " << endl;
+                continue;
+            }
+        }
+        else if (choice == 2)
+        {
+            destination = multigraph.getNode(getIntInput("Enter destination node id: "));
+            if (destination == nullptr)
+            {
+                cout << "No node found " << endl;
+                continue;
+            }
+        }
+        else if (choice == 3)
+        {
+            int max = 0;
+            cout << "---- Choose algorithm ----" << endl;
+            if (problem == 1)
+            {
+                cout << "1 - dijkstra" << endl;
+                cout << "2 - dijkstra by node" << endl;
+                max = 2;
+            }
+            else if (problem == 2)
+            {
+                cout << "1 - dfs" << endl;
+                cout << "2 - dfs by node" << endl;
+                max = 2;
+            }
+            else if (problem == 3)
+            {
+                cout << "1 - bfs " << endl;
+                cout << "2 - bfs by node" << endl;
+                max = 2;
+            }
+
+            cout << "0 - Return " << endl;
+
+            algorithm = getIntInput("Enter your choice: ", 0, max);
+            continue;
+        }
+        else if (choice == 4)
+        {
+            if (origin == nullptr)
+            {
+                cout << "You must choose an origin node" << endl;
+                continue;
+            }
+            if (destination == nullptr)
+            {
+                cout << "You must choose a destination node" << endl;
+                continue;
+            }
+            if (algorithm == 0)
+            {
+                cout << "You must choose an algorithm" << endl;
+                continue;
+            }
+            break;
+        }
+        else if (choice == 0)
+        {
+            return;
+        }
+        else
+        {
+            cout << "Please select a valid option" << endl;
+        }
+    }
+
+    pair<vector<Edge *>, int> solution;
+
+    if (problem == 1)
+    {
+        // dijkstra
+        // solution = multigraph.dijkstra(origin, destination, filter, weighter, algorithm);
+    }
+    else if (problem == 2)
+    {
+        // spanning tree
+        // solution = multigraph.spanningTree(origin, destination, filter, weighter, algorithm);
+    }
+    else if (problem == 3)
+    {
+        solution = multigraph.getErdos(origin, destination, filter, algorithm);
+    }
+    viewSolution(solution);
 }
 
 void viewNodesFilter(Node *node)
