@@ -204,7 +204,7 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
             double weight;
             edgeWeight(bestEdge, weight);
             double alt = node->getNodeDistance() - weight;
-            if (alt < toNode->getNodeDistance())
+            if (alt > toNode->getNodeDistance() || isinf(toNode->getNodeDistance()))
             {
                 toNode->setNodeDistance(alt);
                 queue.push(toNode);
