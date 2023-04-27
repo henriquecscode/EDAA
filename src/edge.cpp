@@ -64,7 +64,7 @@ function<bool(Edge *)> Edge::getEdgeFilter(function<string(Flight *)> f, string 
     };
 }
 
-function<double(Edge *)> Edge::getEdgeWeighter(string dataAttributeName)
+function<double(Edge *, double &)> Edge::getEdgeWeighter(string dataAttributeName)
 {
     enum attributeType type = Flight::getAttributeType(dataAttributeName);
     if (type == INT)
@@ -100,23 +100,25 @@ function<double(Edge *)> Edge::getEdgeWeighter(string dataAttributeName)
     // }
 }
 
-function<double(Edge *)> Edge::getDoubleEdgeWeighter(function<double(Flight *)> f)
+function<double(Edge *, double &)> Edge::getDoubleEdgeWeighter(function<double(Flight *)> f)
 {
-    return [f](Edge *edge) -> double
+    return [f](Edge *edge, double &pointer) -> double
     {
         Flight *data = edge->getData();
         double value = f(data);
-        return max(0.0, value); // non-negative for dijsktra restrictions
+        double result = max(0.0, value);
+        pointer = result; // non-negative for dijsktra restrictions
     };
 }
 
-function<double(Edge *)> Edge::getIntEdgeWeighter(function<int(Flight *f)> f)
+function<double(Edge *, double &)> Edge::getIntEdgeWeighter(function<int(Flight *f)> f)
 {
-    return [f](Edge *edge) -> double
+    return [f](Edge *edge, double &pointer) -> double
     {
         Flight *data = edge->getData();
         int value = f(data);
-        return max(0.0, static_cast<double>(value)); // non-negative for dijsktra restrictions
+        double result = max(0.0, static_cast<double>(value)); // non-negative for dijsktra restrictions
+        pointer = result;
     };
 }
 

@@ -20,7 +20,7 @@ string EDGES_FILE = "../data/flights.csv";
 Multigraph multigraph = Multigraph();
 int problem = -1;
 function<bool(Edge *)> filter;
-function<double(Edge *)> weighter;
+function<double(Edge *, double &)> weighter;
 
 // Choose filter
 // Choose Weighter
@@ -138,7 +138,7 @@ function<bool(Edge *)> chooseFilter()
     }
 }
 
-function<bool(Edge *)> chooseWeighter()
+function<double(Edge *, double &)> chooseWeighter()
 {
     while (1)
     {
@@ -590,7 +590,6 @@ void menu()
     auto filter = Edge::getEdgeFilter();
     auto weighter = Edge::getEdgeWeighter("distance");
     int choice;
-    multigraph.getBestEdges(&filter, &weighter);
 
     while (1)
     {

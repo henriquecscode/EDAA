@@ -17,8 +17,8 @@ class Multigraph
 {
     vector<Node *> nodes;
     vector<Edge *> edges;
-    vector<Edge *> dijkstraShortestPath(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
-    vector<Edge *> dijkstraShortestPathEdgesByNode(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
+    vector<Edge *> dijkstraShortestPath(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge*, double&)> edgeWeight);
+    vector<Edge *> dijkstraShortestPathEdgesByNode(Node *source, Node *dest, function<bool(Edge *)> edgeFilter, function<double(Edge*, double&)> edgeWeight);
     vector<Edge *> buildPath(Node *source, Node *dest);
     vector<Edge *> bfs(
         Node *n1,
@@ -42,8 +42,8 @@ class Multigraph
     map<Node *, vector<Edge *>> dfsByNode(
         Node *n1,
         function<bool(Edge *)> edgeFilter);
-    vector<Edge *> getEdges(function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
-    vector<Edge *> getBestEdgesByNode(Node *node, function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight);
+    vector<Edge *> getEdges(function<bool(Edge *)> edgeFilter, function<double(Edge*, double&)> edgeWeight);
+    vector<Edge *> getBestEdgesByNode(Node *node, function<bool(Edge *)> edgeFilter, function<double(Edge*, double&)> edgeWeight);
     bool isConnected(Node *n1, function<bool(Edge *)> edgeFilter, vector<Edge *> (*dfs)(Node *, function<bool(Edge*)>));
     void mountTree(Node *root, vector<Edge *> treeEdges);
 
@@ -54,7 +54,7 @@ public:
 
     vector<Node *> getNodes();
     vector<Edge *> getEdges();
-    vector<Edge *> getBestEdges(function<bool(Edge *)> *edgeFilter, function<double(Edge *)> *edgeWeight);
+    vector<Edge *> getBestEdges(function<bool(Edge *)> edgeFilter, function<double(Edge*, double&)> edgeWeight);
 
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
@@ -77,8 +77,8 @@ public:
     void getLocalMinimumSpanningTree(
         Node *localNode,
         function<bool(Edge *)> edgeFilter,
-        function<double(Edge *)> edgeWeight,
-        vector<Edge *> (*collectEdges)(function<bool(Edge *)> edgeFilter, function<double(Edge *)> edgeWeight),
+        function<double(Edge*, double&)> edgeWeight,
+        vector<Edge *> (*collectEdges)(function<bool(Edge *)> edgeFilter, function<double(Edge*, double&)> edgeWeight),
         vector<Edge *> (*dfs)(Node *, function<bool(Edge *)>));
 
     Node *getNode(int id);
