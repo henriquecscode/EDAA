@@ -295,7 +295,7 @@ void run()
     int choice;
     Node *origin = nullptr;
     Node *destination = nullptr;
-    int algorithm = 0;
+    int algorithm = 0, edgeCollector = 0;
     while (true)
     {
         cout << "---- Choose parameters ---- " << endl;
@@ -303,8 +303,12 @@ void run()
         cout << "2 - Choose destination node" << endl;
         cout << "3 - Choose algorithm" << endl;
         cout << "4 - Run" << endl;
+        if (problem == 2)
+        {
+            cout << "5 - Choose edge collector" << endl;
+        }
         cout << "0 - Return " << endl;
-        choice = getIntInput("Enter your choice: ", 0, 4);
+        choice = getIntInput("Enter your choice: ", 0, problem == 2 ? 5 : 4);
         cout << endl
              << endl;
 
@@ -371,10 +375,13 @@ void run()
             }
             if (destination == nullptr)
             {
-                cout << "You must choose a destination node" << endl;
-                cout << endl
-                     << endl;
-                continue;
+                if (problem != 2)
+                {
+                    cout << "You must choose a destination node" << endl;
+                    cout << endl
+                         << endl;
+                    continue;
+                }
             }
             if (algorithm == 0)
             {
@@ -384,6 +391,16 @@ void run()
                 continue;
             }
             break;
+        }
+        else if (choice == 5)
+        {
+            cout << "---- Choose edge collector ----" << endl;
+            if (problem == 1)
+            {
+                cout << "1 - no collector" << endl;
+                cout << "2 - best edge" << endl;
+            }
+            edgeCollector = getIntInput("Enter your choice: ", 1, 2);
         }
         else if (choice == 0)
         {
@@ -406,7 +423,9 @@ void run()
     }
     else if (problem == 2)
     {
+
         // spanning tree
+        multigraph.getLocalMinimumSpanningTree(origin, filter, weighter, algorithm, edgeCollector);
         // solution = multigraph.spanningTree(origin, destination, filter, weighter, algorithm);
     }
     else if (problem == 3)
@@ -758,10 +777,16 @@ void loadData(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-    // istringstream iss("1 10 2 5 3 1 5 1 11433 2 13930 3 1 4");
-    istringstream iss("1 10 2 5 3 1 5 1 11433 2 10140 3 1 4");
-    inputstream = iss.rdbuf();
-    cin.rdbuf(iss.rdbuf());
+    istringstream iss;
+    if (argc > 1)
+    {
+        // iss =istringstream("1 10 2 5 3 1 5 1 11433 2 13930 3 1 4");
+        // iss = istringstream("1 10 2 5 3 1 5 1 11433 2 10140 3 1 4");
+        iss = istringstream("1 10 3 3 5 1 11433 2 10140 3 1 4");
+        iss = istringstream("1 10 3 3 5 1 11433 2 10140 3 2 4");
+        inputstream = iss.rdbuf();
+        cin.rdbuf(iss.rdbuf());
+    }
     cout << "Loading data... " << endl;
     loadData(argc, argv);
     cout << "Data loaded. Creating multigraph" << endl;

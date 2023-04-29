@@ -44,8 +44,9 @@ class Multigraph
         Node *n1,
         EdgeFilter edgeFilter);
     vector<Edge *> getEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
+    vector<Edge *> getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     vector<Edge *> getBestEdgesByNode(Node *node, EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
-    bool isConnected(Node *n1, EdgeFilter edgeFilter, vector<Edge *> (*dfs)(Node *, EdgeFilter));
+    bool isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*dfs)(Node *, EdgeFilter));
     void mountTree(Node *root, vector<Edge *> treeEdges);
 
 public:
@@ -55,13 +56,12 @@ public:
 
     vector<Node *> getNodes();
     vector<Edge *> getEdges();
-    vector<Edge *> getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
 
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
-        vector<Edge *> (*dijkstra)(Node *, Node *, EdgeFilter, EdgeWeighter));
+        vector<Edge *> (Multigraph::*dijkstra)(Node *, Node *, EdgeFilter, EdgeWeighter));
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
         EdgeFilter edgeFilter,
@@ -72,7 +72,7 @@ public:
         Node *n1,
         Node *n2,
         EdgeFilter edgeFilter,
-        std::vector<Edge *, std::allocator<Edge *>> (Multigraph::*)(Node *n1, Node *n2, EdgeFilter edgeFilter));
+        std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter));
     pair<vector<Edge *>, int> getErdos(
         Node *n1,
         Node *n2,
@@ -84,8 +84,19 @@ public:
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
-        vector<Edge *> (*collectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
-        vector<Edge *> (*dfs)(Node *, EdgeFilter));
+        std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
+        map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node *localNode, EdgeFilter edgeFilter));
+    // function<vector<Edge *>(EdgeFilter, EdgeWeighter)> collectEdges)
+    // function<vector<Edge *>(Node *, EdgeFilter)> dfs);
+    // vector<Edge *> (*collectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
+    // vector<Edge *> (*dfs)(Node *, EdgeFilter));
+
+    void getLocalMinimumSpanningTree(
+        Node *localNode,
+        EdgeFilter edgeFilter,
+        EdgeWeighter edgeWeight,
+        int collectionAlgorithm,
+        int dfsAlgorithm);
 
     Node *getNode(int id);
 };
