@@ -69,6 +69,11 @@ void Node::resetNode()
     found = false;
     distance = numeric_limits<double>::infinity();
     previousEdge = nullptr;
+}
+
+void Node::resetVirtualNode()
+{
+
     auxIncomingEdges.clear();
     auxOutgoingEdges.clear();
 }

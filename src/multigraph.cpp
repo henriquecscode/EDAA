@@ -478,18 +478,17 @@ map<Node *, vector<Edge *>> Multigraph::dfs(
         Node *node = s.top();
         s.pop();
 
-        for (auto edge : node->getOutgoingEdges())
+        for (auto edge : node->getAuxOutgoingEdges())
         {
-            if (edgeFilter(edge))
+
+            Node *toNode = edge->getDest();
+            toNode->find();
+            if (found.find(toNode) == found.end())
             {
-                Node *toNode = edge->getDest();
-                if (found.find(toNode) == found.end())
-                {
-                    // Not found
-                    s.push(toNode);
-                    toNode->setPreviousEdge(edge);
-                    found.insert(toNode);
-                }
+                // Not found
+                s.push(toNode);
+                toNode->setPreviousEdge(edge);
+                found.insert(toNode);
             }
         }
     }
@@ -615,35 +614,55 @@ map<Node *, vector<Edge *>> Multigraph::dfsByNode(
 vector<Edge *> Multigraph::getEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight)
 {
     vector<Edge *> filteredEdges;
-    copy_if(this->edges.begin(), this->edges.end(), filteredEdges.begin(), edgeFilter);
+    filteredEdges.reserve(edges.size());
+    for (Edge *edge : edges)
+    {
+        if (edgeFilter(edge))
+        {
+            filteredEdges.push_back(edge);
+        }
+    }
     return filteredEdges;
 }
 
 vector<Edge *> Multigraph::getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight)
 {
-    // I think this is useles. Will only get the edges with least weight for the local minimum spanning tree
-    // We need every edge
-    vector<Edge *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
-    for (auto edge : this->edges)
+
+    map<pair<Node *, Node *>, pair<Edge *, double>> bestEdges;
+    for (auto edge : edges)
     {
         if (edgeFilter(edge))
         {
             double weight;
             edgeWeight(edge, weight);
-            if (weight < bestWeight)
+
+
+            pair<Node *, Node *> connection = make_pair(edge->getSource(), edge->getDest());
+            pair<Edge *, double> value = make_pair(edge, weight);
+            if (bestEdges.find(connection) == bestEdges.end())
             {
-                bestEdges.clear();
-                bestEdges.push_back(edge);
-                bestWeight = weight;
+                bestEdges.insert({connection, value});
+                continue;
             }
-            else if (weight == bestWeight)
+            else
             {
-                bestEdges.push_back(edge);
+                pair<Edge *, double> bestValue = bestEdges.at(connection);
+                double bestWeight = bestValue.second;
+                if (weight < bestWeight)
+                {
+                    bestEdges.insert({connection, value});
+                }
             }
         }
     }
-    return bestEdges;
+    vector<Edge *> bestEdgesVector;
+    for (auto const &pair : bestEdges)
+    {
+        Edge *edge = pair.second.first;
+        bestEdgesVector.push_back(edge);
+    }
+    return bestEdgesVector;
 }
 
 vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, EdgeFilter edgeFilter, EdgeWeighter edgeWeight)
@@ -689,7 +708,11 @@ bool Multigraph::isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector
 
 void Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
 {
-    return;
+    for (auto edge : treeEdges)
+    {
+        cout << edge->getSource()->getData().getId() << "to" << edge->getDest()->getData().getId() << endl;
+    }
+    cout << "Spanning tree is made of " << treeEdges.size() << "edges" << endl;
 }
 
 void Multigraph::getLocalMinimumSpanningTree(
@@ -700,23 +723,26 @@ void Multigraph::getLocalMinimumSpanningTree(
     map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node *localNode, EdgeFilter edgeFilter))
 {
 
-    vector<Edge *> edges = (this->*chosenCollectEdges)(edgeFilter, edgeWeight);
+    cout << "Starting minimum spanning tree" << endl;
+    vector<Edge *> newEdges = (this->*chosenCollectEdges)(edgeFilter, edgeWeight);
     vector<Edge *> mstEdges = vector<Edge *>();
-
+    cout << "Finished collecting edges " << endl;
     // sort edges by weight
-    sort(edges.begin(), edges.end(), [edgeWeight](Edge *e1, Edge *e2)
+    sort(newEdges.begin(), newEdges.end(), [edgeWeight](Edge *e1, Edge *e2)
          {
             double w1, w2;
             edgeWeight(e1, w1);
             edgeWeight(e2, w2);
             return w1 < w2; });
 
+    cout << "Finished sorting edges" << endl;
     for (auto node : nodes)
     {
         node->resetNode();
+        node->resetVirtualNode();
     }
 
-    for (auto edge : edges)
+    for (auto edge : newEdges)
     {
         Node *n1 = edge->getSource();
         Node *n2 = edge->getDest();
@@ -724,7 +750,12 @@ void Multigraph::getLocalMinimumSpanningTree(
         n2->addAuxIncomingEdge(edge);
     }
 
-    for (auto edge : edges)
+    int count = 0;
+    int connectedCount = 0;
+    int lastPrint = 0;
+    int size = newEdges.size();
+    cout << "Starting reverse delete algorithm with " << size << " edges" << endl;
+    for (auto edge : newEdges)
     {
         Node *n1 = edge->getSource();
         Node *n2 = edge->getDest();
@@ -733,10 +764,8 @@ void Multigraph::getLocalMinimumSpanningTree(
         n2->removeAuxIncomingEdge(edge);
 
         bool connected = isConnected(
-            localNode, [](Edge *e)
-            { 
-                auto it = e->getSource()->getAuxOutgoingEdges().find(e);
-                return it!=e->getSource()->getAuxOutgoingEdges().end(); },
+            localNode, [newEdges](Edge *e) -> bool
+            { return find(newEdges.begin(), newEdges.end(), e) != newEdges.end(); },
             chosenDfs);
 
         if (!connected)
@@ -744,11 +773,14 @@ void Multigraph::getLocalMinimumSpanningTree(
             // restitute edge
             n1->addAuxOutgoingEdge(edge);
             n2->addAuxIncomingEdge(edge);
+            mstEdges.push_back(edge);
         }
         else
         {
-            mstEdges.push_back(edge);
+            connectedCount++;
         }
+        count++;
+        cout << "Calculated " << count << "/" << size << "edges " << endl;
     }
 
     mountTree(localNode, mstEdges);
@@ -758,26 +790,26 @@ void Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
-    int collectionAlgorithm,
-    int dfsAlgorithm)
+    int dfsAlgorithm,
+    int collectionAlgorithm)
 {
 
     std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node * localNode, EdgeFilter edgeFilter);
-    if (collectionAlgorithm == 0)
+    if (collectionAlgorithm == 1)
     {
         chosenCollectEdges = &Multigraph::getEdges;
     }
-    else
+    else if (collectionAlgorithm == 2)
     {
         chosenCollectEdges = &Multigraph::getBestEdges;
     }
 
-    if (dfsAlgorithm == 0)
+    if (dfsAlgorithm == 1)
     {
         chosenDfs = &Multigraph::dfs;
     }
-    else
+    else if (dfsAlgorithm == 2)
     {
         chosenDfs = &Multigraph::dfsByNode;
     }

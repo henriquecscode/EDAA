@@ -33,6 +33,7 @@ public:
     bool addEdge(Edge *edge);
 
     void resetNode();
+    void resetVirtualNode();
     bool isFound();
     void find();
     string toString();
@@ -54,7 +55,6 @@ public:
     map<Node *, vector<Edge *>> getOutgoingEdgesByNode();
     vector<Edge *> getIncomingEdgesFromNode(Node *node);
     vector<Edge *> getOutgoingEdgesToNode(Node *node);
-    
 };
 
 class NodeDistanceComparator

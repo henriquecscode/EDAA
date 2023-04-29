@@ -245,6 +245,8 @@ void viewSolution(pair<vector<Edge *>, int> solution)
     }
     cout << "Found above solution (top to bottom)" << endl;
     cout << "Total steps: " << steps << endl;
+    cout << endl
+         << endl;
 }
 
 void run()
@@ -395,7 +397,7 @@ void run()
         else if (choice == 5)
         {
             cout << "---- Choose edge collector ----" << endl;
-            if (problem == 1)
+            if (problem == 2)
             {
                 cout << "1 - no collector" << endl;
                 cout << "2 - best edge" << endl;
@@ -667,22 +669,6 @@ void menu()
     }
 }
 
-void startMultigraph()
-{
-    // static init
-    Flight flight1 = Flight(1, 1, "CARRIER", 1, 2, 1, 2, 1, 2),
-           flight2 = Flight(2, 2, "CARRIER2", 1, 2, -2, -3, -1, 2);
-
-    Airport airport1 = Airport(1, 2),
-            airport2 = Airport(2, 1);
-
-    auto node = multigraph.createNode(airport1);
-    auto node2 = multigraph.createNode(airport2);
-
-    multigraph.createEdge(node, node2, flight1);
-    multigraph.createEdge(node, node2, flight2);
-}
-
 vector<vector<string>> loadCSV(string fname)
 {
     vector<vector<string>> content;
@@ -782,15 +768,15 @@ int main(int argc, char *argv[])
     {
         // iss =istringstream("1 10 2 5 3 1 5 1 11433 2 13930 3 1 4");
         // iss = istringstream("1 10 2 5 3 1 5 1 11433 2 10140 3 1 4");
-        iss = istringstream("1 10 3 3 5 1 11433 2 10140 3 1 4");
-        iss = istringstream("1 10 3 3 5 1 11433 2 10140 3 2 4");
+        // iss = istringstream("1 10 3 3 5 1 11433 2 10140 3 1 4");
+        // iss = istringstream("1 10 3 3 5 1 11433 2 10140 3 2 4");
+        iss = istringstream("1 10 2 5 3 2 5 1 11433 3 1 5 2 4");
         inputstream = iss.rdbuf();
         cin.rdbuf(iss.rdbuf());
     }
     cout << "Loading data... " << endl;
     loadData(argc, argv);
     cout << "Data loaded. Creating multigraph" << endl;
-    startMultigraph();
     menu();
     return 0;
 }

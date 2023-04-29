@@ -95,8 +95,8 @@ public:
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
-        int collectionAlgorithm,
-        int dfsAlgorithm);
+        int dfsAlgorithm,
+        int collectionAlgorithm);
 
     Node *getNode(int id);
 };
