@@ -50,7 +50,7 @@ def plotFlight(edge):
 
 
 #filename = os.path.expanduser;
-with open('../data/airports_actually_used.csv', 'r')  as f:          # Read lines separately
+with open(os.path.expanduser('data/airports_actually_used.csv'), 'r')  as f:          # Read lines separately
     reader = csv.reader(f, delimiter=',')
     for i, line in enumerate(reader):
         if (i == 0): continue  # Skip header
