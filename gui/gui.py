@@ -47,8 +47,8 @@ def plotFlight(edge):
 
 
 
-filename = os.path.expanduser;
-with open(os.path.expanduser("L:\\FEUP\\repos\\EDAA\\data\\airports_actually_used.csv"), 'r') as f:          # Read lines separately
+#filename = os.path.expanduser;
+with open('../data/airports_actually_used.csv', 'r')  as f:          # Read lines separately
     reader = csv.reader(f, delimiter=',')
     for i, line in enumerate(reader):
         if (i == 0): continue  # Skip header
@@ -56,11 +56,11 @@ with open(os.path.expanduser("L:\\FEUP\\repos\\EDAA\\data\\airports_actually_use
 
 
 ## DayofMonth,DayOfWeek,Carrier,OriginAirportID,DestAirportID,DepDelay,ArrDelay,distance,flight_time
-airports = pandas.read_csv(os.path.expanduser("L:\\FEUP\\repos\\EDAA\\data\\airports_actually_used.csv"))
+airports = pandas.read_csv(filepath_or_buffer='../data/airports_actually_used.csv', sep=',')
 airports = pandas.DataFrame(data=airports)[['airport_id', 'lat', 'lng']]
 
 
-with open(os.path.expanduser("L:\\FEUP\\repos\\EDAA\\data\\flights.csv"), "r") as f:
+with open('../data/flights.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
     count = 0
     for i, line in enumerate(reader):
