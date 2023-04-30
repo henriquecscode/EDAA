@@ -1,10 +1,10 @@
 # Import necessary packages
 import csv
+import random
 import os
 import webbrowser 
 import folium
 from folium import plugins
-import pandas
 import rioxarray as rxr
 import earthpy as et
 import earthpy.spatial as es
@@ -35,11 +35,13 @@ m = folium.Map(location=[40.0150, -105.2705], prefer_canvas=True)
 # html.script.get_root().render()
 # html.script._children[e.get_name()] = e
 
+colors =  ['beige', 'black', 'blue', 'cadetblue', 'darkblue', 'darkgreen', 'darkpurple', 'darkred', 'gray', 'green', 'lightblue', 'lightgray', 'lightgreen', 'lightred', 'orange', 'pink', 'purple', 'red'];
+
 def plotAirport(point):
     '''input: series that contains a numeric named latitude and a numeric named longitude
     this function creates a CircleMarker and adds it to your this_map'''
     popup  = folium.Popup(point[0], max_width=600, max_height=600)
-    folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[2], popup = popup, marker_color = 'purple').add_to(m)
+    folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[2], popup = popup, icon=folium.Icon(icon='plane', color=colors[random.randint(0, len(colors) - 1)])).add_to(m)
 
 def plotFlight(edge):
     popup = folium.Popup(edge, max_width=600, max_height=600)
@@ -74,7 +76,8 @@ with open(os.path.expanduser("L:\\FEUP\\repos\\EDAA\\data\\airports_actually_use
 
 #Set the zoom to the maximum possible
 m.fit_bounds(m.get_bounds())
-
+folium.LayerControl().add_to(m)
+plugins.MiniMap().add_to(m)
 # Display the map
 m.save("map.html")
 webbrowser.open("map.html")
