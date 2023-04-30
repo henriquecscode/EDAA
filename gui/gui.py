@@ -5,11 +5,7 @@ import os
 import webbrowser 
 import folium
 from folium import plugins
-import rioxarray as rxr
-import earthpy as et
-import earthpy.spatial as es
-from jinja2 import Template
-from folium.map import Marker
+
 
 # # Modify Marker template to include the onClick event
 # click_template = """{% macro script(this, kwargs) %}
@@ -81,6 +77,7 @@ with open(os.path.expanduser('data/airports_actually_used.csv'), 'r')  as f:    
 m.fit_bounds(m.get_bounds())
 folium.LayerControl().add_to(m)
 plugins.MiniMap().add_to(m)
+
 # Display the map
 m.save("map.html")
 webbrowser.open("map.html")
