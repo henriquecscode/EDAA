@@ -38,8 +38,8 @@ m = folium.Map(location=[40.0150, -105.2705], prefer_canvas=True)
 def plotAirport(point):
     '''input: series that contains a numeric named latitude and a numeric named longitude
     this function creates a CircleMarker and adds it to your this_map'''
-    popup  = folium.Popup(point[2], max_width=600, max_height=600)
-    folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[0], popup = popup, marker_color = 'purple').add_to(m)
+    popup  = folium.Popup(point[0], max_width=600, max_height=600)
+    folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[2], popup = popup, marker_color = 'purple').add_to(m)
 
 def plotFlight(edge):
     popup = folium.Popup(edge, max_width=600, max_height=600)
@@ -56,23 +56,23 @@ with open('../data/airports_actually_used.csv', 'r')  as f:          # Read line
 
 
 ## DayofMonth,DayOfWeek,Carrier,OriginAirportID,DestAirportID,DepDelay,ArrDelay,distance,flight_time
-airports = pandas.read_csv(filepath_or_buffer='../data/airports_actually_used.csv', sep=',')
-airports = pandas.DataFrame(data=airports)[['airport_id', 'lat', 'lng']]
-
-
-with open('../data/flights.csv', 'r') as f:
-    reader = csv.reader(f, delimiter=',')
-    count = 0
-    for i, line in enumerate(reader):
-        if (i == 0): continue
-        origin = airports.loc[airports['airport_id'] == int(line[3])].reset_index()
-        dest = airports.loc[airports['airport_id'] == int(line[4])].reset_index()
-        edge = [[origin['lat'][0], origin['lng'][0]], [dest['lat'][0], dest['lng'][0]]]
-        print(count)
-        if (count == 5000):
-            break;
-        count += 1
-        plotFlight(edge)
+#airports = pandas.read_csv(filepath_or_buffer='../data/airports_actually_used.csv', sep=',')
+#airports = pandas.DataFrame(data=airports)[['airport_id', 'lat', 'lng']]
+#
+#
+#with open('../data/flights.csv', 'r') as f:
+#    reader = csv.reader(f, delimiter=',')
+#    count = 0
+#    for i, line in enumerate(reader):
+#        if (i == 0): continue
+#        origin = airports.loc[airports['airport_id'] == int(line[3])].reset_index()
+#        dest = airports.loc[airports['airport_id'] == int(line[4])].reset_index()
+#        edge = [[origin['lat'][0], origin['lng'][0]], [dest['lat'][0], dest['lng'][0]]]
+#        print(count)
+#        if (count == 5000):
+#            break;
+#        count += 1
+#        plotFlight(edge)
 
 
 #Set the zoom to the maximum possible
