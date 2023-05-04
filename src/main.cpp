@@ -144,6 +144,7 @@ EdgeFilter chooseFilter()
     else
     {
         cout << "Invalid input. Try again: ";
+        return nullptr;
     }
 }
 
@@ -423,9 +424,11 @@ void run()
     }
     else if (problem == 2)
     {
-
+        algorithm = algorithm << 0;
+        edgeCollector = edgeCollector << 2;
+        int algorithmCodification = algorithm | edgeCollector;
         // spanning tree
-        multigraph.getLocalMinimumSpanningTree(origin, filter, weighter, algorithm, edgeCollector);
+        multigraph.getLocalMinimumSpanningTree(origin, filter, weighter, algorithmCodification);
         // solution = multigraph.spanningTree(origin, destination, filter, weighter, algorithm);
     }
     else if (problem == 3)

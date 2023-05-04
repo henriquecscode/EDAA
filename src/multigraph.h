@@ -97,6 +97,7 @@ public:
         EdgeWeighter edgeWeight,
         int dfsAlgorithm,
         int collectionAlgorithm);
+        int algorithmCodification);
 
     Node *getNode(int id);
 };
