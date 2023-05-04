@@ -395,7 +395,6 @@ pair<vector<Edge *>, int> Multigraph::getErdos(
     EdgeFilter edgeFilter,
     int bfsSelection)
 {
-    std::vector<Edge *> (Multigraph::*chosenBfs)(Node * n1, Node * n2, EdgeFilter edgeFilter);
     std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter);
     if (bfsSelection == 1)
     {
@@ -638,7 +637,6 @@ vector<Edge *> Multigraph::getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edge
             double weight;
             edgeWeight(edge, weight);
 
-
             pair<Node *, Node *> connection = make_pair(edge->getSource(), edge->getDest());
             pair<Edge *, double> value = make_pair(edge, weight);
             if (bestEdges.find(connection) == bestEdges.end())
@@ -791,14 +789,10 @@ void Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
-    int dfsAlgorithm,
-    int collectionAlgorithm)
     int algorithmCodifiction)
 {
 
     std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
-    map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node * localNode, EdgeFilter edgeFilter);
-    if (collectionAlgorithm == 1)
     map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node *localNode, EdgeFilter edgeFilter);
 
     int firstAlgorithm = (algorithmCodifiction & 0b11<<0)>>0;
@@ -807,24 +801,41 @@ void Multigraph::getLocalMinimumSpanningTree(
     {
         chosenCollectEdges = &Multigraph::getEdges;
     }
-    else if (collectionAlgorithm == 2)
     else if (firstAlgorithm == 2)
     {
         chosenCollectEdges = &Multigraph::getBestEdges;
     }
 
-    if (dfsAlgorithm == 1)
     if (secondAlgorithm == 1)
     {
         chosenDfs = &Multigraph::dfs;
     }
-    else if (dfsAlgorithm == 2)
     else if (secondAlgorithm == 2)
     {
         chosenDfs = &Multigraph::dfsByNode;
     }
 
     return getLocalMinimumSpanningTree(localNode, edgeFilter, edgeWeight, chosenCollectEdges, chosenDfs);
+}
+
+vector<Edge *> Multigraph::getDfs(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeight,
+    int dfsAlgorithm)
+{
+    vector<Edge *> (Multigraph::*chosenDfs)(Node *, Node *, EdgeFilter);
+
+    if (dfsAlgorithm == 1) 
+    {
+        chosenDfs = &Multigraph::dfs;
+    }
+    else if (dfsAlgorithm == 2) 
+    {
+        chosenDfs = &Multigraph::dfsByNode;
+    }
+
+    return (this->*chosenDfs)(nodes[0], nodes[1], edgeFilter);
 }
 
 Node *Multigraph::getNode(int id)

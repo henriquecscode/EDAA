@@ -95,9 +95,13 @@ public:
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
-        int dfsAlgorithm,
-        int collectionAlgorithm);
         int algorithmCodification);
+
+    vector<Edge *> getDfs(
+        vector<Node *> nodes,
+        EdgeFilter edgeFilter,
+        EdgeWeighter edgeWeight,
+        int dfsAlgorithm);
 
     Node *getNode(int id);
 };

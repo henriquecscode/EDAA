@@ -7,8 +7,8 @@
 #include <sstream>
 #include <sys/types.h>
 #include <sys/stat.h>
- #include <unistd.h>
-//#include <direct.h>
+#include <unistd.h>
+// #include <direct.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
@@ -158,6 +158,54 @@ void loop(vector<string> algorithmNames,
         }
     }
 }
+void loop(vector<string> algorithmNames,
+          vector<pair<string, EdgeFilter>> edgeFilters,
+          vector<pair<Node *, Node *>> pairs)
+{
+    for (int i = 0; i < algorithmNames.size(); i++)
+    {
+        string algorithmName = algorithmNames[i];
+        int algorithmNumber = i + 1;
+
+        for (auto pairNameFilter : edgeFilters)
+        {
+            string filterName = pairNameFilter.first;
+            EdgeFilter filter = pairNameFilter.second;
+
+            string weighterName = pairNameWeigter.first;
+            EdgeWeighter weighter = pairNameWeigter.second;
+
+            string date = getDate();
+            string filedir = DIJKSTRA_DIR + date + "_" + filterName + "_" + algorithmName + "/";
+            string logFilename = filedir + "log.csv";
+            string totalFilename = filedir + "total.csv";
+            mkdir(filedir.c_str(), 0777);
+
+            ofstream file(logFilename);
+            ofstream totalFile(totalFilename);
+            file << "origin, destination, duration(mu_s)\n";
+            long long total = 0;
+            long long totalAverage;
+            for (auto pair : pairs)
+            {
+                Node *origin = pair.first;
+                Node *destination = pair.second;
+                auto start = std::chrono::high_resolution_clock::now();
+                (multigraph.*problem)(origin, destination, filter);
+                auto finish = std::chrono::high_resolution_clock::now();
+                auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
+                total += microseconds;
+                file << origin->getData().getId() << "," << destination->getData().getId() << "," << microseconds << endl;
+            }
+            totalAverage = total / pairs.size();
+            totalFile << "total(mu_s), numberOfRuns, totalAverage(mu_s)\n";
+            totalFile << total << "," << pairs.size() << "," << totalAverage << endl;
+
+            file.close();
+            totalFile.close();
+        }
+    }
+}
 
 void testDijkstra()
 {
@@ -182,6 +230,12 @@ void testDijkstra()
 
 void testDfs()
 {
+    vector<string> algorithmNames = {"dfs",
+                                     "dfsByNode"};
+    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
+    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
+    MultiNodeProblem problem = &Multigraph::getDfs;
+    loop(algorithmNames, edgeFilters, pairs, problem);
     std::cout << "Starting dfs test" << endl;
     std::cout << "Finished dfs test" << endl;
 }
