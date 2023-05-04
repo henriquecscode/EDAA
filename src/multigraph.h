@@ -37,10 +37,10 @@ class Multigraph
         Node *n1,
         Node *n2,
         EdgeFilter edgeFilter);
-    map<Node *, vector<Edge *>> dfs(
+    map<Node *, vector<Edge *>> dfsSpanningTree(
         Node *n1,
         EdgeFilter edgeFilter);
-    map<Node *, vector<Edge *>> dfsByNode(
+    map<Node *, vector<Edge *>> dfsByNodeSpanningTree(
         Node *n1,
         EdgeFilter edgeFilter);
     vector<Edge *> getEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
@@ -78,7 +78,13 @@ public:
         Node *n2,
         EdgeFilter edgeFilter,
         int bfsSelection);
-    vector<vector<Edge*>> getErdos(
+    vector<vector<Edge *>> getErdos(
+        vector<Node *> nodes,
+        EdgeFilter edgeFilter,
+        EdgeWeighter edgeWeighter,
+        int bfsSelection);
+
+    vector<vector<Edge *>> getBfs(
         vector<Node *> nodes,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeighter,
@@ -98,6 +104,12 @@ public:
 
     void getLocalMinimumSpanningTree(
         Node *localNode,
+        EdgeFilter edgeFilter,
+        EdgeWeighter edgeWeight,
+        int algorithmCodification);
+
+    vector<vector<Edge *>> getLocalMinimumSpanningTree(
+        vector<Node *> nodes,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
         int algorithmCodification);

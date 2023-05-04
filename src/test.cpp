@@ -263,20 +263,31 @@ void testErdos()
 }
 void testBfs()
 {
+    vector<pair<int, string>> algorithmNPairs = {
+        make_pair(1, "bfs"),
+        make_pair(2, "bfsByNode")};
+    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
+    vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
+    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting bfs test" << endl;
+    MultiNodeProblem problem = &Multigraph::getBfs;
+    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Finished bfs test" << endl;
 }
 void testSpanningTree()
 {
     vector<pair<int, string>> algorithmNPairs = {
-        make_pair((1 << 0 | 1 << 2), "getEdges&Dfs"),
-        make_pair((1 << 0 | 2 << 2), "getBestEdges&Dfs"),
-        make_pair((2 << 0 | 1 << 2), "getEdges&DfsByNode"),
-        make_pair((2 << 0 | 2 << 2), "getBestEdges&DfsByNode")};
+        // make_pair((1 << 0 | 1 << 2), "Dfs&getEdges"),
+        // make_pair((2 << 0 | 1 << 2), "DfsByNode&getEdges"),
+        make_pair((1 << 0 | 2 << 2), "Dfs&getBestEdges"),
+        // make_pair((2 << 0 | 2 << 2), "DfsByNode&getBestEdges")
+    };
     vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
     vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting spanning tree test" << endl;
+    MultiNodeProblem problem = &Multigraph::getLocalMinimumSpanningTree;
+    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Finished spanning tree test" << endl;
 }
 

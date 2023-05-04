@@ -379,45 +379,6 @@ vector<Edge *> Multigraph::bfsByNode(
     return path;
 }
 
-pair<vector<Edge *>, int> Multigraph::getErdos(
-    Node *n1,
-    Node *n2,
-    EdgeFilter edgeFilter,
-    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter))
-{
-    vector<Edge *> path = (this->*chosenBfs)(n1, n2, edgeFilter);
-    return make_pair(path, path.size());
-}
-
-pair<vector<Edge *>, int> Multigraph::getErdos(
-    Node *n1,
-    Node *n2,
-    EdgeFilter edgeFilter,
-    int bfsSelection)
-{
-    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter);
-    if (bfsSelection == 1)
-    {
-        chosenBfs = &Multigraph::bfs;
-    }
-    else if (bfsSelection == 2)
-    {
-        chosenBfs = &Multigraph::bfsByNode;
-    }
-    return this->getErdos(n1, n2, edgeFilter, chosenBfs);
-}
-
-vector<vector<Edge *>> Multigraph::getErdos(
-    vector<Node *> nodes,
-    EdgeFilter edgeFilter,
-    EdgeWeighter edgeWeighter,
-    int bfsSelection)
-{
-    auto erdos = this->getErdos(nodes[0], nodes[1], edgeFilter, bfsSelection);
-    vector<Edge *> path = erdos.first;
-    return {path};
-}
-
 vector<Edge *> Multigraph::dfs(
     Node *n1,
     Node *n2,
@@ -468,7 +429,7 @@ vector<Edge *> Multigraph::dfs(
     return path;
 }
 
-map<Node *, vector<Edge *>> Multigraph::dfs(
+map<Node *, vector<Edge *>> Multigraph::dfsSpanningTree(
     Node *n1,
     EdgeFilter edgeFilter)
 {
@@ -572,7 +533,7 @@ vector<Edge *> Multigraph::dfsByNode(
     return path;
 }
 
-map<Node *, vector<Edge *>> Multigraph::dfsByNode(
+map<Node *, vector<Edge *>> Multigraph::dfsByNodeSpanningTree(
     Node *n1,
     EdgeFilter edgeFilter)
 {
@@ -725,6 +686,64 @@ void Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
     cout << "Spanning tree is made of " << treeEdges.size() << "edges" << endl;
 }
 
+pair<vector<Edge *>, int> Multigraph::getErdos(
+    Node *n1,
+    Node *n2,
+    EdgeFilter edgeFilter,
+    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter))
+{
+    vector<Edge *> path = (this->*chosenBfs)(n1, n2, edgeFilter);
+    return make_pair(path, path.size());
+}
+
+pair<vector<Edge *>, int> Multigraph::getErdos(
+    Node *n1,
+    Node *n2,
+    EdgeFilter edgeFilter,
+    int bfsSelection)
+{
+    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter);
+    if (bfsSelection == 1)
+    {
+        chosenBfs = &Multigraph::bfs;
+    }
+    else if (bfsSelection == 2)
+    {
+        chosenBfs = &Multigraph::bfsByNode;
+    }
+    return this->getErdos(n1, n2, edgeFilter, chosenBfs);
+}
+
+vector<vector<Edge *>> Multigraph::getErdos(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeighter,
+    int bfsSelection)
+{
+    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter);
+    if (bfsSelection == 1)
+    {
+        chosenBfs = &Multigraph::bfs;
+    }
+    else if (bfsSelection == 2)
+    {
+        chosenBfs = &Multigraph::bfsByNode;
+    }
+    vector<Edge *> path = (this->*chosenBfs)(nodes[0], nodes[1], edgeFilter);
+    return {path};
+}
+
+vector<vector<Edge *>> Multigraph::getBfs(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeighter,
+    int bfsSelection)
+{
+    auto erdos = this->getErdos(nodes[0], nodes[1], edgeFilter, bfsSelection);
+    vector<Edge *> path = erdos.first;
+    return {path};
+}
+
 void Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
@@ -808,25 +827,35 @@ void Multigraph::getLocalMinimumSpanningTree(
 
     int firstAlgorithm = (algorithmCodifiction & 0b11 << 0) >> 0;
     int secondAlgorithm = (algorithmCodifiction & 0b11 << 2) >> 2;
-    if (firstAlgorithm == 1)
+    if (secondAlgorithm == 1)
     {
         chosenCollectEdges = &Multigraph::getEdges;
     }
-    else if (firstAlgorithm == 2)
+    else if (secondAlgorithm == 2)
     {
         chosenCollectEdges = &Multigraph::getBestEdges;
     }
 
-    if (secondAlgorithm == 1)
+    if (firstAlgorithm == 1)
     {
-        chosenDfs = &Multigraph::dfs;
+        chosenDfs = &Multigraph::dfsSpanningTree;
     }
-    else if (secondAlgorithm == 2)
+    else if (firstAlgorithm == 2)
     {
-        chosenDfs = &Multigraph::dfsByNode;
+        chosenDfs = &Multigraph::dfsByNodeSpanningTree;
     }
 
     return getLocalMinimumSpanningTree(localNode, edgeFilter, edgeWeight, chosenCollectEdges, chosenDfs);
+}
+
+vector<vector<Edge *>> Multigraph::getLocalMinimumSpanningTree(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeight,
+    int algorithmCodification)
+{
+    this->getLocalMinimumSpanningTree(nodes[0], edgeFilter, edgeWeight, algorithmCodification);
+    return vector<vector<Edge *>>();
 }
 
 vector<vector<Edge *>> Multigraph::getDfs(
