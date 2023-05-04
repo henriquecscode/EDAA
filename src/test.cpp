@@ -103,27 +103,31 @@ vector<pair<string, EdgeWeighter>> getEdgeWeighters()
     return edgeWeighters;
 }
 
+vector<pair<string, EdgeWeighter>> getNoWeighters()
+{
+    return {make_pair("noWeighter", nullptr)};
+}
 // typedef void (*MultiNodeProblem)(vector<Node *>, EdgeFilter, EdgeWeighter, int);
 
-void loop(vector<string> algorithmNames,
+void loop(vector<pair<int, string>> algorithmPairs,
           vector<pair<string, EdgeFilter>> edgeFilters,
           vector<pair<string, EdgeWeighter>> edgeWeighters,
           vector<pair<Node *, Node *>> pairs,
           MultiNodeProblem problem)
 {
-    for (int i = 0; i < algorithmNames.size(); i++)
+    for (auto algorithmPair : algorithmPairs)
     {
-        string algorithmName = algorithmNames[i];
-        int algorithmNumber = i + 1;
+        int algorithmNumber = algorithmPair.first;
+        string algorithmName = algorithmPair.second;
 
         for (auto pairNameFilter : edgeFilters)
         {
             string filterName = pairNameFilter.first;
             EdgeFilter filter = pairNameFilter.second;
-            for (auto pairNameWeigter : edgeWeighters)
+            for (auto pairNameWeighter : edgeWeighters)
             {
-                string weighterName = pairNameWeigter.first;
-                EdgeWeighter weighter = pairNameWeigter.second;
+                string weighterName = pairNameWeighter.first;
+                EdgeWeighter weighter = pairNameWeighter.second;
 
                 string date = getDate();
                 string filedir = DIJKSTRA_DIR + date + "_" + filterName + "_" + weighterName + "_" + algorithmName + "/";
@@ -158,14 +162,15 @@ void loop(vector<string> algorithmNames,
         }
     }
 }
-void loop(vector<string> algorithmNames,
+/*
+void loop(vector<pair<int, string>> algorithmPairs,
           vector<pair<string, EdgeFilter>> edgeFilters,
           vector<pair<Node *, Node *>> pairs)
 {
-    for (int i = 0; i < algorithmNames.size(); i++)
+    for (auto algorithmPair : algorithmPairs)
     {
-        string algorithmName = algorithmNames[i];
-        int algorithmNumber = i + 1;
+        int algorithmNumber = algorithmPair.first;
+        string algorithmName = algorithmPair.second;
 
         for (auto pairNameFilter : edgeFilters)
         {
@@ -206,11 +211,12 @@ void loop(vector<string> algorithmNames,
         }
     }
 }
-
+*/
 void testDijkstra()
 {
-    vector<string> algorithmNames = {"dijkstra",
-                                     "dijkstraByNode"};
+    vector<pair<int, string>> algorithmPairs = {
+        make_pair(1, "dfs"),
+        make_pair(2, "dfsByNode")};
     vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
     vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
@@ -224,18 +230,21 @@ void testDijkstra()
     // };
     // vector<vector<Edge *>> (Multigraph::*problem)(vector<Node *>, EdgeFilter, EdgeWeighter, int) = &Multigraph::getShortestPathDijkstra;
     MultiNodeProblem problem = &Multigraph::getShortestPathDijkstra;
-    loop(algorithmNames, edgeFilters, edgeWeighters, pairs, problem);
+    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Finished dijkstra test" << endl;
 }
 
 void testDfs()
 {
-    vector<string> algorithmNames = {"dfs",
-                                     "dfsByNode"};
+    vector<pair<int, string>> algorithmPairs = {
+        make_pair(1, "dfs"),
+        make_pair(2, "dfsByNode")};
+
     vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
+    vector<pair<string, EdgeWeighter>> edgeWeighters = getNoWeighters();
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     MultiNodeProblem problem = &Multigraph::getDfs;
-    loop(algorithmNames, edgeFilters, pairs, problem);
+    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Starting dfs test" << endl;
     std::cout << "Finished dfs test" << endl;
 }
@@ -252,6 +261,14 @@ void testBfs()
 }
 void testSpanningTree()
 {
+    vector<pair<int, string>> algorithmNPairs = {
+        make_pair((1 << 0 | 1 << 2), "getEdges&Dfs"),
+        make_pair((1 << 0 | 2 << 2), "getBestEdges&Dfs"),
+        make_pair((2 << 0 | 1 << 2), "getEdges&DfsByNode"),
+        make_pair((2 << 0 | 2 << 2), "getBestEdges&DfsByNode")};
+    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
+    vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
+    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting spanning tree test" << endl;
     std::cout << "Finished spanning tree test" << endl;
 }

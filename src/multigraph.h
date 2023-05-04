@@ -97,7 +97,7 @@ public:
         EdgeWeighter edgeWeight,
         int algorithmCodification);
 
-    vector<Edge *> getDfs(
+    vector<vector<Edge *>> getDfs(
         vector<Node *> nodes,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,

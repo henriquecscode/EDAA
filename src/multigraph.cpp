@@ -795,8 +795,8 @@ void Multigraph::getLocalMinimumSpanningTree(
     std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node *localNode, EdgeFilter edgeFilter);
 
-    int firstAlgorithm = (algorithmCodifiction & 0b11<<0)>>0;
-    int secondAlgorithm = (algorithmCodifiction & 0b11<<2)>>2;
+    int firstAlgorithm = (algorithmCodifiction & 0b11 << 0) >> 0;
+    int secondAlgorithm = (algorithmCodifiction & 0b11 << 2) >> 2;
     if (firstAlgorithm == 1)
     {
         chosenCollectEdges = &Multigraph::getEdges;
@@ -818,7 +818,7 @@ void Multigraph::getLocalMinimumSpanningTree(
     return getLocalMinimumSpanningTree(localNode, edgeFilter, edgeWeight, chosenCollectEdges, chosenDfs);
 }
 
-vector<Edge *> Multigraph::getDfs(
+vector<vector<Edge *>> Multigraph::getDfs(
     vector<Node *> nodes,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
@@ -826,16 +826,16 @@ vector<Edge *> Multigraph::getDfs(
 {
     vector<Edge *> (Multigraph::*chosenDfs)(Node *, Node *, EdgeFilter);
 
-    if (dfsAlgorithm == 1) 
+    if (dfsAlgorithm == 1)
     {
         chosenDfs = &Multigraph::dfs;
     }
-    else if (dfsAlgorithm == 2) 
+    else if (dfsAlgorithm == 2)
     {
         chosenDfs = &Multigraph::dfsByNode;
     }
-
-    return (this->*chosenDfs)(nodes[0], nodes[1], edgeFilter);
+    vector<Edge *> path = (this->*chosenDfs)(nodes[0], nodes[1], edgeFilter);
+    return {path};
 }
 
 Node *Multigraph::getNode(int id)
