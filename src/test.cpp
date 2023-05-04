@@ -7,13 +7,16 @@
 #include <sstream>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+ #include <unistd.h>
+//#include <direct.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
 #include "loader.h"
 #include "edge.h"
 #include "node.h"
+#include "multigraph.h"
+#include <functional>
 
 using namespace std;
 unsigned int SEED = 42;
@@ -27,6 +30,7 @@ string BFS_DIR = DATA_DIR + "bfs/";
 string SPANNING_TREE_DIR = DATA_DIR + "spanning_tree/";
 
 Multigraph multigraph;
+typedef vector<vector<Edge *>> (Multigraph::*MultiNodeProblem)(vector<Node *>, EdgeFilter, EdgeWeighter, int);
 
 string getDate()
 {
@@ -99,15 +103,14 @@ vector<pair<string, EdgeWeighter>> getEdgeWeighters()
     return edgeWeighters;
 }
 
-void testDijkstra()
-{
-    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
-    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
-    vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
-    vector<string> algorithmNames = {"dijkstra",
-                                     "dijkstraByNode"};
+// typedef void (*MultiNodeProblem)(vector<Node *>, EdgeFilter, EdgeWeighter, int);
 
-    cout << "Starting dijskstra test" << endl;
+void loop(vector<string> algorithmNames,
+          vector<pair<string, EdgeFilter>> edgeFilters,
+          vector<pair<string, EdgeWeighter>> edgeWeighters,
+          vector<pair<Node *, Node *>> pairs,
+          MultiNodeProblem problem)
+{
     for (int i = 0; i < algorithmNames.size(); i++)
     {
         string algorithmName = algorithmNames[i];
@@ -139,7 +142,7 @@ void testDijkstra()
                     Node *destination = pair.second;
                     vector<Node *> nodes = {origin, destination};
                     auto start = std::chrono::high_resolution_clock::now();
-                    multigraph.getShortestPathDijkstra(nodes, filter, weighter, algorithmNumber);
+                    (multigraph.*problem)(nodes, filter, weighter, algorithmNumber);
                     auto finish = std::chrono::high_resolution_clock::now();
                     auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
                     total += microseconds;
@@ -154,30 +157,49 @@ void testDijkstra()
             }
         }
     }
+}
 
-    cout << "Finished dijkstra test" << endl;
+void testDijkstra()
+{
+    vector<string> algorithmNames = {"dijkstra",
+                                     "dijkstraByNode"};
+    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
+    vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
+    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
+
+    std::cout << "Starting dijskstra test" << endl;
+    // std::function<vector<vector<Edge*>>(vector<Node*>, EdgeFilter, EdgeWeighter, int)>problem = Multigraph::getShortestPathDijkstra;
+    // vector<vector<Edge *>> (Multigraph::*problem)(vector<Node *>, EdgeFilter, EdgeWeighter, int) = &Multigraph::getShortestPathDijkstra;
+    // MultiNodeProblem problem[](vector<Node *> nodes, EdgeFilter filter, EdgeWeighter weighter, int algorithmNumber)
+    // {
+    //     multigraph.getShortestPathDijkstra(nodes, filter, weighter, algorithmNumber);
+    // };
+    // vector<vector<Edge *>> (Multigraph::*problem)(vector<Node *>, EdgeFilter, EdgeWeighter, int) = &Multigraph::getShortestPathDijkstra;
+    MultiNodeProblem problem = &Multigraph::getShortestPathDijkstra;
+    loop(algorithmNames, edgeFilters, edgeWeighters, pairs, problem);
+    std::cout << "Finished dijkstra test" << endl;
 }
 
 void testDfs()
 {
-    cout << "Starting dfs test" << endl;
-    cout << "Finished dfs test" << endl;
+    std::cout << "Starting dfs test" << endl;
+    std::cout << "Finished dfs test" << endl;
 }
 void testErdos()
 {
 
-    cout << "Starting erdos test" << endl;
-    cout << "Finished erdos test" << endl;
+    std::cout << "Starting erdos test" << endl;
+    std::cout << "Finished erdos test" << endl;
 }
 void testBfs()
 {
-    cout << "Starting bfs test" << endl;
-    cout << "Finished bfs test" << endl;
+    std::cout << "Starting bfs test" << endl;
+    std::cout << "Finished bfs test" << endl;
 }
 void testSpanningTree()
 {
-    cout << "Starting spanning tree test" << endl;
-    cout << "Finished spanning tree test" << endl;
+    std::cout << "Starting spanning tree test" << endl;
+    std::cout << "Finished spanning tree test" << endl;
 }
 
 int main(int argc, char *argv[])
@@ -185,10 +207,10 @@ int main(int argc, char *argv[])
     srand(SEED);
     initDirs();
 
-    cout << "Loading data" << endl;
+    std::cout << "Loading data" << endl;
     loadData(multigraph, argc, argv);
 
-    cout << "Loaded data" << endl;
+    std::cout << "Loaded data" << endl;
     testDijkstra();
     testDfs();
     testErdos();
