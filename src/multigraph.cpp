@@ -407,6 +407,17 @@ pair<vector<Edge *>, int> Multigraph::getErdos(
     return this->getErdos(n1, n2, edgeFilter, chosenBfs);
 }
 
+vector<vector<Edge *>> Multigraph::getErdos(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeighter,
+    int bfsSelection)
+{
+    auto erdos = this->getErdos(nodes[0], nodes[1], edgeFilter, bfsSelection);
+    vector<Edge *> path = erdos.first;
+    return {path};
+}
+
 vector<Edge *> Multigraph::dfs(
     Node *n1,
     Node *n2,

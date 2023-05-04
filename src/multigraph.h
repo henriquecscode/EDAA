@@ -78,6 +78,11 @@ public:
         Node *n2,
         EdgeFilter edgeFilter,
         int bfsSelection);
+    vector<vector<Edge*>> getErdos(
+        vector<Node *> nodes,
+        EdgeFilter edgeFilter,
+        EdgeWeighter edgeWeighter,
+        int bfsSelection);
 
     // Local because we just check connectivity from the source node
     void getLocalMinimumSpanningTree(

@@ -244,14 +244,21 @@ void testDfs()
     vector<pair<string, EdgeWeighter>> edgeWeighters = getNoWeighters();
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     MultiNodeProblem problem = &Multigraph::getDfs;
-    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Starting dfs test" << endl;
+    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Finished dfs test" << endl;
 }
 void testErdos()
 {
-
+    vector<pair<int, string>> algorithmNPairs = {
+        make_pair(1, "erdos"),
+        make_pair(2, "erdosByNode")};
+    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
+    vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
+    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting erdos test" << endl;
+    MultiNodeProblem problem = &Multigraph::getErdos;
+    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem);
     std::cout << "Finished erdos test" << endl;
 }
 void testBfs()
