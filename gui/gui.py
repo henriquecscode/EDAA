@@ -43,15 +43,13 @@ m = folium.Map(location=[40.0150, -105.2705], prefer_canvas=True)
 ## Middle: cadet blue
 ## Edges: light gray
 
-colors =  ['beige', 'black', 'blue', 'cadetblue', 'darkblue', 'darkgreen', 'darkpurple', 'darkred', 'gray', 'green', 'lightblue', 'lightgray', 'lightgreen', 'lightred', 'orange', 'pink', 'purple', 'red'];
-
 def plotAirport(point, type):
     '''input: series that contains a numeric named latitude and a numeric named longitude
     this function creates a CircleMarker and adds it to your this_map'''
     popup  = folium.Popup(point[0], max_width=600, max_height=600)
 
     if (type == AirportType.ORIGIN):
-        folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[2], popup = popup, icon=folium.Icon(icon='plane', color='green')).add_to(m)
+        folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[2], popup = popup, icon=folium.Icon(icon='plane', color='lightgreen')).add_to(m)
     elif (type == AirportType.DESTINATION):
         folium.vector_layers.Marker(location=[point[6], point[7]], tooltip=point[2], popup = popup, icon=folium.Icon(icon='plane', color='darkred')).add_to(m)
     else:
@@ -64,9 +62,13 @@ def plotFlight(edge):
 
 
 filename = os.path.expanduser('data/airports_actually_used.csv'); ##TODO: file path to use.
+
+length = 0
+with open(filename, 'r') as f:
+    length = len(f.readlines())
+
 with open(filename, 'r')  as f:          # Read lines separately
     reader = csv.reader(f, delimiter=',')
-    length = len(f.readlines())
 
     for i, line in enumerate(reader):
         if (i == 0): 
