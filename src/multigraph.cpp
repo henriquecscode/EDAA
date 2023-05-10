@@ -827,14 +827,6 @@ void Multigraph::getLocalMinimumSpanningTree(
 
     int firstAlgorithm = (algorithmCodifiction & 0b11 << 0) >> 0;
     int secondAlgorithm = (algorithmCodifiction & 0b11 << 2) >> 2;
-    if (secondAlgorithm == 1)
-    {
-        chosenCollectEdges = &Multigraph::getEdges;
-    }
-    else if (secondAlgorithm == 2)
-    {
-        chosenCollectEdges = &Multigraph::getBestEdges;
-    }
 
     if (firstAlgorithm == 1)
     {
@@ -843,6 +835,15 @@ void Multigraph::getLocalMinimumSpanningTree(
     else if (firstAlgorithm == 2)
     {
         chosenDfs = &Multigraph::dfsByNodeSpanningTree;
+    }
+
+    if (secondAlgorithm == 1)
+    {
+        chosenCollectEdges = &Multigraph::getEdges;
+    }
+    else if (secondAlgorithm == 2)
+    {
+        chosenCollectEdges = &Multigraph::getBestEdges;
     }
 
     return getLocalMinimumSpanningTree(localNode, edgeFilter, edgeWeight, chosenCollectEdges, chosenDfs);
