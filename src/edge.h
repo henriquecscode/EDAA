@@ -23,6 +23,7 @@ public:
     Flight *getData();
 
     string toString();
+    string toCSV();
 
     // function<bool (Edge*)>getEdgeFilter(double (*f)(Flight*), double min, double max);
 
