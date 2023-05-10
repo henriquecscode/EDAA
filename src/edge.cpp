@@ -127,6 +127,11 @@ string Edge::toString()
     return data.toString();
 }
 
+string Edge::toCSV()
+{
+    return data.toCSV();
+}
+
 // // 1 define a function pointer and initialize to NULL
 
 // int (TMyClass::*pt2ConstMember)(float, char, char) const = NULL;

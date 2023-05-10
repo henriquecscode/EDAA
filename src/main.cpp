@@ -12,6 +12,8 @@
 #include <functional>
 #include <limits>
 #include <vector>
+#include <stdio.h>
+#include <cstring>
 
 using namespace std;
 
@@ -22,6 +24,8 @@ Multigraph multigraph = Multigraph();
 int problem = -1;
 EdgeFilter filter;
 EdgeWeighter weighter;
+
+string pythonScriptPath = "python3 ../gui/gui.py";
 
 // Choose filter
 // Choose Weighter
@@ -248,6 +252,24 @@ void viewSolution(pair<vector<Edge *>, int> solution)
          << endl;
 }
 
+void viewGUISolution(pair<vector<Edge *>, int> solution)
+{
+    string solutionName = "solution_file.txt";
+    string path = "../data/solutions/";
+    ofstream solutionFile(path + solutionName);
+
+    vector<Edge *> edges = solution.first;
+    solutionFile << edges.size() << '\n';
+    for (Edge *edge : edges)
+    {
+        solutionFile << edge->toCSV() << '\n';
+    }
+    solutionFile.flush();
+
+    system((pythonScriptPath + " " + solutionName).c_str());
+    // execl(pythonScriptPath.c_str(), solutionName.c_str());
+}
+
 void run()
 {
     if (problem == 1)
@@ -436,6 +458,7 @@ void run()
         solution = multigraph.getErdos(origin, destination, filter, algorithm);
     }
     viewSolution(solution);
+    viewGUISolution(solution);
 }
 
 void viewNodesFilter(Node *node)
