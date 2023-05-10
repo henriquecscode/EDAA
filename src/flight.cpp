@@ -243,3 +243,9 @@ string Flight::toString()
     stream << originId << " - " << destId << ":" << dayMonth << " on " << dayWeek << "," << carrier << " - " << distance << "," << flightTime << " [" << depDelay << "," << arrDelay << "]";
     return stream.str();
 }
+
+string Flight::toCSV(){
+    strinstream stream;
+    stream << originId << "," << destId << "," << dayMonth << "," << dayWeek << "," << carrier << "," << distance << "," << flightTime << "," << depDelay << "," << arrDelay <<;
+    return stream.str()
+}

@@ -56,6 +56,8 @@ public:
     static std::function<string(Flight *)> getStringGetter(string attribute);
 
     string toString();
+
+    string toCSV();
 };
 
 #endif
