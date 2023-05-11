@@ -44,7 +44,7 @@ def plotAirport(point, type):
     popup  = folium.Popup(point['name'], max_width=600, max_height=600)
 
     if (type == AirportType.ORIGIN):
-        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='lightgreen')).add_to(m)
+        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='green')).add_to(m)
     elif (type == AirportType.DESTINATION):
         folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='darkred')).add_to(m)
     else:
