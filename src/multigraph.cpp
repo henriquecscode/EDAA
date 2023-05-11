@@ -684,6 +684,14 @@ vector<Edge *> Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
         cout << edge->getSource()->getData().getId() << "to" << edge->getDest()->getData().getId() << endl;
     }
     cout << "Spanning tree is made of " << treeEdges.size() << "edges" << endl;
+    for (auto it = treeEdges.begin(); it != treeEdges.end(); ++it)
+    {
+        if ((*it)->getSource() == root)
+        {
+            iter_swap(it, treeEdges.begin());
+            break;
+        }
+    }
     return treeEdges;
 }
 
@@ -745,7 +753,7 @@ vector<vector<Edge *>> Multigraph::getBfs(
     return {path};
 }
 
-vector<Edge*> Multigraph::getLocalMinimumSpanningTree(
+vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
@@ -757,13 +765,14 @@ vector<Edge*> Multigraph::getLocalMinimumSpanningTree(
     vector<Edge *> newEdges = (this->*chosenCollectEdges)(edgeFilter, edgeWeight);
     vector<Edge *> mstEdges = vector<Edge *>();
     cout << "Finished collecting edges " << endl;
+    cout << "Got " << newEdges.size() << " edges" << endl;
     // sort edges by weight
     sort(newEdges.begin(), newEdges.end(), [edgeWeight](Edge *e1, Edge *e2)
          {
             double w1, w2;
             edgeWeight(e1, w1);
             edgeWeight(e2, w2);
-            return w1 < w2; });
+            return w1 > w2; });
 
     cout << "Finished sorting edges" << endl;
     for (auto node : nodes)
@@ -813,11 +822,11 @@ vector<Edge*> Multigraph::getLocalMinimumSpanningTree(
         cout << "Calculated " << count << "/" << size << "edges " << endl;
     }
 
-    vector<Edge*> tree = mountTree(localNode, mstEdges);
+    vector<Edge *> tree = mountTree(localNode, mstEdges);
     return tree;
 }
 
-vector<Edge*> Multigraph::getLocalMinimumSpanningTree(
+vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
