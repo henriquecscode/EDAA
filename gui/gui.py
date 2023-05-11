@@ -38,17 +38,20 @@ airports = pandas.read_csv(filepath_or_buffer=airports_file, sep=',')
 ## Start: green
 ## End: dark red
 ## Middle: cadet blue
+
+first_airport = -1
 def plotAirport(point, type):
+    global first_airport
     '''input: series that contains a numeric named latitude and a numeric named longitude
     this function creates a CircleMarker and adds it to your this_map'''
-    popup  = folium.Popup(point['name'], max_width=600, max_height=600)
+    popup  = folium.Popup(point['name'][0], max_width=600, max_height=600)
 
-    if (type == AirportType.ORIGIN):
-        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='green')).add_to(m)
+    if (type == AirportType.ORIGIN or point['airport_id'][0] == first_airport):
+        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'][0], popup = popup, icon=folium.Icon(icon='plane', color='green')).add_to(m)
     elif (type == AirportType.DESTINATION):
-        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='darkred')).add_to(m)
+        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'][0], popup = popup, icon=folium.Icon(icon='plane', color='darkred')).add_to(m)
     else:
-        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='cadetblue')).add_to(m)
+        folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'][0], popup = popup, icon=folium.Icon(icon='plane', color='cadetblue')).add_to(m)
 
 def get_carrier_color(carrier):
     hashed = hashlib.sha256(carrier.encode('utf-8')).hexdigest()
@@ -71,6 +74,7 @@ for i, (origin, dest, carrier) in enumerate(airports_ids):
     plotFlight(edge, color)
 
     if (i == 0): 
+        first_airport = origin_airport['airport_id'][0]
         plotAirport(origin_airport, AirportType.ORIGIN)
         plotAirport(dest_airport, AirportType.MIDDLE)
     elif (i == len(airports_ids) - 1):
