@@ -450,8 +450,8 @@ void run()
         edgeCollector = edgeCollector << 2;
         int algorithmCodification = algorithm | edgeCollector;
         // spanning tree
-        multigraph.getLocalMinimumSpanningTree(origin, filter, weighter, algorithmCodification);
-        // solution = multigraph.spanningTree(origin, destination, filter, weighter, algorithm);
+        vector<Edge *> path = multigraph.getLocalMinimumSpanningTree(origin, filter, weighter, algorithmCodification);
+        solution = make_pair(path, path.size());
     }
     else if (problem == 3)
     {

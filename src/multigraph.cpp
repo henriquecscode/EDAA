@@ -677,13 +677,14 @@ bool Multigraph::isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector
     return true;
 }
 
-void Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
+vector<Edge *> Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
 {
     for (auto edge : treeEdges)
     {
         cout << edge->getSource()->getData().getId() << "to" << edge->getDest()->getData().getId() << endl;
     }
     cout << "Spanning tree is made of " << treeEdges.size() << "edges" << endl;
+    return treeEdges;
 }
 
 pair<vector<Edge *>, int> Multigraph::getErdos(
@@ -744,7 +745,7 @@ vector<vector<Edge *>> Multigraph::getBfs(
     return {path};
 }
 
-void Multigraph::getLocalMinimumSpanningTree(
+vector<Edge*> Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
@@ -812,10 +813,11 @@ void Multigraph::getLocalMinimumSpanningTree(
         cout << "Calculated " << count << "/" << size << "edges " << endl;
     }
 
-    mountTree(localNode, mstEdges);
+    vector<Edge*> tree = mountTree(localNode, mstEdges);
+    return tree;
 }
 
-void Multigraph::getLocalMinimumSpanningTree(
+vector<Edge*> Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,

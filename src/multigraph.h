@@ -47,7 +47,7 @@ class Multigraph
     vector<Edge *> getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     vector<Edge *> getBestEdgesByNode(Node *node, EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     bool isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*dfs)(Node *, EdgeFilter));
-    void mountTree(Node *root, vector<Edge *> treeEdges);
+    vector<Edge *> mountTree(Node *root, vector<Edge *> treeEdges);
 
 public:
     Multigraph();
@@ -91,7 +91,7 @@ public:
         int bfsSelection);
 
     // Local because we just check connectivity from the source node
-    void getLocalMinimumSpanningTree(
+    vector<Edge*> getLocalMinimumSpanningTree(
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
@@ -102,7 +102,7 @@ public:
     // vector<Edge *> (*collectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
     // vector<Edge *> (*dfs)(Node *, EdgeFilter));
 
-    void getLocalMinimumSpanningTree(
+    vector<Edge*> getLocalMinimumSpanningTree(
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
