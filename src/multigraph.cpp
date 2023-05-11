@@ -679,10 +679,10 @@ bool Multigraph::isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector
 
 vector<Edge *> Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
 {
-    for (auto edge : treeEdges)
-    {
-        cout << edge->getSource()->getData().getId() << "to" << edge->getDest()->getData().getId() << endl;
-    }
+    // for (auto edge : treeEdges)
+    // {
+    //     cout << edge->getSource()->getData().getId() << " to " << edge->getDest()->getData().getId() << endl;
+    // }
     cout << "Spanning tree is made of " << treeEdges.size() << "edges" << endl;
     for (auto it = treeEdges.begin(); it != treeEdges.end(); ++it)
     {
@@ -819,7 +819,7 @@ vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
             connectedCount++;
         }
         count++;
-        cout << "Calculated " << count << "/" << size << "edges " << endl;
+        cout << "Calculated " << count << "/" << size << " edges " << endl;
     }
 
     vector<Edge *> tree = mountTree(localNode, mstEdges);
