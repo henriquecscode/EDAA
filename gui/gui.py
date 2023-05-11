@@ -10,7 +10,7 @@ from folium import plugins
 from folium.utilities import normalize
 import pandas
 import sys
-
+import hashlib
 
 class AirportType(enum.Enum):
     ORIGIN = 1
@@ -51,13 +51,12 @@ def plotAirport(point, type):
         folium.vector_layers.Marker(location=[point['lat'], point['lng']], tooltip=point['airport_id'], popup = popup, icon=folium.Icon(icon='plane', color='cadetblue')).add_to(m)
 
 def get_carrier_color(carrier):
-    hex_value = hex(hash(carrier))
-    hex_value_color = hex_value.substr(0,6) #hi, it's me. I'm the problem, it's me
+    hashed = hashlib.sha256(carrier.encode('utf-8')).hexdigest()
+    hex_value_color = hashed[0:6] #hi, it's me. I'm the problem, it's me
     return "#" + hex_value_color
 
 ## Edges: light gray booooooo
 def plotFlight(edge,color="black"):
-    # color = get_carrier_color(edge['carrier'])
     popup = folium.Popup(edge, max_width=600, max_height=600)
     line = folium.vector_layers.PolyLine(locations=edge, tooltip=edge[0], popup = popup, color=color, weight=2.5, opacity=0.8)
     line.add_to(m)
@@ -67,8 +66,9 @@ for i, (origin, dest, carrier) in enumerate(airports_ids):
     origin_airport = airports.loc[airports['airport_id'] == origin].reset_index()
     dest_airport = airports.loc[airports['airport_id'] == dest].reset_index()
     edge = [[origin_airport['lat'][0], origin_airport['lng'][0]], [dest_airport['lat'][0], dest_airport['lng'][0]]]
-    #color = get_carrier_color(carrier)
-    plotFlight(edge)
+    color = get_carrier_color(carrier)
+    print(color)
+    plotFlight(edge, color)
 
     if (i == 0): 
         plotAirport(origin_airport, AirportType.ORIGIN)
