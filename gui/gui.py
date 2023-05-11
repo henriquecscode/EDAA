@@ -70,7 +70,6 @@ for i, (origin, dest, carrier) in enumerate(airports_ids):
     dest_airport = airports.loc[airports['airport_id'] == dest].reset_index()
     edge = [[origin_airport['lat'][0], origin_airport['lng'][0]], [dest_airport['lat'][0], dest_airport['lng'][0]]]
     color = get_carrier_color(carrier)
-    print(color)
     plotFlight(edge, color)
 
     if (i == 0): 
