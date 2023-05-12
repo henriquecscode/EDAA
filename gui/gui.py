@@ -1,5 +1,6 @@
 # Import necessary packages
 import csv
+from datetime import datetime
 import enum
 import random
 import os
@@ -12,6 +13,9 @@ import pandas
 import sys
 import hashlib
 
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 class AirportType(enum.Enum):
     ORIGIN = 1
     DESTINATION = 2
@@ -19,7 +23,7 @@ class AirportType(enum.Enum):
 
 m = folium.Map(location=[40.0150, -105.2705], prefer_canvas=True)
 
-BASE_DIR = "./data/solutions/"
+BASE_DIR = "../data/solutions/"
 solution_file = sys.argv[1]
 filepath = BASE_DIR + solution_file
 edges = []
@@ -32,7 +36,7 @@ with open(os.path.expanduser(filepath), "r") as f:
 
 airports_ids = [(int(edge[0]), int(edge[1]), edge[4]) for edge in edges]
 
-airports_file = os.path.expanduser('./data/airports_actually_used.csv')
+airports_file = os.path.expanduser('../data/airports_actually_used.csv')
 airports = pandas.read_csv(filepath_or_buffer=airports_file, sep=',')
 
 ## Start: green
@@ -70,7 +74,6 @@ for i, (origin, dest, carrier) in enumerate(airports_ids):
     dest_airport = airports.loc[airports['airport_id'] == dest].reset_index()
     edge = [[origin_airport['lat'][0], origin_airport['lng'][0]], [dest_airport['lat'][0], dest_airport['lng'][0]]]
     color = get_carrier_color(carrier)
-    print(color)
     plotFlight(edge, color)
 
     if (i == 0): 
@@ -95,6 +98,8 @@ folium.LayerControl().add_to(m)
 plugins.MiniMap().add_to(m)
 
 # Display the map
-m.save("map.html")
-webbrowser.open("map.html")
+date_time = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+
+m.save(f"../data/solutions/gui_output/map_{date_time}.html")
+webbrowser.open(f"../data/solutions/gui_output/map_{date_time}.html")
 
