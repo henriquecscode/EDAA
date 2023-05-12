@@ -98,7 +98,7 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
         // Node *node = pQ.pop_value().key;
         Node *node = queue.top().second;
         cout << "Checking node " << node->getData().getId() << endl;
-        cout << "Distance is" << node->getNodeDistance() << endl;
+        cout << "Distance is " << node->getNodeDistance() << endl;
         printQueue(queue);
         queue.pop();
         if (node->isFound())
@@ -113,7 +113,7 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
         }
 
         vector<Edge *> outgoingEdges = node->getOutgoingEdges();
-        cout << "Node has " << outgoingEdges.size() << "connections" << endl;
+        cout << "Node has " << outgoingEdges.size() << " connections" << endl;
 
         for (auto edge : outgoingEdges)
         {
@@ -165,7 +165,7 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
         // check if node is destination
         Node *node = queue.top();
         cout << "Checking node " << node->getData().getId() << endl;
-        cout << "Distance is" << node->getNodeDistance() << endl;
+        cout << "Distance is " << node->getNodeDistance() << endl;
         printQueue(queue);
         queue.pop();
         if (node->isFound())
@@ -185,7 +185,7 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
             Edge *bestEdge = nullptr;
             Node *toNode = outgoingEdgesOfNode.first;
             vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
-            cout << "Checking" << outgoingEdges.size() << "edges to " << toNode->getData().getId() << endl;
+            cout << "Checking " << outgoingEdges.size() << " edges to " << toNode->getData().getId() << endl;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
