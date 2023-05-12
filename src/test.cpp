@@ -100,7 +100,7 @@ vector<pair<string, EdgeFilter>> getEdgeFilters()
     edgeFilters.push_back(make_pair(filterName, filter));
 
     max = (int)(0.5 * (MAX_DEP_DELAY - MIN_DEP_DELAY) + MIN_DEP_DELAY);
-        filter = Edge::getEdgeFilter(dataGetter, min, max);
+    filter = Edge::getEdgeFilter(dataGetter, min, max);
     filterName = "depDelayFilter2";
     edgeFilters.push_back(make_pair(filterName, filter));
 
@@ -144,8 +144,10 @@ void loop(vector<pair<int, string>> algorithmPairs,
           vector<pair<string, EdgeFilter>> edgeFilters,
           vector<pair<string, EdgeWeighter>> edgeWeighters,
           vector<pair<Node *, Node *>> pairs,
-          MultiNodeProblem problem)
+          MultiNodeProblem problem,
+          string problem_dir)
 {
+    string date = getDate();
     for (auto algorithmPair : algorithmPairs)
     {
         int algorithmNumber = algorithmPair.first;
@@ -160,9 +162,8 @@ void loop(vector<pair<int, string>> algorithmPairs,
                 string weighterName = pairNameWeighter.first;
                 EdgeWeighter weighter = pairNameWeighter.second;
 
-                string date = getDate();
                 string file_run_prefix = run_prefix != "" ? run_prefix + "_" : "";
-                string filedir = DIJKSTRA_DIR + file_run_prefix + date + "_" + filterName + "_" + weighterName + "_" + algorithmName + "/";
+                string filedir = problem_dir + file_run_prefix + date + "_" + filterName + "_" + weighterName + "_" + algorithmName + "/";
                 string logFilename = filedir + "log.csv";
                 string totalFilename = filedir + "total.csv";
                 mkdir(filedir.c_str(), 0777);
@@ -262,7 +263,7 @@ void testDijkstra()
     // };
     // vector<vector<Edge *>> (Multigraph::*problem)(vector<Node *>, EdgeFilter, EdgeWeighter, int) = &Multigraph::getShortestPathDijkstra;
     MultiNodeProblem problem = &Multigraph::getShortestPathDijkstra;
-    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem);
+    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem, DIJKSTRA_DIR);
     std::cout << "Finished dijkstra test" << endl;
 }
 
@@ -277,7 +278,7 @@ void testDfs()
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     MultiNodeProblem problem = &Multigraph::getDfs;
     std::cout << "Starting dfs test" << endl;
-    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem);
+    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem, DFS_DIR);
     std::cout << "Finished dfs test" << endl;
 }
 void testErdos()
@@ -290,7 +291,7 @@ void testErdos()
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting erdos test" << endl;
     MultiNodeProblem problem = &Multigraph::getErdos;
-    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem);
+    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem, ERDOS_DIR);
     std::cout << "Finished erdos test" << endl;
 }
 void testBfs()
@@ -303,7 +304,7 @@ void testBfs()
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting bfs test" << endl;
     MultiNodeProblem problem = &Multigraph::getBfs;
-    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem);
+    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem, BFS_DIR);
     std::cout << "Finished bfs test" << endl;
 }
 void testSpanningTree()
@@ -319,7 +320,7 @@ void testSpanningTree()
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
     std::cout << "Starting spanning tree test" << endl;
     MultiNodeProblem problem = &Multigraph::getLocalMinimumSpanningTree;
-    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem);
+    loop(algorithmNPairs, edgeFilters, edgeWeighters, pairs, problem, SPANNING_TREE_DIR);
     std::cout << "Finished spanning tree test" << endl;
 }
 

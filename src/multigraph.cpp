@@ -185,7 +185,7 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
             Edge *bestEdge = nullptr;
             Node *toNode = outgoingEdgesOfNode.first;
             vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
-            cout << "Checking" << outgoingEdges.size() << "edges to " << toNode->getData().getId() << endl;
+            // cout << "Checking" << outgoingEdges.size() << "edges to " << toNode->getData().getId() << endl;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -199,7 +199,9 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
                     }
                 }
             }
-
+            if(bestEdge == nullptr){
+                continue;
+            }
             // use the best edge for dijkstra
             double weight;
             edgeWeight(bestEdge, weight);
@@ -228,6 +230,10 @@ vector<Edge *> Multigraph::buildPath(Node *source, Node *dest)
     while (node != source)
     {
         path.push_back(node->getPreviousEdge());
+        if (node->getPreviousEdge() == nullptr)
+        {
+            return vector<Edge *>();
+        }
         node = node->getPreviousEdge()->getSource();
     }
     reverse(path.begin(), path.end());
