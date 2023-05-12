@@ -92,7 +92,7 @@ void loadData(Multigraph &multigraph, int argc, char *argv[])
 {
     string nodes_file = NODES_FILE;
     string edges_file = EDGES_FILE;
-    if (argc == 3)
+    if (argc >= 3)
     {
         nodes_file = LOADER_DIR + argv[1];
         edges_file = LOADER_DIR + argv[2];
