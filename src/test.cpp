@@ -22,6 +22,7 @@ using namespace std;
 unsigned int SEED = 42;
 unsigned int DEFAULT_NUMBER_OF_PAIRS = 2;
 
+string run_prefix = "";
 string DATA_DIR = "data/";
 string DIJKSTRA_DIR = DATA_DIR + "dijkstra/";
 string DFS_DIR = DATA_DIR + "dfs/";
@@ -81,11 +82,41 @@ vector<pair<Node *, Node *>> getPairNodesForTesting()
 
 vector<pair<string, EdgeFilter>> getEdgeFilters()
 {
+    int MIN_DEP_DELAY = -100;
+    int MAX_DEP_DELAY = 2000;
+    int min, max;
     vector<pair<string, EdgeFilter>> edgeFilters;
     EdgeFilter filter;
     string filterName;
     filter = Edge::getEdgeFilter();
     filterName = "noFilter";
+    edgeFilters.push_back(make_pair(filterName, filter));
+    auto dataGetter = Flight::getIntGetter("depDelay");
+
+    min = MIN_DEP_DELAY;
+    max = (int)(0.7 * (MAX_DEP_DELAY - MIN_DEP_DELAY) + MIN_DEP_DELAY);
+    filter = Edge::getEdgeFilter(dataGetter, min, max);
+    filterName = "depDelayFilter1";
+    edgeFilters.push_back(make_pair(filterName, filter));
+
+    max = (int)(0.5 * (MAX_DEP_DELAY - MIN_DEP_DELAY) + MIN_DEP_DELAY);
+        filter = Edge::getEdgeFilter(dataGetter, min, max);
+    filterName = "depDelayFilter2";
+    edgeFilters.push_back(make_pair(filterName, filter));
+
+    max = (int)(0.3 * (MAX_DEP_DELAY - MIN_DEP_DELAY) + MIN_DEP_DELAY);
+    filter = Edge::getEdgeFilter(dataGetter, min, max);
+    filterName = "depDelayFilter3";
+    edgeFilters.push_back(make_pair(filterName, filter));
+
+    max = (int)(0.1 * (MAX_DEP_DELAY - MIN_DEP_DELAY) + MIN_DEP_DELAY);
+    filter = Edge::getEdgeFilter(dataGetter, min, max);
+    filterName = "depDelayFilter4";
+    edgeFilters.push_back(make_pair(filterName, filter));
+
+    max = (int)(0.01 * (MAX_DEP_DELAY - MIN_DEP_DELAY) + MIN_DEP_DELAY);
+    filter = Edge::getEdgeFilter(dataGetter, min, max);
+    filterName = "depDelayFilter5";
     edgeFilters.push_back(make_pair(filterName, filter));
 
     return edgeFilters;
@@ -130,7 +161,8 @@ void loop(vector<pair<int, string>> algorithmPairs,
                 EdgeWeighter weighter = pairNameWeighter.second;
 
                 string date = getDate();
-                string filedir = DIJKSTRA_DIR + date + "_" + filterName + "_" + weighterName + "_" + algorithmName + "/";
+                string file_run_prefix = run_prefix != "" ? run_prefix + "_" : "";
+                string filedir = DIJKSTRA_DIR + file_run_prefix + date + "_" + filterName + "_" + weighterName + "_" + algorithmName + "/";
                 string logFilename = filedir + "log.csv";
                 string totalFilename = filedir + "total.csv";
                 mkdir(filedir.c_str(), 0777);
@@ -298,6 +330,11 @@ int main(int argc, char *argv[])
 
     std::cout << "Loading data" << endl;
     loadData(multigraph, argc, argv);
+
+    if (argc > 3)
+    {
+        run_prefix = argv[3];
+    }
 
     std::cout << "Loaded data" << endl;
     testDijkstra();

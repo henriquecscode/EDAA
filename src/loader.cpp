@@ -9,8 +9,9 @@
 #include <sstream>
 #include <iostream>
 
-string NODES_FILE = "../data/airports_actually_used.csv";
-string EDGES_FILE = "../data/flights.csv";
+string LOADER_DIR = "../data/";
+string NODES_FILE = LOADER_DIR + "airports_actually_used.csv";
+string EDGES_FILE = LOADER_DIR + "flights.csv";
 
 void createNodes(Multigraph &multigraph, vector<vector<string>> data)
 {
@@ -93,8 +94,8 @@ void loadData(Multigraph &multigraph, int argc, char *argv[])
     string edges_file = EDGES_FILE;
     if (argc == 3)
     {
-        nodes_file = argv[1];
-        edges_file = argv[2];
+        nodes_file = LOADER_DIR + argv[1];
+        edges_file = LOADER_DIR + argv[2];
     }
 
     auto node_data = loadCSV(nodes_file);
