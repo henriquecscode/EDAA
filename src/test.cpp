@@ -20,7 +20,7 @@
 
 using namespace std;
 unsigned int SEED = 42;
-unsigned int DEFAULT_NUMBER_OF_PAIRS = 2;
+unsigned int DEFAULT_NUMBER_OF_PAIRS = 3;
 
 string run_prefix = "";
 string DATA_DIR = "data/";
@@ -69,8 +69,16 @@ vector<pair<Node *, Node *>> getPairNodesForTesting(int numberOfPairs)
     vector<pair<Node *, Node *>> pairs;
     for (int i = 0; i < numberOfPairs; i++)
     {
-        Node *origin = getRandomNode();
-        Node *destination = getRandomNode();
+        Node *origin;
+        Node *destination;
+        while (true)
+        {
+            origin = getRandomNode();
+            destination = getRandomNode();
+            if(origin != destination){
+                break;
+            }
+        }
         pairs.push_back(make_pair(origin, destination));
     }
     return pairs;
