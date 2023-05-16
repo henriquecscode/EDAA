@@ -47,15 +47,15 @@ class Multigraph
     vector<Edge *> getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     vector<Edge *> getBestEdgesByNode(Node *node, EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     bool isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*dfs)(Node *, EdgeFilter));
-    vector<Edge *> mountTree(Node *root, vector<Edge *> treeEdges);
+    vector<Edge *> mountTree(Node *root, vector<Edge *> &treeEdges);
 
 public:
     Multigraph();
     Node *createNode(Airport data);
     bool createEdge(Node *source, Node *dest, Flight data);
 
-    vector<Node *> getNodes();
-    vector<Edge *> getEdges();
+    vector<Node *> &getNodes();
+    vector<Edge *> &getEdges();
 
     vector<vector<Edge *>> getShortestPathDijkstra(
         vector<Node *> nodes,
@@ -91,7 +91,7 @@ public:
         int bfsSelection);
 
     // Local because we just check connectivity from the source node
-    vector<Edge*> getLocalMinimumSpanningTree(
+    vector<Edge *> getLocalMinimumSpanningTree(
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
@@ -102,7 +102,7 @@ public:
     // vector<Edge *> (*collectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
     // vector<Edge *> (*dfs)(Node *, EdgeFilter));
 
-    vector<Edge*> getLocalMinimumSpanningTree(
+    vector<Edge *> getLocalMinimumSpanningTree(
         Node *localNode,
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
