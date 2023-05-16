@@ -365,6 +365,9 @@ vector<Edge *> Multigraph::bfsByNode(
         {
             Node *toNode = outgoingEdgesOfNode.first;
             vector<Edge *>& outgoingEdges = outgoingEdgesOfNode.second;
+            if(toNode->isFound()){
+                continue;
+            }
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -565,6 +568,9 @@ map<Node *, vector<Edge *>> Multigraph::dfsByNodeSpanningTree(
         {
             Node *toNode = outgoingEdgesOfNode.first;
             vector<Edge *>& outgoingEdges = outgoingEdgesOfNode.second;
+            if(toNode->isFound()){
+                continue;
+            }
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
