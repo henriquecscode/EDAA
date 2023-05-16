@@ -25,7 +25,6 @@ unsigned int DEFAULT_NUMBER_OF_PAIRS = 3;
 string run_prefix = "";
 string DATA_DIR = "data/";
 string DIJKSTRA_DIR = DATA_DIR + "dijkstra/";
-string DFS_DIR = DATA_DIR + "dfs/";
 string ERDOS_DIR = DATA_DIR + "erdos/";
 string BFS_DIR = DATA_DIR + "bfs/";
 string SPANNING_TREE_DIR = DATA_DIR + "spanning_tree/";
@@ -50,7 +49,6 @@ void initDirs()
     check = mkdir(DATA_DIR.c_str(), 0777);
 
     check = mkdir(DIJKSTRA_DIR.c_str(), 0777);
-    check = mkdir(DFS_DIR.c_str(), 0777);
     check = mkdir(ERDOS_DIR.c_str(), 0777);
     check = mkdir(BFS_DIR.c_str(), 0777);
     check = mkdir(SPANNING_TREE_DIR.c_str(), 0777);
@@ -256,8 +254,8 @@ void loop(vector<pair<int, string>> algorithmPairs,
 void testDijkstra()
 {
     vector<pair<int, string>> algorithmPairs = {
-        make_pair(1, "dfs"),
-        make_pair(2, "dfsByNode")};
+        make_pair(1, "bfs"),
+        make_pair(2, "bfsByNode")};
     vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
     vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
     vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
@@ -275,20 +273,6 @@ void testDijkstra()
     std::cout << "Finished dijkstra test" << endl;
 }
 
-void testDfs()
-{
-    vector<pair<int, string>> algorithmPairs = {
-        make_pair(1, "dfs"),
-        make_pair(2, "dfsByNode")};
-
-    vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
-    vector<pair<string, EdgeWeighter>> edgeWeighters = getNoWeighters();
-    vector<pair<Node *, Node *>> pairs = getPairNodesForTesting();
-    MultiNodeProblem problem = &Multigraph::getDfs;
-    std::cout << "Starting dfs test" << endl;
-    loop(algorithmPairs, edgeFilters, edgeWeighters, pairs, problem, DFS_DIR);
-    std::cout << "Finished dfs test" << endl;
-}
 void testErdos()
 {
     vector<pair<int, string>> algorithmNPairs = {
@@ -318,10 +302,10 @@ void testBfs()
 void testSpanningTree()
 {
     vector<pair<int, string>> algorithmNPairs = {
-        // make_pair((1 << 0 | 1 << 2), "Dfs&getEdges"),
-        // make_pair((2 << 0 | 1 << 2), "DfsByNode&getEdges"),
-        make_pair((1 << 0 | 2 << 2), "Dfs&getBestEdges"),
-        // make_pair((2 << 0 | 2 << 2), "DfsByNode&getBestEdges")
+        // make_pair((1 << 0 | 1 << 2), "Bfs&getEdges"),
+        // make_pair((2 << 0 | 1 << 2), "BfsByNode&getEdges"),
+        make_pair((1 << 0 | 2 << 2), "Bfs&getBestEdges"),
+        // make_pair((2 << 0 | 2 << 2), "BfsByNode&getBestEdges")
     };
     vector<pair<string, EdgeFilter>> edgeFilters = getEdgeFilters();
     vector<pair<string, EdgeWeighter>> edgeWeighters = getEdgeWeighters();
@@ -347,7 +331,6 @@ int main(int argc, char *argv[])
 
     std::cout << "Loaded data" << endl;
     testDijkstra();
-    testDfs();
     testErdos();
     testBfs();
     testSpanningTree();

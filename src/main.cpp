@@ -369,8 +369,8 @@ void run()
             }
             else if (problem == 2)
             {
-                cout << "1 - dfs" << endl;
-                cout << "2 - dfs by node" << endl;
+                cout << "1 - bfs" << endl;
+                cout << "2 - bfs by node" << endl;
                 max = 2;
             }
             else if (problem == 3)

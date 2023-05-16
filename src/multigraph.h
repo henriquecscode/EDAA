@@ -29,24 +29,16 @@ class Multigraph
         Node *n1,
         Node *n2,
         EdgeFilter edgeFilter);
-    vector<Edge *> dfs(
-        Node *n1,
-        Node *n2,
-        EdgeFilter edgeFilter);
-    vector<Edge *> dfsByNode(
-        Node *n1,
-        Node *n2,
-        EdgeFilter edgeFilter);
-    map<Node *, vector<Edge *>> dfsSpanningTree(
+    map<Node *, vector<Edge *>> bfsSpanningTree(
         Node *n1,
         EdgeFilter edgeFilter);
-    map<Node *, vector<Edge *>> dfsByNodeSpanningTree(
+    map<Node *, vector<Edge *>> bfsByNodeSpanningTree(
         Node *n1,
         EdgeFilter edgeFilter);
     vector<Edge *> getEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     vector<Edge *> getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
     vector<Edge *> getBestEdgesByNode(Node *node, EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
-    bool isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*dfs)(Node *, EdgeFilter));
+    bool isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*bfs)(Node *, EdgeFilter));
     vector<Edge *> mountTree(Node *root, vector<Edge *> &treeEdges);
 
 public:
@@ -96,11 +88,7 @@ public:
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
         std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
-        map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node *localNode, EdgeFilter edgeFilter));
-    // function<vector<Edge *>(EdgeFilter, EdgeWeighter)> collectEdges)
-    // function<vector<Edge *>(Node *, EdgeFilter)> dfs);
-    // vector<Edge *> (*collectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
-    // vector<Edge *> (*dfs)(Node *, EdgeFilter));
+        map<Node *, vector<Edge *>> (Multigraph::*chosenBfs)(Node *localNode, EdgeFilter edgeFilter));
 
     vector<Edge *> getLocalMinimumSpanningTree(
         Node *localNode,
@@ -113,13 +101,6 @@ public:
         EdgeFilter edgeFilter,
         EdgeWeighter edgeWeight,
         int algorithmCodification);
-
-    vector<vector<Edge *>> getDfs(
-        vector<Node *> nodes,
-        EdgeFilter edgeFilter,
-        EdgeWeighter edgeWeight,
-        int dfsAlgorithm);
-
     Node *getNode(int id);
 };
 #endif
