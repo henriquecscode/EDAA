@@ -99,8 +99,8 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
     {
         // Node *node = pQ.pop_value().key;
         Node *node = queue.top().second;
-        cout << "Checking node " << node->getData().getId() << endl;
-        cout << "Distance is " << node->getNodeDistance() << endl;
+        // cout << "Checking node " << node->getData().getId() << endl;
+        // cout << "Distance is " << node->getNodeDistance() << endl;
         printQueue(queue);
         queue.pop();
         if (node->isFound())
@@ -166,8 +166,8 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
         // Node *node = pQ.pop_value().key;
         // check if node is destination
         Node *node = queue.top();
-        cout << "Checking node " << node->getData().getId() << endl;
-        cout << "Distance is " << node->getNodeDistance() << endl;
+        // cout << "Checking node " << node->getData().getId() << endl;
+        // cout << "Distance is " << node->getNodeDistance() << endl;
         printQueue(queue);
         queue.pop();
         if (node->isFound())
@@ -671,11 +671,11 @@ vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
     map<Node *, vector<Edge *>> (Multigraph::*chosenBfs)(Node *localNode, EdgeFilter edgeFilter))
 {
 
-    cout << "Starting minimum spanning tree" << endl;
+    // cout << "Starting minimum spanning tree" << endl;
     vector<Edge *> newEdges = (this->*chosenCollectEdges)(edgeFilter, edgeWeight);
     vector<Edge *> mstEdges = vector<Edge *>();
-    cout << "Finished collecting edges " << endl;
-    cout << "Got " << newEdges.size() << " edges" << endl;
+    // cout << "Finished collecting edges " << endl;
+    // cout << "Got " << newEdges.size() << " edges" << endl;
     // sort edges by weight
     sort(newEdges.begin(), newEdges.end(), [edgeWeight](Edge *e1, Edge *e2)
          {
@@ -684,7 +684,7 @@ vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
             edgeWeight(e2, w2);
             return w1 > w2; });
 
-    cout << "Finished sorting edges" << endl;
+    // cout << "Finished sorting edges" << endl;
     for (auto node : nodes)
     {
         node->resetNode();
@@ -703,7 +703,7 @@ vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
     int connectedCount = 0;
     int lastPrint = 0;
     int size = newEdges.size();
-    cout << "Starting reverse delete algorithm with " << size << " edges" << endl;
+    // cout << "Starting reverse delete algorithm with " << size << " edges" << endl;
     for (auto edge : newEdges)
     {
         Node *n1 = edge->getSource();
