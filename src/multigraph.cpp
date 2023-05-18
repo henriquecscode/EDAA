@@ -115,7 +115,7 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
         }
 
         vector<Edge *> &outgoingEdges = node->getOutgoingEdges();
-        cout << "Node has " << outgoingEdges.size() << " connections" << endl;
+        //cout << "Node has " << outgoingEdges.size() << " connections" << endl;
 
         for (auto edge : outgoingEdges)
         {
