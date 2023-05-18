@@ -18,6 +18,7 @@ using namespace std;
 
 void printQueue(priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue)
 {
+    return;
     Node *node;
     cout << "Queue ";
     while (!queue.empty())
@@ -30,6 +31,7 @@ void printQueue(priority_queue<Node *, vector<Node *>, NodeDistanceComparator> q
 }
 void printQueue(priority_queue<pair<double, Node *>, vector<pair<double, Node *>>, NodeDistanceComparatorPair> queue)
 {
+    return;
     Node *node;
     double distance;
     pair<double, Node *> pair;
@@ -134,7 +136,7 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
                 }
             }
         }
-        cout << "Checked the connections" << endl;
+        // cout << "Checked the connections" << endl;
         node->find();
     }
     path = buildPath(source, dest);
@@ -727,7 +729,7 @@ vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
             connectedCount++;
         }
         count++;
-        cout << "Calculated " << count << "/" << size << " edges " << endl;
+        // cout << "Calculated " << count << "/" << size << " edges " << endl;
     }
 
     vector<Edge *> tree = mountTree(localNode, mstEdges);
