@@ -5,9 +5,9 @@
 #include <string>
 #include "multigraph.h"
 
-void createNodes(Multigraph &multigraph, vector<vector<string>> data);
+void createNodes(Multigraph &multigraph, vector<vector<string>>& data);
 
-void createEdges(Multigraph &multigraph, vector<vector<string>> data);
+void createEdges(Multigraph &multigraph, vector<vector<string>>& data);
 
 vector<vector<string>> loadCSV(string fname);
 

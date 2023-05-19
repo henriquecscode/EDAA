@@ -42,19 +42,19 @@ public:
     void setNodeDistance(double distance);
     Edge *getPreviousEdge();
     void setPreviousEdge(Edge *edge);
-    set<Edge *> getAuxIncomingEdges();
+    set<Edge *>& getAuxIncomingEdges();
     void addAuxIncomingEdge(Edge *edge);
     void removeAuxIncomingEdge(Edge *edge);
-    set<Edge *> getAuxOutgoingEdges();
+    set<Edge *>& getAuxOutgoingEdges();
     void addAuxOutgoingEdge(Edge *edge);
     void removeAuxOutgoingEdge(Edge *edge);
 
-    vector<Edge *> getIncomingEdges();
-    vector<Edge *> getOutgoingEdges();
-    map<Node *, vector<Edge *>> getIncomingEdgesByNode();
-    map<Node *, vector<Edge *>> getOutgoingEdgesByNode();
-    vector<Edge *> getIncomingEdgesFromNode(Node *node);
-    vector<Edge *> getOutgoingEdgesToNode(Node *node);
+    vector<Edge *>& getIncomingEdges();
+    vector<Edge *>& getOutgoingEdges();
+    map<Node *, vector<Edge *>>& getIncomingEdgesByNode();
+    map<Node *, vector<Edge *>>& getOutgoingEdgesByNode();
+    vector<Edge *>& getIncomingEdgesFromNode(Node *node);
+    vector<Edge *>& getOutgoingEdgesToNode(Node *node);
 };
 
 class NodeDistanceComparator

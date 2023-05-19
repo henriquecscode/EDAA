@@ -13,7 +13,7 @@ string LOADER_DIR = "../data/";
 string NODES_FILE = LOADER_DIR + "airports_actually_used.csv";
 string EDGES_FILE = LOADER_DIR + "flights.csv";
 
-void createNodes(Multigraph &multigraph, vector<vector<string>> data)
+void createNodes(Multigraph &multigraph, vector<vector<string>>& data)
 {
     for (int i = 1; i < data.size(); i++)
     {
@@ -35,7 +35,7 @@ void createNodes(Multigraph &multigraph, vector<vector<string>> data)
     }
 }
 
-void createEdges(Multigraph &multigraph, vector<vector<string>> data)
+void createEdges(Multigraph &multigraph, vector<vector<string>>& data)
 {
     for (int i = 1; i < data.size(); i++)
     {
@@ -98,9 +98,9 @@ void loadData(Multigraph &multigraph, int argc, char *argv[])
         edges_file = LOADER_DIR + argv[2];
     }
 
-    auto node_data = loadCSV(nodes_file);
+    vector<vector<string>> node_data = loadCSV(nodes_file);
     createNodes(multigraph, node_data);
 
-    auto edge_data = loadCSV(edges_file);
+    vector<vector<string>> edge_data = loadCSV(edges_file);
     createEdges(multigraph, edge_data);
 }
