@@ -18,6 +18,7 @@ using namespace std;
 
 void printQueue(priority_queue<Node *, vector<Node *>, NodeDistanceComparator> queue)
 {
+    return;
     Node *node;
     cout << "Queue ";
     while (!queue.empty())
@@ -30,6 +31,7 @@ void printQueue(priority_queue<Node *, vector<Node *>, NodeDistanceComparator> q
 }
 void printQueue(priority_queue<pair<double, Node *>, vector<pair<double, Node *>>, NodeDistanceComparatorPair> queue)
 {
+    return;
     Node *node;
     double distance;
     pair<double, Node *> pair;
@@ -65,12 +67,12 @@ bool Multigraph::createEdge(Node *source, Node *dest, Flight data)
     return true;
 }
 
-vector<Node *> Multigraph::getNodes()
+vector<Node *> &Multigraph::getNodes()
 {
     return this->nodes;
 }
 
-vector<Edge *> Multigraph::getEdges()
+vector<Edge *> &Multigraph::getEdges()
 {
     return this->edges;
 }
@@ -97,8 +99,8 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
     {
         // Node *node = pQ.pop_value().key;
         Node *node = queue.top().second;
-        cout << "Checking node " << node->getData().getId() << endl;
-        cout << "Distance is" << node->getNodeDistance() << endl;
+        // cout << "Checking node " << node->getData().getId() << endl;
+        // cout << "Distance is " << node->getNodeDistance() << endl;
         printQueue(queue);
         queue.pop();
         if (node->isFound())
@@ -112,8 +114,8 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
             break;
         }
 
-        vector<Edge *> outgoingEdges = node->getOutgoingEdges();
-        cout << "Node has " << outgoingEdges.size() << "connections" << endl;
+        vector<Edge *> &outgoingEdges = node->getOutgoingEdges();
+        cout << "Node has " << outgoingEdges.size() << " connections" << endl;
 
         for (auto edge : outgoingEdges)
         {
@@ -134,7 +136,7 @@ vector<Edge *> Multigraph::dijkstraShortestPath(Node *source, Node *dest, EdgeFi
                 }
             }
         }
-        cout << "Checked the connections" << endl;
+        // cout << "Checked the connections" << endl;
         node->find();
     }
     path = buildPath(source, dest);
@@ -164,8 +166,8 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
         // Node *node = pQ.pop_value().key;
         // check if node is destination
         Node *node = queue.top();
-        cout << "Checking node " << node->getData().getId() << endl;
-        cout << "Distance is" << node->getNodeDistance() << endl;
+        // cout << "Checking node " << node->getData().getId() << endl;
+        // cout << "Distance is " << node->getNodeDistance() << endl;
         printQueue(queue);
         queue.pop();
         if (node->isFound())
@@ -177,15 +179,15 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
             break;
         }
 
-        auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
+        map<Node *, vector<Edge *>>& outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
             // get the best edge
             double bestWeight = numeric_limits<double>::max();
             Edge *bestEdge = nullptr;
             Node *toNode = outgoingEdgesOfNode.first;
-            vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
-            cout << "Checking" << outgoingEdges.size() << "edges to " << toNode->getData().getId() << endl;
+            vector<Edge *> &outgoingEdges = outgoingEdgesOfNode.second;
+            // cout << "Checking" << outgoingEdges.size() << "edges to " << toNode->getData().getId() << endl;
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -199,7 +201,10 @@ vector<Edge *> Multigraph::dijkstraShortestPathEdgesByNode(Node *source, Node *d
                     }
                 }
             }
-
+            if (bestEdge == nullptr)
+            {
+                continue;
+            }
             // use the best edge for dijkstra
             double weight;
             edgeWeight(bestEdge, weight);
@@ -228,6 +233,10 @@ vector<Edge *> Multigraph::buildPath(Node *source, Node *dest)
     while (node != source)
     {
         path.push_back(node->getPreviousEdge());
+        if (node->getPreviousEdge() == nullptr)
+        {
+            return vector<Edge *>();
+        }
         node = node->getPreviousEdge()->getSource();
     }
     reverse(path.begin(), path.end());
@@ -353,11 +362,14 @@ vector<Edge *> Multigraph::bfsByNode(
             break;
         }
 
-        auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
+        map<Node *, vector<Edge *>>& outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
             Node *toNode = outgoingEdgesOfNode.first;
-            vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
+            vector<Edge *>& outgoingEdges = outgoingEdgesOfNode.second;
+            if(toNode->isFound()){
+                continue;
+            }
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -378,86 +390,7 @@ vector<Edge *> Multigraph::bfsByNode(
     path = buildPath(n1, n2);
     return path;
 }
-
-pair<vector<Edge *>, int> Multigraph::getErdos(
-    Node *n1,
-    Node *n2,
-    EdgeFilter edgeFilter,
-    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter))
-{
-    vector<Edge *> path = (this->*chosenBfs)(n1, n2, edgeFilter);
-    return make_pair(path, path.size());
-}
-
-pair<vector<Edge *>, int> Multigraph::getErdos(
-    Node *n1,
-    Node *n2,
-    EdgeFilter edgeFilter,
-    int bfsSelection)
-{
-    std::vector<Edge *> (Multigraph::*chosenBfs)(Node * n1, Node * n2, EdgeFilter edgeFilter);
-    if (bfsSelection == 1)
-    {
-        chosenBfs = &Multigraph::bfs;
-    }
-    else if (bfsSelection == 2)
-    {
-        chosenBfs = &Multigraph::bfsByNode;
-    }
-    return this->getErdos(n1, n2, edgeFilter, chosenBfs);
-}
-
-vector<Edge *> Multigraph::dfs(
-    Node *n1,
-    Node *n2,
-    EdgeFilter edgeFilter)
-{
-    stack<Node *> s;
-    vector<Edge *> path;
-
-    if (n1 == n2)
-    {
-        return path;
-    }
-
-    for (auto node : nodes)
-    {
-        node->resetNode();
-    }
-
-    // dfs over nodes using visited
-    s.push(n1);
-    n1->find();
-    while (!s.empty())
-    {
-        Node *node = s.top();
-        s.pop();
-        if (node == n2)
-        {
-            break;
-        }
-
-        for (auto edge : node->getOutgoingEdges())
-        {
-            if (edgeFilter(edge))
-            {
-                Node *toNode = edge->getDest();
-                if (!toNode->isFound())
-                {
-                    // Not found
-                    s.push(toNode);
-                    toNode->setPreviousEdge(edge);
-                    toNode->find();
-                }
-            }
-        }
-    }
-
-    path = buildPath(n1, n2);
-    return path;
-}
-
-map<Node *, vector<Edge *>> Multigraph::dfs(
+map<Node *, vector<Edge *>> Multigraph::bfsSpanningTree(
     Node *n1,
     EdgeFilter edgeFilter)
 {
@@ -470,7 +403,7 @@ map<Node *, vector<Edge *>> Multigraph::dfs(
         node->resetNode();
     }
 
-    // dfs over nodes using visited
+    // bfs over nodes using visited
     s.push(n1);
     n1->find();
     while (!s.empty())
@@ -505,63 +438,7 @@ map<Node *, vector<Edge *>> Multigraph::dfs(
     return pathMap;
 }
 
-vector<Edge *> Multigraph::dfsByNode(
-    Node *n1,
-    Node *n2,
-    EdgeFilter edgeFilter)
-{
-    stack<Node *> s;
-    vector<Edge *> path;
-
-    if (n1 == n2)
-    {
-        return path;
-    }
-
-    for (auto node : nodes)
-    {
-        node->resetNode();
-    }
-
-    // dfs over nodes using visited
-    s.push(n1);
-    n1->find();
-    while (!s.empty())
-    {
-        Node *node = s.top();
-        s.pop();
-        if (node == n2)
-        {
-            break;
-        }
-
-        auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
-        for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
-        {
-            Node *toNode = outgoingEdgesOfNode.first;
-            vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
-            for (auto edge : outgoingEdges)
-            {
-                if (edgeFilter(edge))
-                {
-                    if (!toNode->isFound())
-                    {
-                        // Not found
-                        s.push(toNode);
-                        toNode->setPreviousEdge(edge);
-                        toNode->find();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    path = buildPath(n1, n2);
-    return path;
-}
-
-map<Node *, vector<Edge *>> Multigraph::dfsByNode(
+map<Node *, vector<Edge *>> Multigraph::bfsByNodeSpanningTree(
     Node *n1,
     EdgeFilter edgeFilter)
 {
@@ -573,7 +450,7 @@ map<Node *, vector<Edge *>> Multigraph::dfsByNode(
         node->resetNode();
     }
 
-    // dfs over nodes using visited
+    // bfs over nodes using visited
     s.push(n1);
     n1->find();
     while (!s.empty())
@@ -581,11 +458,14 @@ map<Node *, vector<Edge *>> Multigraph::dfsByNode(
         Node *node = s.top();
         s.pop();
 
-        auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
+        map<Node *, vector<Edge *>>& outgoingEdgesByNode = node->getOutgoingEdgesByNode();
         for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
         {
             Node *toNode = outgoingEdgesOfNode.first;
-            vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
+            vector<Edge *>& outgoingEdges = outgoingEdgesOfNode.second;
+            if(toNode->isFound()){
+                continue;
+            }
             for (auto edge : outgoingEdges)
             {
                 if (edgeFilter(edge))
@@ -637,7 +517,6 @@ vector<Edge *> Multigraph::getBestEdges(EdgeFilter edgeFilter, EdgeWeighter edge
             double weight;
             edgeWeight(edge, weight);
 
-
             pair<Node *, Node *> connection = make_pair(edge->getSource(), edge->getDest());
             pair<Edge *, double> value = make_pair(edge, weight);
             if (bestEdges.find(connection) == bestEdges.end())
@@ -669,11 +548,11 @@ vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, EdgeFilter edgeFilter,
 {
     vector<Edge *> bestEdges;
     double bestWeight = numeric_limits<double>::max(); // Initialize to a large number
-    auto outgoingEdgesByNode = node->getOutgoingEdgesByNode();
+    map<Node *, vector<Edge *>>& outgoingEdgesByNode = node->getOutgoingEdgesByNode();
     for (auto outgoingEdgesOfNode : outgoingEdgesByNode)
     {
         Node *toNode = outgoingEdgesOfNode.first;
-        vector<Edge *> outgoingEdges = outgoingEdgesOfNode.second;
+        vector<Edge *>& outgoingEdges = outgoingEdgesOfNode.second;
         for (auto edge : outgoingEdges)
         {
             if (edgeFilter(edge))
@@ -692,9 +571,9 @@ vector<Edge *> Multigraph::getBestEdgesByNode(Node *node, EdgeFilter edgeFilter,
     return bestEdges;
 }
 
-bool Multigraph::isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*dfs)(Node *, EdgeFilter))
+bool Multigraph::isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector<Edge *>> (Multigraph::*bfs)(Node *, EdgeFilter))
 {
-    (this->*dfs)(n1, edgeFilter);
+    (this->*bfs)(n1, edgeFilter);
 
     for (auto node : nodes)
     {
@@ -706,36 +585,106 @@ bool Multigraph::isConnected(Node *n1, EdgeFilter edgeFilter, map<Node *, vector
     return true;
 }
 
-void Multigraph::mountTree(Node *root, vector<Edge *> treeEdges)
+vector<Edge *> Multigraph::mountTree(Node *root, vector<Edge *> &treeEdges)
 {
-    for (auto edge : treeEdges)
-    {
-        cout << edge->getSource()->getData().getId() << "to" << edge->getDest()->getData().getId() << endl;
-    }
+    // for (auto edge : treeEdges)
+    // {
+    //     cout << edge->getSource()->getData().getId() << " to " << edge->getDest()->getData().getId() << endl;
+    // }
     cout << "Spanning tree is made of " << treeEdges.size() << "edges" << endl;
+    for (auto it = treeEdges.begin(); it != treeEdges.end(); ++it)
+    {
+        if ((*it)->getSource() == root)
+        {
+            iter_swap(it, treeEdges.begin());
+            break;
+        }
+    }
+    return treeEdges;
 }
 
-void Multigraph::getLocalMinimumSpanningTree(
+pair<vector<Edge *>, int> Multigraph::getErdos(
+    Node *n1,
+    Node *n2,
+    EdgeFilter edgeFilter,
+    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter))
+{
+    vector<Edge *> path = (this->*chosenBfs)(n1, n2, edgeFilter);
+    return make_pair(path, path.size());
+}
+
+pair<vector<Edge *>, int> Multigraph::getErdos(
+    Node *n1,
+    Node *n2,
+    EdgeFilter edgeFilter,
+    int bfsSelection)
+{
+    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter);
+    if (bfsSelection == 1)
+    {
+        chosenBfs = &Multigraph::bfs;
+    }
+    else if (bfsSelection == 2)
+    {
+        chosenBfs = &Multigraph::bfsByNode;
+    }
+    return this->getErdos(n1, n2, edgeFilter, chosenBfs);
+}
+
+vector<vector<Edge *>> Multigraph::getErdos(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeighter,
+    int bfsSelection)
+{
+    std::vector<Edge *> (Multigraph::*chosenBfs)(Node *n1, Node *n2, EdgeFilter edgeFilter);
+    if (bfsSelection == 1)
+    {
+        chosenBfs = &Multigraph::bfs;
+    }
+    else if (bfsSelection == 2)
+    {
+        chosenBfs = &Multigraph::bfsByNode;
+    }
+    vector<Edge *> path = (this->*chosenBfs)(nodes[0], nodes[1], edgeFilter);
+    vector<vector<Edge*>> allPaths = {path};
+    return allPaths;
+}
+
+vector<vector<Edge *>> Multigraph::getBfs(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeighter,
+    int bfsSelection)
+{
+    auto erdos = this->getErdos(nodes[0], nodes[1], edgeFilter, bfsSelection);
+    vector<Edge *> path = erdos.first;
+    vector<vector<Edge*>> allPaths = {path};
+    return allPaths;
+}
+
+vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
     std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight),
-    map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node *localNode, EdgeFilter edgeFilter))
+    map<Node *, vector<Edge *>> (Multigraph::*chosenBfs)(Node *localNode, EdgeFilter edgeFilter))
 {
 
-    cout << "Starting minimum spanning tree" << endl;
+    // cout << "Starting minimum spanning tree" << endl;
     vector<Edge *> newEdges = (this->*chosenCollectEdges)(edgeFilter, edgeWeight);
     vector<Edge *> mstEdges = vector<Edge *>();
-    cout << "Finished collecting edges " << endl;
+    // cout << "Finished collecting edges " << endl;
+    // cout << "Got " << newEdges.size() << " edges" << endl;
     // sort edges by weight
     sort(newEdges.begin(), newEdges.end(), [edgeWeight](Edge *e1, Edge *e2)
          {
             double w1, w2;
             edgeWeight(e1, w1);
             edgeWeight(e2, w2);
-            return w1 < w2; });
+            return w1 > w2; });
 
-    cout << "Finished sorting edges" << endl;
+    // cout << "Finished sorting edges" << endl;
     for (auto node : nodes)
     {
         node->resetNode();
@@ -754,7 +703,7 @@ void Multigraph::getLocalMinimumSpanningTree(
     int connectedCount = 0;
     int lastPrint = 0;
     int size = newEdges.size();
-    cout << "Starting reverse delete algorithm with " << size << " edges" << endl;
+    // cout << "Starting reverse delete algorithm with " << size << " edges" << endl;
     for (auto edge : newEdges)
     {
         Node *n1 = edge->getSource();
@@ -766,7 +715,7 @@ void Multigraph::getLocalMinimumSpanningTree(
         bool connected = isConnected(
             localNode, [newEdges](Edge *e) -> bool
             { return find(newEdges.begin(), newEdges.end(), e) != newEdges.end(); },
-            chosenDfs);
+            chosenBfs);
 
         if (!connected)
         {
@@ -780,41 +729,55 @@ void Multigraph::getLocalMinimumSpanningTree(
             connectedCount++;
         }
         count++;
-        cout << "Calculated " << count << "/" << size << "edges " << endl;
+        // cout << "Calculated " << count << "/" << size << " edges " << endl;
     }
 
-    mountTree(localNode, mstEdges);
+    vector<Edge *> tree = mountTree(localNode, mstEdges);
+    return tree;
 }
 
-void Multigraph::getLocalMinimumSpanningTree(
+vector<Edge *> Multigraph::getLocalMinimumSpanningTree(
     Node *localNode,
     EdgeFilter edgeFilter,
     EdgeWeighter edgeWeight,
-    int dfsAlgorithm,
-    int collectionAlgorithm)
+    int algorithmCodifiction)
 {
 
     std::vector<Edge *> (Multigraph::*chosenCollectEdges)(EdgeFilter edgeFilter, EdgeWeighter edgeWeight);
-    map<Node *, vector<Edge *>> (Multigraph::*chosenDfs)(Node * localNode, EdgeFilter edgeFilter);
-    if (collectionAlgorithm == 1)
+    map<Node *, vector<Edge *>> (Multigraph::*chosenBfs)(Node *localNode, EdgeFilter edgeFilter);
+
+    int firstAlgorithm = (algorithmCodifiction & 0b11 << 0) >> 0;
+    int secondAlgorithm = (algorithmCodifiction & 0b11 << 2) >> 2;
+
+    if (firstAlgorithm == 1)
+    {
+        chosenBfs = &Multigraph::bfsSpanningTree;
+    }
+    else if (firstAlgorithm == 2)
+    {
+        chosenBfs = &Multigraph::bfsByNodeSpanningTree;
+    }
+
+    if (secondAlgorithm == 1)
     {
         chosenCollectEdges = &Multigraph::getEdges;
     }
-    else if (collectionAlgorithm == 2)
+    else if (secondAlgorithm == 2)
     {
         chosenCollectEdges = &Multigraph::getBestEdges;
     }
 
-    if (dfsAlgorithm == 1)
-    {
-        chosenDfs = &Multigraph::dfs;
-    }
-    else if (dfsAlgorithm == 2)
-    {
-        chosenDfs = &Multigraph::dfsByNode;
-    }
+    return getLocalMinimumSpanningTree(localNode, edgeFilter, edgeWeight, chosenCollectEdges, chosenBfs);
+}
 
-    return getLocalMinimumSpanningTree(localNode, edgeFilter, edgeWeight, chosenCollectEdges, chosenDfs);
+vector<vector<Edge *>> Multigraph::getLocalMinimumSpanningTree(
+    vector<Node *> nodes,
+    EdgeFilter edgeFilter,
+    EdgeWeighter edgeWeight,
+    int algorithmCodification)
+{
+    this->getLocalMinimumSpanningTree(nodes[0], edgeFilter, edgeWeight, algorithmCodification);
+    return vector<vector<Edge *>>();
 }
 
 Node *Multigraph::getNode(int id)

@@ -1,0 +1,71 @@
+airport_id,code,name,city,state,statename,lat,lng
+785,NCN,Chenega,New Chenega,AK,Alaska,60.0784,-148.017
+588,NUI,Nuiqsut,Nuiqsut,AK,Alaska,70.2167,-150.917
+380,BZN,Gallatin Field Airport,Bozeman,MT,Montana,45.7722,-111.157
+519,MEI,Key Field Airport,Meridian,MS,Mississippi,32.3334,-88.7449
+229,ACK,Nantucket Memorial Airport,Nantucket,MA,Massachusetts,41.2568,-70.0649
+546,GTR,Golden Triangle Regional Airport,Columbus,MS,Mississippi,33.4516,-88.5876
+591,ITH,Tompkins County Airport,Ithaca,NY,New York,42.4898,-76.4627
+96,AKB,Atka Airport,Atka,AK,Alaska,52.2217,-174.204
+555,PSC,Tri Cities Airport,Pasco,WA,Washington,46.2592,-119.117
+118,ENW,Kenosha Regional Airport,Kenosha,WI,Wisconsin,42.5934,-87.9299
+983,ATK,Atqasuk Airport,Atqasuk,AK,Alaska,70.4639,-157.331
+432,PML,Port Moller,Port Moller,AK,Alaska,55.9833,-160.533
+503,SDY,Sidney Richland Municipal Airport,Sidney,MT,Montana,47.7113,-104.184
+12478,JFK,John F Kennedy International Airport,Jamaica,NY,New York,40.6437,-73.79
+10397,ATL,Hartsfield-Jackson Atlanta International Airport,Atlanta,GA,Georgia,33.6558,-84.4333
+254,HVR,Havre City-County Airport,Havre,MT,Montana,48.5461,-109.773
+433,AHC,Amedee Army Air Field,Herlong,CA,California,40.2664,-120.151
+559,AEX,Alexandria International Airport,Alexandria,LA,Louisiana,31.323,-92.5417
+4,FAT,Fresno Yosemite International Airport,Fresno,CA,California,36.7675,-119.717
+360,TWA,Twin Hills,Twin Hills,AK,Alaska,36.8259,-83.3212
+84,LOU,Bowman Field Airport,Louisville,KY,Kentucky,38.2228,-85.6669
+869,KPN,Kipnuk,Kipnuk,AK,Alaska,59.9371,-164.041
+217,COU,Columbia Regional Airport,Columbia,MO,Missouri,38.8174,-92.2218
+156,SIG,Isla Grande Airport,San Juan,PR,Puerto Rico,18.4558,-66.0981
+777,NKI,Naukiti Airport,Naukiti,AK,Alaska,55.8556,-133.183
+927,CEZ,Cortez-Montezuma County Airport,Cortez,CO,Colorado,37.3044,-108.63
+226,ANI,Aniak Airport,Bethel,AK,Alaska,61.5742,-159.535
+649,OME,Nome Airport,Nome,AK,Alaska,64.5125,-165.445
+520,FMN,Four Corners Regional Airport,Farmington,NM,New Mexico,36.7387,-108.227
+958,EAR,Kearney Municipal Airport,Kearney,NE,Nebraska,40.7236,-99.0151
+414,LIH,Lihue Airport,Lihue,HI,Hawaii,21.9782,-159.351
+900,ORV,Curtis Memorial,Noorvik,AK,Alaska,66.8333,-161.033
+942,ODW,Oak Harbor Airpark,Oak Harbor,WA,Washington,48.2517,-122.68
+908,FAR,Hector International Airport,Fargo,ND,North Dakota,46.9195,-96.8243
+261,PKB,Wood County Airport-Gill Robb Wilson Field,Williamstown,WV,West Virginia,39.3462,-81.4345
+76,MCW,Mason City Municipal Airport,Clear Lake,IA,Iowa,43.153,-93.3361
+662,JST,Johnstown Cambria County Airport,Johnstown,PA,Pennsylvania,40.3208,-78.8306
+115,ABI,Abilene Regional Airport,Abilene,TX,Texas,32.4164,-99.6803
+557,MKC,Kansas City Downtown Airport,Kansas City,MO,Missouri,39.1197,-94.5906
+285,AOS,Amook Bay Seaplane Base,Amook,AK,Alaska,57.4672,-153.839
+12892,LAX,Los Angeles International Airport,Los Angeles,CA,California,33.9456,-118.391
+14492,RDU,Durham International Airport,Raleigh/Durham,NC,North Carolina,35.8729,-78.7923
+634,BKL,Burke Lakefront Airport,Cleveland,OH,Ohio,41.5115,-81.6869
+513,FLG,Flagstaff Pulliam Airport,Flagstaff,AZ,Arizona,35.139,-111.675
+411,CNY,Canyonlands Field Airport,Thompson,UT,Utah,38.7609,-109.742
+417,JAC,Jackson Hole Airport,Jackson,WY,Wyoming,43.6034,-110.736
+580,RIV,March Air Force Base,Alessandro,CA,California,33.8806,-117.259
+647,IGM,Kingman Airport,Kingman,AZ,Arizona,35.2692,-113.957
+10529,BDL,Bradley International Airport,Windsor Locks,CT,Connecticut,41.9271,-72.6816
+889,MGW,Morgantown Municipal Airport-Hart Field,Morgantown,WV,West Virginia,39.6411,-79.9241
+629,MGM,Montgomery Regional Airport,Montgomery,AL,Alabama,32.3049,-86.3909
+20,GJT,Walker Field Airport,Grand Junction,CO,Colorado,39.1217,-108.529
+635,SCM,Scammon Bay,Scammon Bay,AK,Alaska,61.8425,-165.58
+943,TLJ,Tatalina LRRS Airport,McGrath,AK,Alaska,62.895031,-155.977011
+571,CKB,Benedum Airport,Clarksburg,WV,West Virginia,39.2967,-80.2314
+13891,ONT,Ontario International Airport,Ontario,CA,California,34.062,-117.594
+37,NNL,Nondalton,Nondalton,AK,Alaska,59.9717,-154.847
+357,SCK,Stockton Metropolitan Airport,Stockton,CA,California,37.8973,-121.253
+249,IWD,Gogebic-Iron County Airport,Ironwood,MI,Michigan,46.5208,-90.1344
+425,ZTV,Louisville International Airport,Louisville,KY,Kentucky,38.1865,-85.7462
+48,STC,St Cloud Regional Airport,St. Cloud,MN,Minnesota,45.5463,-94.066
+13244,MEM,Memphis International Airport,Memphis,TN,Tennessee,35.047,-89.9823
+753,ISN,Sloulin Field International Airport,Williston,ND,North Dakota,48.1767,-103.631
+886,KPY,Port Bailey,Port Bailey,AK,Alaska,58.743,-154.96
+624,CEM,Central Airport,Circle,AK,Alaska,65.6121,-144.674
+707,HOB,Lea County Regional Airport,Hobbs,NM,New Mexico,32.6929,-103.215
+390,AVP,Wilkes Barre Scranton International Airport,Pittston,PA,Pennsylvania,41.3354,-75.7294
+978,BRW,Wiley Post Will Rogers Memorial Airport,Barrow,AK,Alaska,71.2892,-156.772
+784,HNM,Hana Airport,Hana,HI,Hawaii,20.7944,-156.015
+960,PTA,Port Alsworth,Port Alsworth,AK,Alaska,60.3956,-154.494

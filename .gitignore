@@ -2,4 +2,5 @@
 src/*.exe
 src/*.o
 .vscode
-./data/flights.csv
+data/flights.csv
+pybind11/

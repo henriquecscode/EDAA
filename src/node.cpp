@@ -108,7 +108,7 @@ void Node::setPreviousEdge(Edge *edge)
     this->previousEdge = edge;
 }
 
-set<Edge *> Node::getAuxIncomingEdges()
+set<Edge *>& Node::getAuxIncomingEdges()
 {
     return auxIncomingEdges;
 }
@@ -123,7 +123,7 @@ void Node::removeAuxIncomingEdge(Edge *edge)
     this->auxIncomingEdges.erase(edge);
 }
 
-set<Edge *> Node::getAuxOutgoingEdges()
+set<Edge *>& Node::getAuxOutgoingEdges()
 {
     return auxOutgoingEdges;
 }
@@ -138,32 +138,32 @@ void Node::removeAuxOutgoingEdge(Edge *edge)
     this->auxOutgoingEdges.erase(edge);
 }
 
-vector<Edge *> Node::getIncomingEdges()
+vector<Edge *>& Node::getIncomingEdges()
 {
     return incomingEdges;
 }
 
-vector<Edge *> Node::getOutgoingEdges()
+vector<Edge *>& Node::getOutgoingEdges()
 {
     return outgoingEdges;
 }
 
-map<Node *, vector<Edge *>> Node::getIncomingEdgesByNode()
+map<Node *, vector<Edge *>>& Node::getIncomingEdgesByNode()
 {
     return incomingEdgesByNode;
 }
 
-map<Node *, vector<Edge *>> Node::getOutgoingEdgesByNode()
+map<Node *, vector<Edge *>>& Node::getOutgoingEdgesByNode()
 {
     return outgoingEdgesByNode;
 }
 
-vector<Edge *> Node::getIncomingEdgesFromNode(Node *node)
+vector<Edge *>& Node::getIncomingEdgesFromNode(Node *node)
 {
     return incomingEdgesByNode[node];
 }
 
-vector<Edge *> Node::getOutgoingEdgesToNode(Node *node)
+vector<Edge *>& Node::getOutgoingEdgesToNode(Node *node)
 {
     return outgoingEdgesByNode[node];
 }
