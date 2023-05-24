@@ -17,7 +17,7 @@ def flatten_list(_2d_list):
     return flat_list
 
 # Read data from CSV file
-for i in ['bfs_by_node.csv', 'bfs.csv', 'dfs_by_node.csv', 'dfs.csv', 'dijkstra_by_node.csv', 'dijkstra.csv', 'spanning.csv']:
+for i in ['bfs_by_node.csv', 'bfs.csv', 'dfs_by_node.csv', 'dfs.csv', 'dijkstra_by_node.csv', 'dijkstra.csv', 'spanning.csv', "erdos_by_node.csv", "erdos.csv"]:
     data = pd.read_csv(i)
     
     # Extract the x and y values
@@ -58,7 +58,7 @@ for i in ['bfs_by_node.csv', 'bfs.csv', 'dfs_by_node.csv', 'dfs.csv', 'dijkstra_
     
     # Set x and y axis labels
     ax.set_xlabel('Sample Size')
-    ax.set_ylabel('Performance (μs)')
+    ax.set_ylabel('Performance (s)')
 
     plt.tight_layout()
     
