@@ -12,9 +12,9 @@ The original dataset was obtained from:
 
 ## Installation Details 
 
-To run this code, you need to have a C++ compiler (such as GCC) and Python installed on your system. 
-There's a Makefile to create an executable to run the program. To use this, it's required to have the *make* command installed in your system.
-Additionally, you need to install the Python libraries specified in the "requirements.txt" file located in this repository. You can install these libraries using the following command:
+To run this code, a C++ compiler (such as GCC) is required, along with a Python installation. 
+There's a Makefile to create an executable to run the program. To use this, the *make* command is needed - be sure to have it installed in your system.
+Additionally, please install the Python libraries specified in the "requirements.txt" file located in this repository. This can be done using the following command:
 ```cmd
 pip install -r requirements.txt
 ```
