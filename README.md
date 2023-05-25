@@ -12,18 +12,31 @@ The original dataset was obtained from:
 
 ## Installation Details 
 
+To run this code, you need to have a C++ compiler (such as GCC) and Python installed on your system. 
+There's a Makefile to create an executable to run the program. To use this, it's required to have the *make* command installed in your system.
+Additionally, you need to install the Python libraries specified in the "requirements.txt" file located in this repository. You can install these libraries using the following command:
+```cmd
+pip install -r requirements.txt
+```
+
 ## Run Commands
 
-The code has a Makefile with two targets:
+The Makefile contains two targets: menu and test. The menu target generates an executable that allows you to use the application, while the test target is used for testing the application. To build each target, use the following commands:
 ```cmd
 make menu
 ```
-This command creates an executable for the user to use to see the menu of the application, with the command:
+```cmd
+make test
+```
+
+After building, you can run the application using the following commands:
+
+For the *menu* target:
 ```cmd
 ./project.exe
 ```
 
+For the *test* target:
 ```cmd
-make test
+./tester.exe
 ```
-This command creates an executable for the user to use to test the application.
