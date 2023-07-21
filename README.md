@@ -1,4 +1,4 @@
-# EDAA Project
+# Multigraph for Airport/Flight Dataset
 
 Implementation of the Multigraph Data Structure and application of the following problems:
 - Path-Finding;
