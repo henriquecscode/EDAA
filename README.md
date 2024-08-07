@@ -4,6 +4,13 @@ Implementation of the Multigraph Data Structure and application of the following
 - Path-Finding;
 - Spanning Tree;
 - Erdõs Number;
+## Collaborators
+
+[Henrique Sousa (Self)](https://github.com/henriquecscode)
+
+[Mateus Silva](https://github.com/lessthelonely)
+
+[Melissa Silva](https://github.com/melisilva)
 
 ## Dataset
 
